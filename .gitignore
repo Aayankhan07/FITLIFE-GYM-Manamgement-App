@@ -1,0 +1,45 @@
+# Git ignore — exclude sensitive and generated files
+
+# Config with real credentials
+config/settings.json
+
+# Python cache
+__pycache__/
+*.py[cod]
+*$py.class
+*.pyc
+
+# Virtual environments
+venv/
+env/
+.venv/
+
+# IDE files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# Generated reports (keep folder, not contents)
+reports/*.pdf
+reports/*.xlsx
+reports/*.csv
+
+# Log files
+logs/*.log
+
+# Uploaded photos
+assets/images/photos/
+
+# OS files
+.DS_Store
+Thumbs.db
+desktop.ini
+
+# Distribution / packaging
+dist/
+build/
+*.egg-info/
+
+# Dev / test scripts
+verify_all.py
