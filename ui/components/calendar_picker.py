@@ -23,7 +23,7 @@ class CalendarPicker(QDateEdit):
         self.setStyleSheet("""
             QDateEdit {
                 background: rgba(255,255,255,0.07);
-                border: 1px solid rgba(124,58,237,0.3);
+                border: 1px solid rgba(0, 102, 255, 0.3);
                 border-radius: 8px;
                 padding: 0 12px;
                 color: #F0F4FF;
@@ -33,11 +33,11 @@ class CalendarPicker(QDateEdit):
                 border: none;
                 width: 24px;
             }
-            QDateEdit:focus { border: 1.5px solid #7C3AED; }
+            QDateEdit:focus { border: 1.5px solid #0066FF; }
             QCalendarWidget {
                 background: rgba(20,20,40,0.98);
                 color: #F0F4FF;
-                border: 1px solid rgba(124,58,237,0.5);
+                border: 1px solid rgba(0, 102, 255, 0.5);
                 border-radius: 12px;
             }
         """)
