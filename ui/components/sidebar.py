@@ -93,7 +93,7 @@ class Sidebar(QWidget):
         self.app_name_lbl = QLabel("FitLife")
         self.app_name_lbl.setStyleSheet(
             "font-size: 22px; font-weight: bold; "
-            "color: #7C3AED; letter-spacing: 1px;"
+            "color: #0066FF; letter-spacing: 1px;"
         )
         brand_row.addWidget(self.logo_lbl)
         brand_row.addWidget(self.app_name_lbl)
@@ -103,7 +103,7 @@ class Sidebar(QWidget):
         # Divider
         div = QFrame()
         div.setFrameShape(QFrame.Shape.HLine)
-        div.setStyleSheet("color: rgba(124,58,237,0.3);")
+        div.setStyleSheet("color: rgba(0, 102, 255, 0.3);")
         layout.addWidget(div)
         layout.addSpacing(8)
 
@@ -121,7 +121,7 @@ class Sidebar(QWidget):
         # Divider
         div2 = QFrame()
         div2.setFrameShape(QFrame.Shape.HLine)
-        div2.setStyleSheet("color: rgba(124,58,237,0.3);")
+        div2.setStyleSheet("color: rgba(0, 102, 255, 0.3);")
         layout.addWidget(div2)
 
         # ── Toggle collapse ───────────────────────────────────────────────────
@@ -135,7 +135,7 @@ class Sidebar(QWidget):
         # ── User Info ─────────────────────────────────────────────────────────
         user_frame = QFrame()
         user_frame.setStyleSheet(
-            "background: rgba(124,58,237,0.12); border-radius: 12px; padding: 4px;"
+            "background: rgba(0, 102, 255, 0.12); border-radius: 12px; padding: 4px;"
         )
         user_layout = QHBoxLayout(user_frame)
         user_layout.setContentsMargins(8, 8, 8, 8)
@@ -149,7 +149,7 @@ class Sidebar(QWidget):
         self.user_name_lbl = QLabel(self._user_name)
         self.user_name_lbl.setStyleSheet("font-weight: bold; font-size: 13px; color: #F0F4FF;")
         self.user_role_lbl = QLabel(self._role)
-        self.user_role_lbl.setStyleSheet("font-size: 11px; color: #7C3AED;")
+        self.user_role_lbl.setStyleSheet("font-size: 11px; color: #0066FF;")
         self.user_info.addWidget(self.user_name_lbl)
         self.user_info.addWidget(self.user_role_lbl)
         user_layout.addLayout(self.user_info)
