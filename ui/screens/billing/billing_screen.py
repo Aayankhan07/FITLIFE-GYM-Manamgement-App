@@ -37,7 +37,7 @@ class BillingScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,24); main.setSpacing(20)
@@ -45,7 +45,7 @@ class BillingScreen(QWidget):
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("💰  Billing & Payments")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         rec_btn = QPushButton("➕  Record Payment")
         rec_btn.setObjectName("btnPrimary")
@@ -65,7 +65,7 @@ class BillingScreen(QWidget):
 
         # ── Month Filter ──────────────────────────────────────────────────────
         filter_frame = QFrame()
-        filter_frame.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        filter_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(filter_frame)
         fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
 
@@ -277,7 +277,7 @@ class PaymentRecordForm(QFrame):
 
         hdr = QHBoxLayout()
         title = QLabel("💰  Record Payment")
-        title.setStyleSheet("font-size:18px;font-weight:bold;color:#00E676;")
+        title.setStyleSheet("QWidget { font-size:18px;font-weight:bold;color:#00E676; }")
         hdr.addWidget(title); hdr.addStretch()
         close = QPushButton("✕")
         close.setFixedSize(28,28)
@@ -318,7 +318,7 @@ class PaymentRecordForm(QFrame):
 
         # Current plan info
         self.plan_info = QLabel("")
-        self.plan_info.setStyleSheet("color:#00F5FF;font-size: 13px;")
+        self.plan_info.setStyleSheet("QWidget { color:#00F5FF;font-size: 13px; }")
         main.addWidget(self.plan_info)
 
         btn_row = QHBoxLayout(); btn_row.setSpacing(10)
@@ -403,7 +403,7 @@ class InvoiceDialog(QWidget):
         super().__init__(parent, Qt.WindowType.Dialog)
         self.setWindowTitle("Invoice")
         self.setMinimumSize(520, 580)
-        self.setStyleSheet("background:#0A0E2A; color:#F0F4FF;")
+        self.setStyleSheet("QWidget { background:#0A0E2A; color:#F0F4FF; }")
         self._setup_ui(payment_id)
 
     def _setup_ui(self, payment_id):
@@ -415,22 +415,22 @@ class InvoiceDialog(QWidget):
             return
 
         title = QLabel("🧾  INVOICE")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#0066FF; text-align:center;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#0066FF; text-align:center; }")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
 
         inv_num = QLabel(p[12])
-        inv_num.setStyleSheet("font-size:14px; color:#00F5FF; text-align:center;")
+        inv_num.setStyleSheet("QWidget { font-size:14px; color:#00F5FF; text-align:center; }")
         inv_num.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(inv_num)
 
         line = QFrame(); line.setFrameShape(QFrame.Shape.HLine)
-        line.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(line)
+        line.setStyleSheet("QWidget { background:rgba(0, 102, 255, 0.4); }"); layout.addWidget(line)
 
         def row(label, val):
             h = QHBoxLayout()
-            l = QLabel(label); l.setStyleSheet("color:#9CA3AF; font-size:13px;")
-            v = QLabel(str(val)); v.setStyleSheet("color:#F0F4FF; font-size:14px; font-weight:600;")
+            l = QLabel(label); l.setStyleSheet("QWidget { color:#9CA3AF; font-size:13px; }")
+            v = QLabel(str(val)); v.setStyleSheet("QWidget { color:#F0F4FF; font-size:14px; font-weight:600; }")
             l.setFixedWidth(160)
             h.addWidget(l); h.addWidget(v); h.addStretch()
             layout.addLayout(h)
@@ -447,7 +447,7 @@ class InvoiceDialog(QWidget):
         if p[13]: row("Notes:", p[13])
 
         line2 = QFrame(); line2.setFrameShape(QFrame.Shape.HLine)
-        line2.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(line2)
+        line2.setStyleSheet("QWidget { background:rgba(0, 102, 255, 0.4); }"); layout.addWidget(line2)
 
         total_lbl = QLabel(f"Total:  Rs. {float(p[8]):,.2f}")
         total_lbl.setStyleSheet(
@@ -457,7 +457,7 @@ class InvoiceDialog(QWidget):
         layout.addWidget(total_lbl)
 
         footer = QLabel("Thank you for choosing FitLife!")
-        footer.setStyleSheet("color:#6B7280;font-size: 13px;")
+        footer.setStyleSheet("QWidget { color:#6B7280;font-size: 13px; }")
         footer.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(footer)
 
