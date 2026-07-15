@@ -95,13 +95,13 @@ class _DietList(QWidget):
         m.addLayout(hdr)
 
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._k_total   = KPICard("Total Plans","—","📋","","#7C3AED")
+        self._k_total   = KPICard("Total Plans","—","📋","","#0066FF")
         self._k_active  = KPICard("Active","—","✅","","#00E676")
         self._k_pending = KPICard("Pending Review","—","⏳","","#FFB800")
         for k in [self._k_total, self._k_active, self._k_pending]: krow.addWidget(k)
         krow.addStretch(); m.addLayout(krow)
 
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Status:"))
         self._sf = QComboBox(); self._sf.setFixedHeight(34); self._sf.addItem("All",None)
@@ -117,7 +117,7 @@ class _DietList(QWidget):
         self.table.row_double_clicked.connect(
             lambda r: self.open_detail.emit(self.table._filtered_data[r][0])
             if r < len(self.table._filtered_data) else None)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         QVBoxLayout(tc).addWidget(self.table)
         m.addWidget(tc)
 
@@ -161,7 +161,7 @@ class _DietList(QWidget):
             cell = QWidget(); bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
             for lbl, clr, fn in [
                 ("👁 View","#00F5FF", lambda _, i=pid: self.open_detail.emit(i)),
-                ("✏️ Edit","#7C3AED", lambda _, i=pid: self.open_edit.emit(i)),
+                ("✏️ Edit","#0066FF", lambda _, i=pid: self.open_edit.emit(i)),
             ]:
                 btn = QPushButton(lbl); btn.setStyleSheet(_BTN(lbl,clr)); btn.clicked.connect(fn); bl.addWidget(btn)
             tw.setCellWidget(ri,7,cell); tw.setCellWidget(ri,6,StatusBadge(st))
@@ -193,7 +193,7 @@ class _DietDetail(QWidget):
             edit.clicked.connect(lambda: self.go_edit.emit(self._plan_id)); hdr.addWidget(edit)
         m.addLayout(hdr)
 
-        hc = QFrame(); hc.setStyleSheet("background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.4);border-radius:16px;")
+        hc = QFrame(); hc.setStyleSheet("background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px;")
         hl = QHBoxLayout(hc); hl.setContentsMargins(24,18,24,18); hl.setSpacing(20)
         iv = QVBoxLayout(); iv.setSpacing(4)
         self._title = QLabel("—"); self._title.setStyleSheet("font-size:20px;font-weight:900;color:#F0F4FF;")
@@ -203,7 +203,7 @@ class _DietDetail(QWidget):
         hl.addLayout(iv); hl.addStretch()
         kr = QHBoxLayout()
         self._k_cal   = KPICard("Calories","—","🔥","","#FF2D78")
-        self._k_prot  = KPICard("Protein","—","💪","","#7C3AED")
+        self._k_prot  = KPICard("Protein","—","💪","","#0066FF")
         self._k_carbs = KPICard("Carbs","—","🌾","","#FFB800")
         self._k_fat   = KPICard("Fat","—","🥑","","#00E676")
         for k in [self._k_cal,self._k_prot,self._k_carbs,self._k_fat]: k.setFixedWidth(150); kr.addWidget(k)
@@ -239,7 +239,7 @@ class _DietDetail(QWidget):
         self._meal_table.verticalHeader().setVisible(False)
         self._meal_table.horizontalHeader().setStretchLastSection(True)
         self._meal_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self._meal_table.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.15);}QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
+        self._meal_table.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
         m.addWidget(self._meal_table)
         m.addStretch(); scroll.setWidget(c)
         QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)
@@ -301,7 +301,7 @@ class _DietForm(QWidget):
         sv.clicked.connect(self._save); hdr.addWidget(sv)
         m.addLayout(hdr)
 
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         g = QGridLayout(card); g.setContentsMargins(28,24,28,28); g.setSpacing(14)
         g.setColumnStretch(1,1); g.setColumnStretch(3,1)
 
