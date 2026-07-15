@@ -74,12 +74,12 @@ class _ProgressOverview(QWidget):
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:10px;border-bottom:1px solid rgba(124,58,237,0.15);}
-            QTableWidget::item:hover{background:rgba(124,58,237,0.1);}
-            QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;
+            QTableWidget::item{padding:10px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
+            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.1);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         QVBoxLayout(tc).addWidget(self._table)
         m.addWidget(tc)
 
@@ -159,7 +159,7 @@ class _MemberProgress(QWidget):
 
         # Summary KPIs
         kr = QHBoxLayout(); kr.setSpacing(14)
-        self._k_logs    = KPICard("Total Logs","—","📋","","#7C3AED")
+        self._k_logs    = KPICard("Total Logs","—","📋","","#0066FF")
         self._k_change  = KPICard("Weight Change","—","⚖️","","#00E676")
         self._k_first   = KPICard("First Log","—","📅","","#00F5FF")
         self._k_latest  = KPICard("Latest Log","—","🕐","","#FFB800")
@@ -209,8 +209,8 @@ class _MemberProgress(QWidget):
         self._hist.verticalHeader().setVisible(False)
         self._hist.horizontalHeader().setStretchLastSection(True)
         self._hist.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self._hist.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.15);}QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        self._hist.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
+        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         QVBoxLayout(tc).addWidget(self._hist)
         m.addWidget(tc); m.addStretch(); scroll.setWidget(c)
         QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)
