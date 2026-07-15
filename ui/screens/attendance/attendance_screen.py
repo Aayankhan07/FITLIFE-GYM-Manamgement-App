@@ -68,14 +68,14 @@ class AttendanceScreen(QWidget):
         krow = QHBoxLayout(); krow.setSpacing(14)
         self._kpi_present = KPICard("Present Today", "—", "✅","","#00E676")
         self._kpi_late    = KPICard("Late Today",    "—", "⚠️","","#FFB800")
-        self._kpi_total   = KPICard("Total Logged",  "—", "📊","","#7C3AED")
+        self._kpi_total   = KPICard("Total Logged",  "—", "📊","","#0066FF")
         for k in [self._kpi_present, self._kpi_late, self._kpi_total]:
             krow.addWidget(k)
         krow.addStretch(); main.addLayout(krow)
 
         # ── Main Split: Check-in Panel (left) | Daily Log (right) ─────────────
         splitter = QSplitter(Qt.Orientation.Horizontal)
-        splitter.setStyleSheet("QSplitter::handle{background:rgba(124,58,237,0.3);width:2px;}")
+        splitter.setStyleSheet("QSplitter::handle{background:rgba(0, 102, 255, 0.3);width:2px;}")
         splitter.setHandleWidth(2)
 
         # ── LEFT: Check-in Panel ──────────────────────────────────────────────
@@ -83,7 +83,7 @@ class AttendanceScreen(QWidget):
         left_frame.setObjectName("glassCard")
         left_frame.setStyleSheet("""
             QFrame {background:rgba(255,255,255,0.05);
-            border:1px solid rgba(124,58,237,0.25);border-radius:16px;}
+            border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;}
         """)
         left_layout = QVBoxLayout(left_frame)
         left_layout.setContentsMargins(20,20,20,20); left_layout.setSpacing(14)
@@ -109,7 +109,7 @@ class AttendanceScreen(QWidget):
         self.status_indicator = QLabel("Select a member above")
         self.status_indicator.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.status_indicator.setStyleSheet(
-            "background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);"
+            "background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.3);"
             "border-radius:10px;padding:10px;color:#9CA3AF;font-size:13px;"
         )
         self.status_indicator.setFixedHeight(60)
@@ -173,7 +173,7 @@ class AttendanceScreen(QWidget):
         right_frame.setObjectName("glassCard")
         right_frame.setStyleSheet("""
             QFrame {background:rgba(255,255,255,0.05);
-            border:1px solid rgba(124,58,237,0.25);border-radius:16px;}
+            border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;}
         """)
         right_layout = QVBoxLayout(right_frame)
         right_layout.setContentsMargins(20,20,20,20); right_layout.setSpacing(12)
@@ -207,9 +207,9 @@ class AttendanceScreen(QWidget):
         self.log_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.log_table.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.15);}
-            QTableWidget::item:hover{background:rgba(124,58,237,0.1);}
-            QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;
+            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
+            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.1);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
         right_layout.addWidget(self.log_table)
@@ -258,7 +258,7 @@ class AttendanceScreen(QWidget):
         else:
             self.status_indicator.setText("Select a member above")
             self.status_indicator.setStyleSheet(
-                "background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.3);"
+                "background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.3);"
                 "border-radius:10px;padding:10px;color:#9CA3AF;font-size:13px;"
             )
 
