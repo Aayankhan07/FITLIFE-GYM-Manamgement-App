@@ -41,14 +41,14 @@ class WorkoutPlansScreen(QWidget):
 
     def _setup_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,24); main.setSpacing(20)
 
         hdr = QHBoxLayout()
         title = QLabel("🏋️  Workout Plans")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             self.add_btn = QPushButton("➕  New Plan")
@@ -69,7 +69,7 @@ class WorkoutPlansScreen(QWidget):
 
         # Status filter
         fbar = QFrame()
-        fbar.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        fbar.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Status:"))
         self.status_filter = QComboBox(); self.status_filter.setFixedHeight(34)
@@ -89,7 +89,7 @@ class WorkoutPlansScreen(QWidget):
             if r < len(self.table._filtered_data) else None
         )
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -194,7 +194,7 @@ class WorkoutPlanDetail(QWidget):
 
     def _setup_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,28); main.setSpacing(20)
@@ -211,12 +211,12 @@ class WorkoutPlanDetail(QWidget):
 
         # Header card
         hc = QFrame()
-        hc.setStyleSheet("background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px;")
+        hc.setStyleSheet("QFrame { background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px; }")
         hcl = QHBoxLayout(hc); hcl.setContentsMargins(24,20,24,20); hcl.setSpacing(20)
         info = QVBoxLayout(); info.setSpacing(6)
         self.title_lbl = QLabel("—")
-        self.title_lbl.setStyleSheet("font-size:22px;font-weight:900;color:#F0F4FF;")
-        self.sub_lbl = QLabel("—"); self.sub_lbl.setStyleSheet("font-size:14px;color:#9CA3AF;")
+        self.title_lbl.setStyleSheet("QWidget { font-size:22px;font-weight:900;color:#F0F4FF; }")
+        self.sub_lbl = QLabel("—"); self.sub_lbl.setStyleSheet("QWidget { font-size:14px;color:#9CA3AF; }")
         self.status_badge = StatusBadge("Draft")
         for w in [self.title_lbl, self.sub_lbl, self.status_badge]: info.addWidget(w)
         hcl.addLayout(info); hcl.addStretch()
@@ -233,7 +233,7 @@ class WorkoutPlanDetail(QWidget):
         # Add exercise row (staff only)
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             add_ex_frame = QFrame()
-            add_ex_frame.setStyleSheet("background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.2);border-radius:12px;")
+            add_ex_frame.setStyleSheet("QFrame { background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.2);border-radius:12px; }")
             exf = QGridLayout(add_ex_frame)
             exf.setContentsMargins(16,12,16,12); exf.setSpacing(10)
 
@@ -389,11 +389,11 @@ class WorkoutPlanForm(QWidget):
 
     def _inp(self, ph=""): f=QLineEdit(); f.setPlaceholderText(ph); f.setMinimumHeight(38); return f
     def _lbl(self, t, req=False):
-        l=QLabel(("* " if req else "")+t); l.setStyleSheet("color:#9CA3AF;font-size:13px;"); return l
+        l=QLabel(("* " if req else "")+t); l.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); return l
 
     def _setup_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container); main.setContentsMargins(28,24,28,28); main.setSpacing(20)
 
@@ -407,7 +407,7 @@ class WorkoutPlanForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         grid = QGridLayout(card); grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1); r=0
 
