@@ -37,22 +37,22 @@ def generate_invoice_pdf(payment_data: dict) -> dict:
                                 leftMargin=20*mm, rightMargin=20*mm,
                                 topMargin=20*mm, bottomMargin=20*mm)
         styles = getSampleStyleSheet()
-        purple = colors.HexColor("#7C3AED")
+        brand_blue = colors.HexColor("#0066FF")
         story = []
 
         # Header
         title_style = ParagraphStyle("title", parent=styles["Title"],
-                                     textColor=purple, fontSize=24, spaceAfter=2)
+                                     textColor=brand_blue, fontSize=24, spaceAfter=2)
         story.append(Paragraph("FitLife", title_style))
         sub_style = ParagraphStyle("sub", parent=styles["Normal"],
                                    textColor=colors.grey, fontSize=10)
         story.append(Paragraph("Male Fitness Chain ERP", sub_style))
-        story.append(HRFlowable(width="100%", thickness=2, color=purple))
+        story.append(HRFlowable(width="100%", thickness=2, color=brand_blue))
         story.append(Spacer(1, 8*mm))
 
         # Invoice title
         inv_style = ParagraphStyle("inv", parent=styles["Heading1"],
-                                   textColor=purple, fontSize=16)
+                                   textColor=brand_blue, fontSize=16)
         story.append(Paragraph(f"INVOICE — {inv_num}", inv_style))
         story.append(Spacer(1, 4*mm))
 
@@ -75,8 +75,8 @@ def generate_invoice_pdf(payment_data: dict) -> dict:
             ("FONTNAME", (2, 0), (2, -1), "Helvetica-Bold"),
             ("FONTSIZE", (0, 0), (-1, -1), 9),
             ("VALIGN",   (0, 0), (-1, -1), "TOP"),
-            ("TEXTCOLOR",(0, 0), (0, -1), purple),
-            ("TEXTCOLOR",(2, 0), (2, -1), purple),
+            ("TEXTCOLOR",(0, 0), (0, -1), brand_blue),
+            ("TEXTCOLOR",(2, 0), (2, -1), brand_blue),
         ]))
         story.append(info_table)
         story.append(Spacer(1, 8*mm))
@@ -91,7 +91,7 @@ def generate_invoice_pdf(payment_data: dict) -> dict:
         ]
         amt_table = Table(amount_data, colWidths=[130*mm, 40*mm])
         amt_table.setStyle(TableStyle([
-            ("BACKGROUND", (0, 0), (-1, 0), purple),
+            ("BACKGROUND", (0, 0), (-1, 0), brand_blue),
             ("TEXTCOLOR",  (0, 0), (-1, 0), colors.white),
             ("FONTNAME",   (0, 0), (-1, 0), "Helvetica-Bold"),
             ("FONTSIZE",   (0, 0), (-1, -1), 10),
@@ -148,11 +148,11 @@ def generate_member_id_card(member_data: dict) -> dict:
                                 leftMargin=8*mm, rightMargin=8*mm,
                                 topMargin=8*mm, bottomMargin=8*mm)
         styles = getSampleStyleSheet()
-        purple = colors.HexColor("#7C3AED")
+        brand_blue = colors.HexColor("#0066FF")
         story = []
 
         title_style = ParagraphStyle("t", parent=styles["Title"],
-                                     textColor=purple, fontSize=16)
+                                     textColor=brand_blue, fontSize=16)
         story.append(Paragraph("💪 FitLife — Member ID", title_style))
         story.append(Spacer(1, 3*mm))
 
@@ -168,7 +168,7 @@ def generate_member_id_card(member_data: dict) -> dict:
         t.setStyle(TableStyle([
             ("FONTNAME", (0, 0), (0, -1), "Helvetica-Bold"),
             ("FONTSIZE", (0, 0), (-1, -1), 9),
-            ("TEXTCOLOR", (0, 0), (0, -1), purple),
+            ("TEXTCOLOR", (0, 0), (0, -1), brand_blue),
             ("VALIGN", (0, 0), (-1, -1), "MIDDLE"),
         ]))
         story.append(t)
