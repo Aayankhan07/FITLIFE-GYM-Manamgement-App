@@ -12,9 +12,9 @@ logger = logging.getLogger(__name__)
 # ─── Color Palettes ───────────────────────────────────────────────────────────
 DARK_COLORS = {
     "bg_primary":       "#0A0E2A",
-    "bg_secondary":     "#1A1040",
+    "bg_secondary":     "#0D153A",
     "bg_tertiary":      "#0D1B2A",
-    "accent_primary":   "#7C3AED",
+    "accent_primary":   "#0066FF",
     "accent_secondary": "#00F5FF",
     "accent_danger":    "#FF2D78",
     "accent_warning":   "#FFB800",
@@ -23,20 +23,20 @@ DARK_COLORS = {
     "text_secondary":   "#9CA3AF",
     "text_muted":       "#6B7280",
     "glass_bg":         "rgba(255,255,255,0.07)",
-    "glass_border":     "rgba(124,58,237,0.3)",
+    "glass_border":     "rgba(0,102,255,0.3)",
     "card_bg":          "rgba(255,255,255,0.05)",
     "input_bg":         "rgba(255,255,255,0.08)",
-    "hover_bg":         "rgba(124,58,237,0.15)",
+    "hover_bg":         "rgba(0,102,255,0.15)",
     "sidebar_bg":       "rgba(10,14,42,0.95)",
-    "row_hover":        "rgba(124,58,237,0.1)",
-    "table_header":     "rgba(124,58,237,0.2)",
+    "row_hover":        "rgba(0,102,255,0.1)",
+    "table_header":     "rgba(0,102,255,0.2)",
 }
 
 LIGHT_COLORS = {
-    "bg_primary":       "#F8F0FF",
+    "bg_primary":       "#F0F6FF",
     "bg_secondary":     "#E8F4FF",
-    "bg_tertiary":      "#FFF0F8",
-    "accent_primary":   "#7C3AED",
+    "bg_tertiary":      "#F3F4F6",
+    "accent_primary":   "#0066FF",
     "accent_secondary": "#0891B2",
     "accent_danger":    "#DC2626",
     "accent_warning":   "#D97706",
@@ -45,13 +45,13 @@ LIGHT_COLORS = {
     "text_secondary":   "#374151",
     "text_muted":       "#6B7280",
     "glass_bg":         "rgba(255,255,255,0.75)",
-    "glass_border":     "rgba(124,58,237,0.2)",
+    "glass_border":     "rgba(0,102,255,0.2)",
     "card_bg":          "rgba(255,255,255,0.85)",
     "input_bg":         "rgba(255,255,255,0.9)",
-    "hover_bg":         "rgba(124,58,237,0.08)",
-    "sidebar_bg":       "rgba(248,240,255,0.97)",
-    "row_hover":        "rgba(124,58,237,0.06)",
-    "table_header":     "rgba(124,58,237,0.1)",
+    "hover_bg":         "rgba(0,102,255,0.08)",
+    "sidebar_bg":       "rgba(240,246,255,0.97)",
+    "row_hover":        "rgba(0,102,255,0.06)",
+    "table_header":     "rgba(0,102,255,0.1)",
 }
 
 
@@ -100,7 +100,8 @@ QWidget#sidebar {{
 QPushButton#sidebarBtn {{
     background: transparent;
     border: none;
-    border-radius: 12px;
+    border-left: 3px solid transparent;
+    border-radius: 0px 12px 12px 0px;
     color: {c['text_secondary']};
     text-align: left;
     padding: 10px 16px;
@@ -109,12 +110,25 @@ QPushButton#sidebarBtn {{
 QPushButton#sidebarBtn:hover {{
     background: {c['hover_bg']};
     color: {c['text_primary']};
+    border-left: 3px solid {c['accent_primary']};
 }}
 QPushButton#sidebarBtn[active="true"] {{
     background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-        stop:0 {c['accent_primary']}, stop:1 rgba(124,58,237,0.4));
+        stop:0 {c['accent_primary']}, stop:1 rgba(0,102,255,0.4));
     color: {c['text_primary']};
     border-left: 3px solid {c['accent_secondary']};
+}}
+QPushButton#sidebarBtn[collapsed="true"] {{
+    text-align: center;
+    padding: 10px 0px;
+    border-radius: 12px;
+    border-left: none;
+}}
+QPushButton#sidebarBtn[collapsed="true"]:hover {{
+    border-left: none;
+}}
+QPushButton#sidebarBtn[collapsed="true"][active="true"] {{
+    border-left: none;
 }}
 
 /* ── TOPBAR ──────────────────────────────────────── */
@@ -227,7 +241,7 @@ QPushButton:disabled {{
 
 QPushButton#btnPrimary {{
     background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-        stop:0 {c['accent_primary']}, stop:1 #5B21B6);
+        stop:0 {c['accent_primary']}, stop:1 #1D4ED8);
     border: none;
     border-radius: 10px;
     color: #FFFFFF;
@@ -237,7 +251,7 @@ QPushButton#btnPrimary {{
 }}
 QPushButton#btnPrimary:hover {{
     background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-        stop:0 #8B5CF6, stop:1 {c['accent_primary']});
+        stop:0 #3B82F6, stop:1 {c['accent_primary']});
 }}
 QPushButton#btnPrimary:pressed {{ padding: 11px 23px 9px 25px; }}
 QPushButton#btnPrimary:disabled {{
@@ -316,7 +330,7 @@ QPushButton[class="btn-view"]:hover {{
 }}
 QPushButton[class="btn-edit"] {{
     background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-        stop:0 #7C3AED, stop:1 #5B21B6);
+        stop:0 #0066FF, stop:1 #1D4ED8);
     color: #FFFFFF;
     border: none; border-radius: 6px;
     font-size: 11px; font-weight: 600;
@@ -324,7 +338,7 @@ QPushButton[class="btn-edit"] {{
 }}
 QPushButton[class="btn-edit"]:hover {{
     background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-        stop:0 #8B5CF6, stop:1 #7C3AED);
+        stop:0 #3B82F6, stop:1 #0066FF);
 }}
 QPushButton[class="btn-delete"] {{
     background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
@@ -465,10 +479,15 @@ QCheckBox, QRadioButton {{
 QCheckBox::indicator, QRadioButton::indicator {{
     width: 18px; height: 18px;
     border: 2px solid {c['glass_border']};
-    border-radius: 4px;
     background: {c['input_bg']};
 }}
-QCheckBox::indicator:checked {{
+QCheckBox::indicator {{
+    border-radius: 4px;
+}}
+QRadioButton::indicator {{
+    border-radius: 9px;
+}}
+QCheckBox::indicator:checked, QRadioButton::indicator:checked {{
     background: {c['accent_primary']};
     border-color: {c['accent_primary']};
 }}
