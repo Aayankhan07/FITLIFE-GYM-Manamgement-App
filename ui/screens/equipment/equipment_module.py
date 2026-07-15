@@ -37,13 +37,13 @@ class EquipmentScreen(QWidget):
 
     def _setup_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container); main.setContentsMargins(28,24,28,24); main.setSpacing(20)
 
         hdr = QHBoxLayout()
         title = QLabel("🏋️  Equipment Inventory")
-        title.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         self.add_btn = QPushButton("➕  Add Equipment")
         self.add_btn.setObjectName("btnPrimary"); self.add_btn.setMinimumHeight(40)
@@ -62,7 +62,7 @@ class EquipmentScreen(QWidget):
 
         # Filters
         fbar = QFrame()
-        fbar.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        fbar.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Category:"))
         self.cat_filter = QComboBox(); self.cat_filter.setFixedHeight(34)
@@ -86,7 +86,7 @@ class EquipmentScreen(QWidget):
         cols = ["ID","Name","Category","Qty","Price (Rs.)","Status","Branch","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -191,11 +191,11 @@ class EquipmentForm(QWidget):
 
     def _inp(self, ph=""): f=QLineEdit(); f.setPlaceholderText(ph); f.setMinimumHeight(38); return f
     def _lbl(self, t, req=False):
-        l=QLabel(("* " if req else "")+t); l.setStyleSheet("color:#9CA3AF;font-size:13px;"); return l
+        l=QLabel(("* " if req else "")+t); l.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); return l
 
     def _setup_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container); main.setContentsMargins(28,24,28,28); main.setSpacing(20)
 
@@ -209,7 +209,7 @@ class EquipmentForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         grid = QGridLayout(card); grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1); r=0
 
@@ -329,7 +329,7 @@ class MaintenanceLogDialog(QDialog):
         self._user_id  = user_id
         self.setWindowTitle("Log Maintenance")
         self.setMinimumWidth(420)
-        self.setStyleSheet("background:#0D1B2A; color:#F0F4FF;")
+        self.setStyleSheet("QWidget { background:#0D1B2A; color:#F0F4FF; }")
         self._setup_ui()
 
     def _setup_ui(self):
