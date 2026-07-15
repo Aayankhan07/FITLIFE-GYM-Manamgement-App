@@ -37,6 +37,41 @@ def main():
     except Exception:
         pass
 
+    # ── Load premium application fonts ────────────────────────────────────────
+    from PyQt6.QtGui import QFontDatabase, QFont, QIcon, QPixmap, QPainter, QRadialGradient, QColor
+    reg_path = ROOT / "assets" / "fonts" / "Inter-Regular.ttf"
+    bold_path = ROOT / "assets" / "fonts" / "Inter-Bold.ttf"
+    if reg_path.exists():
+        QFontDatabase.addApplicationFont(str(reg_path))
+    if bold_path.exists():
+        QFontDatabase.addApplicationFont(str(bold_path))
+    
+    app.setFont(QFont("Inter", 10))
+
+    # ── Custom App Icon ───────────────────────────────────────────────────────
+    def create_app_icon():
+        pixmap = QPixmap(128, 128)
+        pixmap.fill(Qt.GlobalColor.transparent)
+        painter = QPainter(pixmap)
+        painter.setRenderHint(QPainter.RenderHint.Antialiasing)
+        
+        # Soft glowing circular gradient background
+        grad = QRadialGradient(64, 64, 60)
+        grad.setColorAt(0.0, QColor("#0066FF"))  # Blue primary
+        grad.setColorAt(1.0, QColor("#0A0E2A"))  # Dark body
+        painter.setBrush(grad)
+        painter.setPen(Qt.PenStyle.NoPen)
+        painter.drawRoundedRect(4, 4, 120, 120, 28, 28)
+        
+        # Icon emoji centered
+        font = QFont("Inter", 54)
+        painter.setFont(font)
+        painter.drawText(pixmap.rect(), Qt.AlignmentFlag.AlignCenter, "💪")
+        painter.end()
+        return QIcon(pixmap)
+
+    app.setWindowIcon(create_app_icon())
+
     # ── Global crash handler ──────────────────────────────────────────────────
     from utils.error_handler import CrashHandler
     CrashHandler.install()
