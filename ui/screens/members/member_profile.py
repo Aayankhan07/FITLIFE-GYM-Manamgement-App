@@ -66,8 +66,8 @@ class MemberProfile(QWidget):
         self.header_card.setObjectName("glassCard")
         self.header_card.setStyleSheet("""
             QFrame#glassCard {
-                background: rgba(124,58,237,0.1);
-                border: 1px solid rgba(124,58,237,0.4);
+                background: rgba(0, 102, 255, 0.1);
+                border: 1px solid rgba(0, 102, 255, 0.4);
                 border-radius: 16px;
             }
         """)
@@ -99,7 +99,7 @@ class MemberProfile(QWidget):
         kpi_row = QHBoxLayout()
         self.kpi_bmi    = KPICard("BMI",     "—", "⚖️",  "", "#00F5FF")
         self.kpi_expiry = KPICard("Expires", "—", "📅",  "", "#FFB800")
-        self.kpi_plan   = KPICard("Plan",    "—", "💳",  "", "#7C3AED")
+        self.kpi_plan   = KPICard("Plan",    "—", "💳",  "", "#0066FF")
         for k in [self.kpi_bmi, self.kpi_expiry, self.kpi_plan]:
             k.setFixedWidth(160)
             kpi_row.addWidget(k)
@@ -111,7 +111,7 @@ class MemberProfile(QWidget):
         self.tabs.setStyleSheet("""
             QTabWidget::pane {
                 background: rgba(255,255,255,0.04);
-                border: 1px solid rgba(124,58,237,0.2);
+                border: 1px solid rgba(0, 102, 255, 0.2);
                 border-radius: 12px;
             }
             QTabBar::tab {
@@ -119,8 +119,8 @@ class MemberProfile(QWidget):
                 padding:10px 20px; border:none;
                 border-bottom:2px solid transparent;
             }
-            QTabBar::tab:selected { color:#7C3AED; border-bottom:2px solid #7C3AED; font-weight:bold; }
-            QTabBar::tab:hover    { color:#F0F4FF; background:rgba(124,58,237,0.1); border-radius:8px 8px 0 0; }
+            QTabBar::tab:selected { color:#0066FF; border-bottom:2px solid #0066FF; font-weight:bold; }
+            QTabBar::tab:hover    { color:#F0F4FF; background:rgba(0, 102, 255, 0.1); border-radius:8px 8px 0 0; }
         """)
 
         self.tabs.addTab(self._build_info_tab(),       "📋 Info")
@@ -207,8 +207,8 @@ class MemberProfile(QWidget):
         t.horizontalHeader().setStretchLastSection(True)
         t.setStyleSheet("""
             QTableWidget { background:transparent; border:none; color:#F0F4FF; }
-            QTableWidget::item { padding:8px; border-bottom:1px solid rgba(124,58,237,0.15); }
-            QHeaderView::section { background:rgba(124,58,237,0.2); color:#00F5FF;
+            QTableWidget::item { padding:8px; border-bottom:1px solid rgba(0, 102, 255, 0.15); }
+            QHeaderView::section { background:rgba(0, 102, 255, 0.2); color:#00F5FF;
                 padding:10px; border:none; font-weight:bold; }
         """)
         return t
