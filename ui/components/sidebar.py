@@ -44,6 +44,7 @@ class SidebarButton(QPushButton):
         self.setMinimumHeight(44)
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setCheckable(True)
+        self.setProperty("collapsed", "false")
         self._update_text()
 
     def _update_text(self):
@@ -56,6 +57,9 @@ class SidebarButton(QPushButton):
 
     def set_expanded(self, expanded: bool):
         self._expanded = expanded
+        self.setProperty("collapsed", "true" if not expanded else "false")
+        self.style().unpolish(self)
+        self.style().polish(self)
         self._update_text()
 
     def set_active(self, active: bool):
@@ -133,11 +137,12 @@ class Sidebar(QWidget):
         layout.addWidget(self.toggle_btn)
 
         # ── User Info ─────────────────────────────────────────────────────────
-        user_frame = QFrame()
-        user_frame.setStyleSheet(
-            "background: rgba(0, 102, 255, 0.12); border-radius: 12px; padding: 4px;"
+        self.user_frame = QFrame()
+        self.user_frame.setObjectName("userFrame")
+        self.user_frame.setStyleSheet(
+            "QFrame#userFrame { background: rgba(0, 102, 255, 0.12); border-radius: 12px; }"
         )
-        user_layout = QHBoxLayout(user_frame)
+        user_layout = QHBoxLayout(self.user_frame)
         user_layout.setContentsMargins(8, 8, 8, 8)
         user_layout.setSpacing(8)
 
@@ -153,7 +158,7 @@ class Sidebar(QWidget):
         self.user_info.addWidget(self.user_name_lbl)
         self.user_info.addWidget(self.user_role_lbl)
         user_layout.addLayout(self.user_info)
-        layout.addWidget(user_frame)
+        layout.addWidget(self.user_frame)
 
         # Set dashboard active by default
         self.set_active("dashboard")
@@ -185,10 +190,19 @@ class Sidebar(QWidget):
         self._anim2.setEasingCurve(QEasingCurve.Type.InOutCubic)
         self._anim2.start()
 
+        # Adjust margins of the sidebar main layout dynamically
+        margin = 12 if self._expanded else 6
+        self.layout().setContentsMargins(margin, 16, margin, 16)
+
         for btn in self._buttons:
             btn.set_expanded(self._expanded)
+
+        self.toggle_btn.setProperty("collapsed", "true" if not self._expanded else "false")
+        self.toggle_btn.style().unpolish(self.toggle_btn)
+        self.toggle_btn.style().polish(self.toggle_btn)
 
         self.app_name_lbl.setVisible(self._expanded)
         self.user_name_lbl.setVisible(self._expanded)
         self.user_role_lbl.setVisible(self._expanded)
+        self.user_frame.setVisible(self._expanded)
         self.toggle_btn.setText("◀ Collapse" if self._expanded else "▶")
