@@ -39,7 +39,7 @@ class SalaryScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,24); main.setSpacing(20)
@@ -47,7 +47,7 @@ class SalaryScreen(QWidget):
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("💳  Salary Management")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         self.gen_btn = QPushButton("⚙️  Generate Monthly Salaries")
         self.gen_btn.setObjectName("btnPrimary")
@@ -286,7 +286,7 @@ class SalaryAdjustDialog(QDialog):
         self._user_id    = user_id
         self.setWindowTitle("Adjust Salary")
         self.setMinimumWidth(460)
-        self.setStyleSheet("background:#0D1B2A; color:#F0F4FF;")
+        self.setStyleSheet("QWidget { background:#0D1B2A; color:#F0F4FF; }")
         self._setup_ui(bonus, deduction, notes)
 
     def _setup_ui(self, bonus, deduction, notes):
@@ -294,11 +294,11 @@ class SalaryAdjustDialog(QDialog):
         layout.setContentsMargins(28,24,28,28); layout.setSpacing(14)
 
         title = QLabel("✏️  Adjust Salary Record")
-        title.setStyleSheet("font-size:18px; font-weight:bold; color:#0066FF;")
+        title.setStyleSheet("QWidget { font-size:18px; font-weight:bold; color:#0066FF; }")
         layout.addWidget(title)
 
         base_lbl = QLabel(f"Base Salary:  Rs. {self._base:,.0f}")
-        base_lbl.setStyleSheet("font-size:15px; color:#00F5FF;")
+        base_lbl.setStyleSheet("QWidget { font-size:15px; color:#00F5FF; }")
         layout.addWidget(base_lbl)
 
         grid = QGridLayout(); grid.setSpacing(12)
@@ -325,7 +325,7 @@ class SalaryAdjustDialog(QDialog):
         layout.addLayout(grid)
 
         self.net_lbl = QLabel()
-        self.net_lbl.setStyleSheet("font-size:16px; font-weight:bold; color:#00E676;")
+        self.net_lbl.setStyleSheet("QWidget { font-size:16px; font-weight:bold; color:#00E676; }")
         layout.addWidget(self.net_lbl)
         self._update_preview()
 
@@ -369,7 +369,7 @@ class SalarySlipDialog(QDialog):
         self.setWindowTitle("Salary Slip")
         self.setMinimumWidth(520)
         self.setMinimumHeight(600)
-        self.setStyleSheet("background:#0A0E2A; color:#F0F4FF;")
+        self.setStyleSheet("QWidget { background:#0A0E2A; color:#F0F4FF; }")
         self._setup_ui(slip)
 
     def _setup_ui(self, s):
@@ -378,12 +378,12 @@ class SalarySlipDialog(QDialog):
 
         # Header
         brand = QLabel("💪  FitLife")
-        brand.setStyleSheet("font-size:28px;font-weight:900;color:#0066FF;")
+        brand.setStyleSheet("QWidget { font-size:28px;font-weight:900;color:#0066FF; }")
         brand.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(brand)
 
         branch_info = QLabel(f"{s['branch_name']}\n{s['branch_address']}\n{s['branch_phone']}")
-        branch_info.setStyleSheet("font-size: 13px;color:#9CA3AF;")
+        branch_info.setStyleSheet("QWidget { font-size: 13px;color:#9CA3AF; }")
         branch_info.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(branch_info)
 
@@ -396,12 +396,12 @@ class SalarySlipDialog(QDialog):
         layout.addWidget(slip_title)
 
         div = QFrame(); div.setFrameShape(QFrame.Shape.HLine)
-        div.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(div)
+        div.setStyleSheet("QWidget { background:rgba(0, 102, 255, 0.4); }"); layout.addWidget(div)
 
         # Employee info
         def row(label, val, color="#F0F4FF"):
             h = QHBoxLayout()
-            l = QLabel(label); l.setStyleSheet("color:#6B7280;font-size:13px;"); l.setFixedWidth(180)
+            l = QLabel(label); l.setStyleSheet("QWidget { color:#6B7280;font-size:13px; }"); l.setFixedWidth(180)
             v = QLabel(str(val)); v.setStyleSheet(f"color:{color};font-size:14px;font-weight:600;")
             h.addWidget(l); h.addWidget(v); h.addStretch()
             layout.addLayout(h)
@@ -415,17 +415,17 @@ class SalarySlipDialog(QDialog):
             row("Payment Date:", str(s['payment_date']))
 
         div2 = QFrame(); div2.setFrameShape(QFrame.Shape.HLine)
-        div2.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(div2)
+        div2.setStyleSheet("QWidget { background:rgba(0, 102, 255, 0.4); }"); layout.addWidget(div2)
 
         row("Base Salary:",   f"Rs. {s['base_salary']:,.0f}", "#F0F4FF")
         row("Bonus:",         f"Rs. {s['bonus']:,.0f}",       "#00E676")
         row("Deduction:",     f"Rs. {s['deduction']:,.0f}",   "#FF2D78")
 
         div3 = QFrame(); div3.setFrameShape(QFrame.Shape.HLine)
-        div3.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(div3)
+        div3.setStyleSheet("QWidget { background:rgba(0, 102, 255, 0.4); }"); layout.addWidget(div3)
 
         net_lbl = QLabel(f"Net Salary:  Rs. {s['net_salary']:,.0f}")
-        net_lbl.setStyleSheet("font-size:20px;font-weight:bold;color:#00E676;")
+        net_lbl.setStyleSheet("QWidget { font-size:20px;font-weight:bold;color:#00E676; }")
         net_lbl.setAlignment(Qt.AlignmentFlag.AlignRight)
         layout.addWidget(net_lbl)
 
@@ -434,7 +434,7 @@ class SalarySlipDialog(QDialog):
 
         layout.addStretch()
         footer = QLabel("This is a system-generated salary slip.")
-        footer.setStyleSheet("color:#374151;font-size: 13px;")
+        footer.setStyleSheet("QWidget { color:#374151;font-size: 13px; }")
         footer.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(footer)
 
