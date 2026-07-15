@@ -53,12 +53,12 @@ class _ProgressOverview(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("📈  Progress Tracking"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("📈  Progress Tracking"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch()
         rb = QPushButton("🔄 Refresh"); rb.setObjectName("btnSecondary"); rb.setMinimumHeight(38)
         rb.clicked.connect(self._load); hdr.addWidget(rb)
@@ -79,7 +79,7 @@ class _ProgressOverview(QWidget):
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         QVBoxLayout(tc).addWidget(self._table)
         m.addWidget(tc)
 
@@ -148,7 +148,7 @@ class _MemberProgress(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
@@ -168,7 +168,7 @@ class _MemberProgress(QWidget):
 
         # Log entry form
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
-            lf = QFrame(); lf.setStyleSheet("background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.2);border-radius:12px;")
+            lf = QFrame(); lf.setStyleSheet("QWidget { background:rgba(0,245,255,0.05);border:1px solid rgba(0,245,255,0.2);border-radius:12px; }")
             lg = QGridLayout(lf); lg.setContentsMargins(20,16,20,16); lg.setSpacing(12)
 
             lg.addWidget(QLabel("Log Date:"),0,0)
@@ -210,7 +210,7 @@ class _MemberProgress(QWidget):
         self._hist.horizontalHeader().setStretchLastSection(True)
         self._hist.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._hist.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         QVBoxLayout(tc).addWidget(self._hist)
         m.addWidget(tc); m.addStretch(); scroll.setWidget(c)
         QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)
