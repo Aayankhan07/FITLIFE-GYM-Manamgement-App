@@ -68,7 +68,7 @@ class MembersScreen(QWidget):
         # ── KPI row ───────────────────────────────────────────────────────────
         self._kpi_row = QHBoxLayout()
         self._kpi_row.setSpacing(14)
-        self._kpi_total    = KPICard("Total Members",    "—", "👥", "", "#7C3AED")
+        self._kpi_total    = KPICard("Total Members",    "—", "👥", "", "#0066FF")
         self._kpi_active   = KPICard("Active",           "—", "✅", "", "#00E676")
         self._kpi_expired  = KPICard("Expired",          "—", "⚠️","", "#FFB800")
         self._kpi_inactive = KPICard("Inactive/Suspend", "—", "❌","", "#FF2D78")
@@ -82,7 +82,7 @@ class MembersScreen(QWidget):
         filter_frame.setStyleSheet("""
             QFrame#glassCard {
                 background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(124,58,237,0.25);
+                border: 1px solid rgba(0, 102, 255, 0.25);
                 border-radius: 12px;
             }
         """)
@@ -137,7 +137,7 @@ class MembersScreen(QWidget):
         table_card.setStyleSheet("""
             QFrame#glassCard {
                 background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(124,58,237,0.2);
+                border: 1px solid rgba(0, 102, 255, 0.2);
                 border-radius: 16px;
             }
         """)
@@ -227,11 +227,11 @@ class MembersScreen(QWidget):
             edit_btn.setFixedHeight(32)
             edit_btn.setStyleSheet(
                 "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #7C3AED,stop:1 #5B21B6);"
+                "stop:0 #0066FF,stop:1 #004BCC);"
                 "border:none;border-radius:6px;color:#FFFFFF;"
                 "font-size: 13px;font-weight:600;padding:0 8px;}"
                 "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #8B5CF6,stop:1 #7C3AED);}"
+                "stop:0 #3B82F6,stop:1 #0066FF);}"
             )
             edit_btn.clicked.connect(lambda _, mid=member_id: self.open_edit_form.emit(mid))
 
