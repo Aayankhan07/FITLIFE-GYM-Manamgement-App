@@ -14,6 +14,15 @@ class GlassCard(QFrame):
         self._layout = QVBoxLayout(self)
         self._layout.setContentsMargins(20, 20, 20, 20)
         self._layout.setSpacing(12)
+        
+        # Soft elevation shadow
+        from PyQt6.QtWidgets import QGraphicsDropShadowEffect
+        from PyQt6.QtGui import QColor
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(25)
+        shadow.setColor(QColor(0, 0, 0, 45))
+        shadow.setOffset(0, 5)
+        self.setGraphicsEffect(shadow)
 
     def card_layout(self) -> QVBoxLayout:
         return self._layout
@@ -23,11 +32,23 @@ class KPICard(QFrame):
     """KPI metric card with title, value, icon, and trend indicator."""
 
     def __init__(self, title: str, value: str, icon: str = "",
-                 trend: str = "", accent_color: str = "#7C3AED", parent=None):
+                 trend: str = "", accent_color: str = "#0066FF", parent=None):
         super().__init__(parent)
         self.setObjectName("kpiCard")
         self.setMinimumSize(180, 110)
         self.setMaximumHeight(130)
+        
+        # Soft colored glow shadow
+        from PyQt6.QtWidgets import QGraphicsDropShadowEffect
+        from PyQt6.QtGui import QColor
+        shadow = QGraphicsDropShadowEffect(self)
+        shadow.setBlurRadius(20)
+        # Parse hex accent color to add a soft glowing shadow
+        glow_color = QColor(accent_color)
+        glow_color.setAlpha(35)  # low opacity glow
+        shadow.setColor(glow_color)
+        shadow.setOffset(0, 4)
+        self.setGraphicsEffect(shadow)
 
         main = QVBoxLayout(self)
         main.setContentsMargins(18, 16, 18, 16)
@@ -102,7 +123,7 @@ class StatusBadge(QLabel):
         "Trainer Approved":     ("#001A0A", "#00E676"),
         "Approved":             ("#001A0A", "#00E676"),
         "Draft":                ("#FFFFFF", "#6B7280"),
-        "Completed":            ("#F0E6FF", "#5B21B6"),
+        "Completed":            ("#F0F6FF", "#1D4ED8"),
         "Rejected":             ("#FFFFFF", "#FF2D78"),
         "New":                  ("#001A0A", "#00E676"),
         "Good":                 ("#001F20", "#00F5FF"),
