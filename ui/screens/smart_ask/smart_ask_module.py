@@ -230,18 +230,18 @@ class SmartAskModule(QWidget):
         m.setSpacing(16)
 
         hdr = QHBoxLayout()
-        t = QLabel("🤖  Smart Ask"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("🤖  Smart Ask"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch()
         clr = QPushButton("🗑 Clear Chat"); clr.setObjectName("btnSecondary"); clr.setFixedHeight(36)
         clr.clicked.connect(self._clear); hdr.addWidget(clr)
         m.addLayout(hdr)
 
         sub = QLabel("Ask any question about your gym data — members, revenue, attendance, equipment and more.")
-        sub.setStyleSheet("color:#9CA3AF;font-size:13px;"); m.addWidget(sub)
+        sub.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); m.addWidget(sub)
 
         # Chat area
         self._chat_scroll = QScrollArea(); self._chat_scroll.setWidgetResizable(True)
-        self._chat_scroll.setStyleSheet("border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;background:rgba(0,0,0,0.15);")
+        self._chat_scroll.setStyleSheet("QWidget { border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;background:rgba(0,0,0,0.15); }")
         self._chat_container = QWidget(); self._chat_container.setStyleSheet("background:transparent;")
         self._chat_layout = QVBoxLayout(self._chat_container)
         self._chat_layout.setContentsMargins(16,16,16,16); self._chat_layout.setSpacing(12)
@@ -251,7 +251,7 @@ class SmartAskModule(QWidget):
 
         # Quick questions
         quick_label = QLabel("💡 Quick Questions:")
-        quick_label.setStyleSheet("color:#9CA3AF;font-size: 13px;font-weight:bold;"); m.addWidget(quick_label)
+        quick_label.setStyleSheet("QWidget { color:#9CA3AF;font-size: 13px;font-weight:bold; }"); m.addWidget(quick_label)
         qrow = QHBoxLayout(); qrow.setSpacing(8)
         for q in ["Revenue this month?","Pending payments?","Expiring memberships?"]:
             qb = QPushButton(q); qb.setFixedHeight(32)
@@ -273,17 +273,17 @@ class SmartAskModule(QWidget):
 
         # ── RIGHT: Canvas Pane ──
         self._canvas_pane = QFrame()
-        self._canvas_pane.setStyleSheet("background:rgba(0,0,0,0.25); border:1px solid rgba(0, 102, 255, 0.3); border-radius:14px;")
+        self._canvas_pane.setStyleSheet("QWidget { background:rgba(0,0,0,0.25); border:1px solid rgba(0, 102, 255, 0.3); border-radius:14px; }")
         canvas_layout = QVBoxLayout(self._canvas_pane)
         canvas_layout.setContentsMargins(20, 20, 20, 20)
         
         canvas_hdr = QHBoxLayout()
         ctitle = QLabel("📄 Smart Canvas")
-        ctitle.setStyleSheet("font-size:18px; font-weight:bold; color:#F0F4FF;")
+        ctitle.setStyleSheet("QWidget { font-size:18px; font-weight:bold; color:#F0F4FF; }")
         canvas_hdr.addWidget(ctitle)
         canvas_hdr.addStretch()
         cclear = QPushButton("✖ Close")
-        cclear.setStyleSheet("background:transparent; color:#9CA3AF; font-size:14px;")
+        cclear.setStyleSheet("QWidget { background:transparent; color:#9CA3AF; font-size:14px; }")
         cclear.setCursor(Qt.CursorShape.PointingHandCursor)
         cclear.clicked.connect(self._hide_canvas)
         canvas_hdr.addWidget(cclear)
@@ -291,7 +291,7 @@ class SmartAskModule(QWidget):
         
         self._canvas_text = QTextEdit()
         self._canvas_text.setReadOnly(True)
-        self._canvas_text.setStyleSheet("background:transparent; border:none; color:#E2E8F0; font-size:15px;")
+        self._canvas_text.setStyleSheet("QWidget { background:transparent; border:none; color:#E2E8F0; font-size:15px; }")
         canvas_layout.addWidget(self._canvas_text)
         
         main_layout.addWidget(self._canvas_pane, 6) # 60% width when visible
@@ -337,9 +337,9 @@ class SmartAskModule(QWidget):
         self._canvas_pane.hide()
 
     def _add_user_bubble(self, text):
-        f = QFrame(); f.setStyleSheet("background:#2F2F2F; border-radius:16px;")
+        f = QFrame(); f.setStyleSheet("QWidget { background:#2F2F2F; border-radius:16px; }")
         l = QVBoxLayout(f); l.setContentsMargins(16,12,16,12)
-        lbl = QLabel(text); lbl.setWordWrap(True); lbl.setStyleSheet("color:#F0F4FF;font-size:14px;")
+        lbl = QLabel(text); lbl.setWordWrap(True); lbl.setStyleSheet("QWidget { color:#F0F4FF;font-size:14px; }")
         l.addWidget(lbl)
         row = QHBoxLayout(); row.addStretch(); row.addWidget(f)
         row.setContentsMargins(0, 10, 0, 10)
@@ -353,13 +353,13 @@ class SmartAskModule(QWidget):
         row = QHBoxLayout(wrap); row.setContentsMargins(0, 10, 0, 10); row.setSpacing(16)
         
         # Avatar
-        ava = QLabel("🤖"); ava.setStyleSheet("font-size:20px; background:rgba(255,255,255,0.1); border-radius:18px;")
+        ava = QLabel("🤖"); ava.setStyleSheet("QWidget { font-size:20px; background:rgba(255,255,255,0.1); border-radius:18px; }")
         ava.setFixedSize(36, 36); ava.setAlignment(Qt.AlignmentFlag.AlignCenter)
         v_ava = QVBoxLayout(); v_ava.addWidget(ava); v_ava.addStretch()
         row.addLayout(v_ava)
         
         lbl = QLabel(); lbl.setWordWrap(True)
-        lbl.setStyleSheet("color:#E2E8F0;font-size:14px;line-height:1.6;")
+        lbl.setStyleSheet("QWidget { color:#E2E8F0;font-size:14px;line-height:1.6; }")
         lbl.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
         lbl.setOpenExternalLinks(True)
         
