@@ -9,7 +9,7 @@ class KPICard(QFrame):
     Glassmorphism KPI card with icon, title, value, and trend.
     """
     def __init__(self, title: str, value: str, icon: str = "📊",
-                 trend: str = "", accent: str = "#7C3AED", parent=None):
+                 trend: str = "", accent: str = "#0066FF", parent=None):
         super().__init__(parent)
         self._title = title
         self.setObjectName("kpiCard")
