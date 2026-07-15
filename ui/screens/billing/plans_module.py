@@ -36,14 +36,14 @@ class PlansScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,24); main.setSpacing(20)
 
         hdr = QHBoxLayout()
         title = QLabel("📋  Membership Plans")
-        title.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
 
         self.assign_btn = QPushButton("🔗  Assign Membership")
@@ -68,7 +68,7 @@ class PlansScreen(QWidget):
 
         # Usage stats table
         stats_lbl = QLabel("Plan Usage Statistics")
-        stats_lbl.setStyleSheet("font-size:15px;font-weight:bold;color:#F0F4FF;")
+        stats_lbl.setStyleSheet("QWidget { font-size:15px;font-weight:bold;color:#F0F4FF; }")
         main.addWidget(stats_lbl)
 
         self.usage_table = QTableWidget()
@@ -90,7 +90,7 @@ class PlansScreen(QWidget):
         cols = ["ID","Plan Name","Duration (days)","Price","Description","Active","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -198,7 +198,7 @@ class PlanForm(QWidget):
 
     def _setup_ui(self):
         scroll = QScrollArea(self)
-        scroll.setWidgetResizable(True); scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setWidgetResizable(True); scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,28); main.setSpacing(20)
@@ -213,7 +213,7 @@ class PlanForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         grid = QGridLayout(card)
         grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1)
@@ -234,7 +234,7 @@ class PlanForm(QWidget):
         grid.addWidget(self._lbl("Status"),r,2)
         self.is_active = QCheckBox("Plan is Active")
         self.is_active.setChecked(True)
-        self.is_active.setStyleSheet("color:#F0F4FF;")
+        self.is_active.setStyleSheet("QWidget { color:#F0F4FF; }")
         grid.addWidget(self.is_active,r,3); r+=1
 
         grid.addWidget(self._lbl("Description"),r,0)
@@ -245,7 +245,7 @@ class PlanForm(QWidget):
 
         # Preview
         self.preview_lbl = QLabel("")
-        self.preview_lbl.setStyleSheet("color:#00F5FF;font-size:13px;")
+        self.preview_lbl.setStyleSheet("QWidget { color:#00F5FF;font-size:13px; }")
         grid.addWidget(self.preview_lbl,r,0,1,4)
         self.duration.valueChanged.connect(self._update_preview)
         self.price.valueChanged.connect(self._update_preview)
@@ -319,7 +319,7 @@ class AssignMembershipForm(QWidget):
 
     def _setup_ui(self):
         scroll = QScrollArea(self)
-        scroll.setWidgetResizable(True); scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setWidgetResizable(True); scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,28); main.setSpacing(20)
@@ -334,7 +334,7 @@ class AssignMembershipForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         grid = QGridLayout(card)
         grid.setContentsMargins(28,24,28,28); grid.setSpacing(16)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1)
