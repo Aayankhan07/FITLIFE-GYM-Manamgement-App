@@ -26,7 +26,7 @@ class FinanceCenterModule(QWidget):
         # Header + Tab buttons
         hdr_row = QHBoxLayout()
         title = QLabel("💳  Finance Center")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr_row.addWidget(title)
         hdr_row.addStretch()
 
