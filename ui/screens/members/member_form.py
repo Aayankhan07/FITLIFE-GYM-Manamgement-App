@@ -99,7 +99,7 @@ class MemberForm(QWidget):
         card.setStyleSheet("""
             QFrame#glassCard {
                 background: rgba(255,255,255,0.06);
-                border: 1px solid rgba(124,58,237,0.25);
+                border: 1px solid rgba(0, 102, 255, 0.25);
                 border-radius: 16px;
             }
         """)
@@ -112,7 +112,7 @@ class MemberForm(QWidget):
         r = 0
         # Section: Personal Info
         sec1 = QLabel("Personal Information")
-        sec1.setStyleSheet("font-size:15px; font-weight:bold; color:#7C3AED; margin-top:8px;")
+        sec1.setStyleSheet("font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px;")
         grid.addWidget(sec1, r, 0, 1, 4)
         r += 1
 
@@ -166,7 +166,7 @@ class MemberForm(QWidget):
 
         # Section: Physical Info
         sec2 = QLabel("Physical Information")
-        sec2.setStyleSheet("font-size:15px; font-weight:bold; color:#7C3AED; margin-top:8px;")
+        sec2.setStyleSheet("font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px;")
         grid.addWidget(sec2, r, 0, 1, 4)
         r += 1
 
@@ -213,7 +213,7 @@ class MemberForm(QWidget):
 
         # Section: Gym Assignment
         sec3 = QLabel("Gym Assignment")
-        sec3.setStyleSheet("font-size:15px; font-weight:bold; color:#7C3AED; margin-top:8px;")
+        sec3.setStyleSheet("font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px;")
         grid.addWidget(sec3, r, 0, 1, 4)
         r += 1
 
