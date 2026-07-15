@@ -35,7 +35,7 @@ class MemberProfile(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
 
         container = QWidget()
         container.setStyleSheet("background:transparent;")
@@ -77,7 +77,7 @@ class MemberProfile(QWidget):
 
         # Avatar
         self.avatar_lbl = QLabel("👤")
-        self.avatar_lbl.setStyleSheet("font-size:64px;")
+        self.avatar_lbl.setStyleSheet("QWidget { font-size:64px; }")
         self.avatar_lbl.setFixedWidth(80)
         hc_layout.addWidget(self.avatar_lbl)
 
@@ -85,9 +85,9 @@ class MemberProfile(QWidget):
         info_col = QVBoxLayout()
         info_col.setSpacing(4)
         self.name_lbl = QLabel("Loading...")
-        self.name_lbl.setStyleSheet("font-size:22px; font-weight:900; color:#F0F4FF;")
+        self.name_lbl.setStyleSheet("QWidget { font-size:22px; font-weight:900; color:#F0F4FF; }")
         self.sub_lbl  = QLabel("")
-        self.sub_lbl.setStyleSheet("font-size:14px; color:#9CA3AF;")
+        self.sub_lbl.setStyleSheet("QWidget { font-size:14px; color:#9CA3AF; }")
         self.status_badge = StatusBadge("Active")
         info_col.addWidget(self.name_lbl)
         info_col.addWidget(self.sub_lbl)
@@ -145,9 +145,9 @@ class MemberProfile(QWidget):
 
         def field_row(label, attr_name, row, col=0):
             lbl = QLabel(label)
-            lbl.setStyleSheet("color:#6B7280; font-size:13px;")
+            lbl.setStyleSheet("QWidget { color:#6B7280; font-size:13px; }")
             val = QLabel("—")
-            val.setStyleSheet("color:#F0F4FF; font-size:14px;")
+            val.setStyleSheet("QWidget { color:#F0F4FF; font-size:14px; }")
             val.setObjectName(attr_name)
             grid.addWidget(lbl, row, col)
             grid.addWidget(val, row, col + 1)
