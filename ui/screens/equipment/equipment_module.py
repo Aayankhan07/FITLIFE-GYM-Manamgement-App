@@ -52,7 +52,7 @@ class EquipmentScreen(QWidget):
 
         # KPIs
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_total   = KPICard("Total Items",  "—","📦","","#7C3AED")
+        self._kpi_total   = KPICard("Total Items",  "—","📦","","#0066FF")
         self._kpi_active  = KPICard("Active",       "—","✅","","#00E676")
         self._kpi_maint   = KPICard("Maintenance",  "—","🔧","","#FFB800")
         self._kpi_value   = KPICard("Total Value",  "—","💰","","#00F5FF")
@@ -62,7 +62,7 @@ class EquipmentScreen(QWidget):
 
         # Filters
         fbar = QFrame()
-        fbar.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        fbar.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Category:"))
         self.cat_filter = QComboBox(); self.cat_filter.setFixedHeight(34)
@@ -86,7 +86,7 @@ class EquipmentScreen(QWidget):
         cols = ["ID","Name","Category","Qty","Price (Rs.)","Status","Branch","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -142,7 +142,7 @@ class EquipmentScreen(QWidget):
             cell = QWidget(); bl = QHBoxLayout(cell)
             bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
             for label, bg1, bg2, txt_color, hover1, hover2 in [
-                ("✏ Edit",   "#7C3AED", "#5B21B6", "#FFFFFF", "#8B5CF6", "#7C3AED"),
+                ("✏ Edit",   "#0066FF", "#004BCC", "#FFFFFF", "#3B82F6", "#0066FF"),
                 ("🗑 Del",   "#FF2D78", "#C0155A", "#FFFFFF", "#FF5294", "#FF2D78"),
             ]:
                 btn = QPushButton(label); btn.setFixedHeight(32)
@@ -209,7 +209,7 @@ class EquipmentForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         grid = QGridLayout(card); grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1); r=0
 
@@ -353,7 +353,7 @@ class MaintenanceLogDialog(QDialog):
         cancel = QPushButton("Cancel"); cancel.setFixedHeight(36)
         cancel.clicked.connect(self.reject); btn_row.addWidget(cancel)
         save = QPushButton("✅ Log Maintenance")
-        save.setStyleSheet("QPushButton{background:#7C3AED;border:none;border-radius:10px;color:#fff;font-size:14px;padding:0 20px;}QPushButton:hover{background:#8B5CF6;}")
+        save.setStyleSheet("QPushButton{background:#0066FF;border:none;border-radius:10px;color:#fff;font-size:14px;padding:0 20px;}QPushButton:hover{background:#3B82F6;}")
         save.setFixedHeight(36); save.clicked.connect(self._save); btn_row.addWidget(save)
         layout.addLayout(btn_row)
 
