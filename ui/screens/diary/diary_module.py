@@ -85,13 +85,13 @@ def _diary_pin(entry_id, user_id):
 # ── Tag colors ────────────────────────────────────────────────────────────────
 TAG_COLORS = {
     'Work':      ('#3B82F6', '#1E3A5F'),
-    'Personal':  ('#7C3AED', '#2D1060'),
+    'Personal':  ('#0066FF', '#2D1060'),
     'Reminder':  ('#FFB800', '#3D2800'),
     'Important': ('#FF2D78', '#4D0020'),
 }
 
 def _tag_style(tag):
-    fg, bg = TAG_COLORS.get(tag, ('#7C3AED', '#2D1060'))
+    fg, bg = TAG_COLORS.get(tag, ('#0066FF', '#2D1060'))
     return f"background:{bg};color:{fg};border:1px solid {fg};border-radius:6px;" \
            f"padding:2px 8px;font-size:10px;font-weight:bold;"
 
@@ -117,14 +117,14 @@ class DiaryModule(QWidget):
         root.setSpacing(0)
 
         splitter = QSplitter(Qt.Orientation.Horizontal)
-        splitter.setStyleSheet("QSplitter::handle{background:rgba(124,58,237,0.2);width:1px;}")
+        splitter.setStyleSheet("QSplitter::handle{background:rgba(0, 102, 255, 0.2);width:1px;}")
 
         # ── LEFT PANEL: list ──────────────────────────────────────────────────
         left = QWidget()
         left.setFixedWidth(310)
         left.setStyleSheet(
             "QWidget{background:rgba(255,255,255,0.03);"
-            "border-right:1px solid rgba(124,58,237,0.15);}"
+            "border-right:1px solid rgba(0, 102, 255, 0.15);}"
         )
         left_layout = QVBoxLayout(left)
         left_layout.setContentsMargins(12, 12, 12, 12)
@@ -135,13 +135,13 @@ class DiaryModule(QWidget):
         self._btn_new.setStyleSheet("""
             QPushButton {
                 background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-                            stop:0 #7C3AED, stop:1 #5B21B6);
+                            stop:0 #0066FF, stop:1 #004BCC);
                 color: #FFFFFF; border: none; border-radius: 10px;
                 padding: 10px; font-size: 13px; font-weight: bold;
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0,y1:0,x2:1,y2:0,
-                            stop:0 #8B5CF6, stop:1 #7C3AED);
+                            stop:0 #3B82F6, stop:1 #0066FF);
             }
         """)
         self._btn_new.clicked.connect(self._new_entry)
@@ -157,7 +157,7 @@ class DiaryModule(QWidget):
                 border-radius: 8px; padding: 8px 12px;
                 color: #F0F4FF; font-size: 13px;
             }
-            QLineEdit:focus { border: 1px solid #7C3AED; }
+            QLineEdit:focus { border: 1px solid #0066FF; }
         """)
         self._search.textChanged.connect(self._filter_entries)
         left_layout.addWidget(self._search)
@@ -224,10 +224,10 @@ class DiaryModule(QWidget):
         self._title_input.setStyleSheet("""
             QLineEdit {
                 background: transparent; border: none;
-                border-bottom: 2px solid rgba(124,58,237,0.4);
+                border-bottom: 2px solid rgba(0, 102, 255, 0.4);
                 color: #F0F4FF; font-size: 22px; font-weight: bold; padding: 8px 0;
             }
-            QLineEdit:focus { border-bottom: 2px solid #7C3AED; }
+            QLineEdit:focus { border-bottom: 2px solid #0066FF; }
         """)
         self._title_input.textChanged.connect(self._mark_dirty)
         ed_layout.addWidget(self._title_input)
@@ -254,8 +254,8 @@ class DiaryModule(QWidget):
             self._tag_combo.addItem(tg, tg)
         self._tag_combo.setStyleSheet("""
             QComboBox {
-                background: rgba(124,58,237,0.2);
-                border: 1px solid rgba(124,58,237,0.4);
+                background: rgba(0, 102, 255, 0.2);
+                border: 1px solid rgba(0, 102, 255, 0.4);
                 border-radius: 8px; padding: 5px 12px;
                 color: #F0F4FF; font-size: 13px;
             }
@@ -298,7 +298,7 @@ class DiaryModule(QWidget):
                 border-radius: 12px; color: #E0E7FF;
                 font-size: 14px; padding: 16px; line-height: 1.6;
             }
-            QTextEdit:focus { border: 1px solid rgba(124,58,237,0.4); }
+            QTextEdit:focus { border: 1px solid rgba(0, 102, 255, 0.4); }
         """)
         self._body_editor.textChanged.connect(self._on_body_changed)
         ed_layout.addWidget(self._body_editor, 1)
@@ -425,8 +425,8 @@ class DiaryModule(QWidget):
         if is_selected:
             card.setStyleSheet("""
                 QFrame {
-                    background: rgba(124,58,237,0.2);
-                    border: 1px solid rgba(124,58,237,0.6);
+                    background: rgba(0, 102, 255, 0.2);
+                    border: 1px solid rgba(0, 102, 255, 0.6);
                     border-radius: 10px;
                 }
             """)
@@ -438,8 +438,8 @@ class DiaryModule(QWidget):
                     border-radius: 10px;
                 }
                 QFrame:hover {
-                    background: rgba(124,58,237,0.12);
-                    border: 1px solid rgba(124,58,237,0.35);
+                    background: rgba(0, 102, 255, 0.12);
+                    border: 1px solid rgba(0, 102, 255, 0.35);
                 }
             """)
 
