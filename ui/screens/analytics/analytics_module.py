@@ -266,14 +266,14 @@ class AnalyticsDashboard(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28, 24, 28, 28); m.setSpacing(20)
 
         # Header + filter
         hdr = QHBoxLayout()
         t = QLabel("📊  Analytics Dashboard")
-        t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role == ROLE_ADMIN:
             hdr.addWidget(QLabel("Branch:"))
@@ -328,7 +328,7 @@ class AnalyticsDashboard(QWidget):
         # Trainer leaderboard
         m.addWidget(SectionHeader("🏆  Top Trainers"))
         tf = QFrame()
-        tf.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        tf.setStyleSheet("QWidget { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         tl = QVBoxLayout(tf); tl.setContentsMargins(16, 14, 16, 14); tl.setSpacing(8)
         self._trainer_rows = QVBoxLayout(); self._trainer_rows.setSpacing(6)
         tl.addLayout(self._trainer_rows)
@@ -349,7 +349,7 @@ class AnalyticsDashboard(QWidget):
         f.setMinimumHeight(280)
         lbl = QLabel(f"⏳ Loading {title}...")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lbl.setStyleSheet("color:#6B7280;font-size:14px;")
+        lbl.setStyleSheet("QWidget { color:#6B7280;font-size:14px; }")
         QVBoxLayout(f).addWidget(lbl)
         return f
 
@@ -442,7 +442,7 @@ class AnalyticsDashboard(QWidget):
             )
             rl = QHBoxLayout(row); rl.setContentsMargins(14, 10, 14, 10)
             num = QLabel(f"#{i+1}")
-            num.setStyleSheet("font-size:16px;font-weight:900;color:#0066FF;min-width:28px;")
+            num.setStyleSheet("QWidget { font-size:16px;font-weight:900;color:#0066FF;min-width:28px; }")
             rl.addWidget(num)
             info = QVBoxLayout(); info.setSpacing(2)
             info.addWidget(_lbl(str(t[0]), "color:#F0F4FF;font-weight:bold;font-size:13px;"))
