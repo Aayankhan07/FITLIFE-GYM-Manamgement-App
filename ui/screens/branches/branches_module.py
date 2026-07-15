@@ -33,14 +33,14 @@ class BranchesScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28, 24, 28, 24); main.setSpacing(20)
 
         hdr = QHBoxLayout()
         title = QLabel("🏢  Branch Management")
-        title.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         self.add_btn = QPushButton("➕  Add Branch")
         self.add_btn.setObjectName("btnPrimary"); self.add_btn.setMinimumHeight(40)
@@ -58,7 +58,7 @@ class BranchesScreen(QWidget):
         cols = ["ID","Branch Name","City","Phone","Manager","Members","Trainers","Status","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px;")
+        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px; }")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
         self._overlay = LoadingOverlay(self)
@@ -148,7 +148,7 @@ class BranchForm(QWidget):
 
     def _setup_ui(self):
         scroll = QScrollArea(self)
-        scroll.setWidgetResizable(True); scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setWidgetResizable(True); scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,28); main.setSpacing(20)
@@ -163,7 +163,7 @@ class BranchForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         grid = QGridLayout(card)
         grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1)
