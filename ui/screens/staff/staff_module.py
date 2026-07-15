@@ -68,12 +68,12 @@ class _StaffList(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("👤  Staff Management"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("👤  Staff Management"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role == ROLE_ADMIN:
             b = QPushButton("➕ Add Staff"); b.setObjectName("btnPrimary"); b.setMinimumHeight(40)
@@ -88,7 +88,7 @@ class _StaffList(QWidget):
         kr.addStretch(); m.addLayout(kr)
 
         # Filters
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Role:"))
         self._rf = QComboBox(); self._rf.setFixedHeight(34)
@@ -110,7 +110,7 @@ class _StaffList(QWidget):
 
         cols = ["ID","Username","Full Name","Email","Phone","Role","Branch","Status","Last Login","Actions"]
         self.table = DataTable(cols)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         QVBoxLayout(tc).addWidget(self.table); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -178,11 +178,11 @@ class _StaffForm(QWidget):
         if self._is_edit: self._load()
 
     def _inp(self, ph=""): f=QLineEdit(); f.setPlaceholderText(ph); f.setMinimumHeight(38); return f
-    def _lbl(self, t): l=QLabel(t); l.setStyleSheet("color:#9CA3AF;font-size:13px;"); return l
+    def _lbl(self, t): l=QLabel(t); l.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); return l
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
@@ -194,7 +194,7 @@ class _StaffForm(QWidget):
         sv.clicked.connect(self._save); hdr.addWidget(sv)
         m.addLayout(hdr)
 
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card = QFrame(); card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         g = QGridLayout(card); g.setContentsMargins(28,24,28,28); g.setSpacing(14)
         g.setColumnStretch(1,1); g.setColumnStretch(3,1)
 
@@ -284,7 +284,7 @@ class _ResetPasswordDialog(QDialog):
         super().__init__(parent)
         self._user_id = user_id; self._admin_id = admin_id
         self.setWindowTitle(f"Reset Password — {username}")
-        self.setMinimumWidth(400); self.setStyleSheet("background:#0D1B2A;color:#F0F4FF;")
+        self.setMinimumWidth(400); self.setStyleSheet("QWidget { background:#0D1B2A;color:#F0F4FF; }")
         layout = QVBoxLayout(self); layout.setContentsMargins(24,20,24,20); layout.setSpacing(12)
         layout.addWidget(QLabel(f"🔑  Reset password for: {username}"))
         self._pw = QLineEdit(); self._pw.setEchoMode(QLineEdit.EchoMode.Password)
