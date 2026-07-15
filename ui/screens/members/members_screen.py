@@ -41,7 +41,7 @@ class MembersScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         container = QWidget()
@@ -53,7 +53,7 @@ class MembersScreen(QWidget):
         # ── Header row ────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("👥  Members Management")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title)
         hdr.addStretch()
 
@@ -91,7 +91,7 @@ class MembersScreen(QWidget):
         filter_row.setSpacing(12)
 
         status_lbl = QLabel("Status:")
-        status_lbl.setStyleSheet("color:#9CA3AF; font-size:13px;")
+        status_lbl.setStyleSheet("QWidget { color:#9CA3AF; font-size:13px; }")
         self.status_filter = QComboBox()
         self.status_filter.addItem("All Statuses", None)
         for s in MEMBER_STATUSES:
@@ -105,7 +105,7 @@ class MembersScreen(QWidget):
         # Branch filter (admin only)
         if self._session.role == ROLE_ADMIN:
             branch_lbl = QLabel("Branch:")
-            branch_lbl.setStyleSheet("color:#9CA3AF; font-size:13px;")
+            branch_lbl.setStyleSheet("QWidget { color:#9CA3AF; font-size:13px; }")
             self.branch_filter = QComboBox()
             self.branch_filter.addItem("All Branches", None)
             branches = branch_svc.get_all_branches_dropdown()
