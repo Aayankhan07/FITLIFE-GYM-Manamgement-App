@@ -24,16 +24,16 @@ class ReportsModule(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("📋  Reports"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("📋  Reports"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         # Common filter bar
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Branch:"))
         self._bf = QComboBox(); self._bf.setFixedHeight(34)
@@ -99,10 +99,10 @@ class ReportsModule(QWidget):
         top.addWidget(QLabel(title))
         top.addStretch()
         gen = QPushButton("🔄 Generate"); gen.setObjectName("btnPrimary"); gen.setFixedHeight(34)
-        exp = QPushButton("💾 Export CSV"); exp.setObjectName("btnSecondary"); exp.setFixedHeight(34)
+        exp = QPushButton("💾 Export Data"); exp.setObjectName("btnSecondary"); exp.setFixedHeight(34)
         top.addWidget(gen); top.addWidget(exp)
         lay.addLayout(top)
-        cnt = QLabel(""); cnt.setStyleSheet("color:#9CA3AF;font-size: 13px;"); lay.addWidget(cnt)
+        cnt = QLabel(""); cnt.setStyleSheet("QWidget { color:#9CA3AF;font-size: 13px; }"); lay.addWidget(cnt)
         tbl = self._make_table(cols)
         lay.addWidget(tbl)
         return w, tbl, gen, exp, cnt
@@ -113,6 +113,30 @@ class ReportsModule(QWidget):
             r = tbl.rowCount(); tbl.insertRow(r)
             for ci, v in enumerate(row): tbl.setItem(r, ci, QTableWidgetItem(str(v) if v is not None else ""))
 
+    def _export_report_flow(self, report_name: str, cols: list, data_func):
+        path, selected_filter = QFileDialog.getSaveFileName(
+            self,
+            f"Export {report_name}",
+            report_name.lower().replace(" ", "_"),
+            "CSV File (*.csv);;Excel Workbook (*.xlsx);;PDF Document (*.pdf)"
+        )
+        if not path:
+            return
+            
+        data = data_func()
+        rows = [list(row) for row in data]
+        
+        if path.endswith(".xlsx"):
+            r = rep_svc.export_to_excel(report_name, cols, rows, path)
+        elif path.endswith(".pdf"):
+            r = rep_svc.export_to_pdf(report_name, cols, rows, path)
+        else:
+            if not path.endswith(".csv"):
+                path += ".csv"
+            r = rep_svc.export_to_csv(cols, rows, path)
+            
+        InfoDialog("Export Status", r["message"], "success" if r["success"] else "error", self).exec()
+
     def _build_tab_members(self):
         cols = ["Name","CNIC","Phone","Email","Branch","Trainer","Plan","Join","Expiry","Status","Goal","Weight","BMI"]
         w, tbl, gen, exp, cnt = self._tab_shell("Member Report", cols)
@@ -121,10 +145,7 @@ class ReportsModule(QWidget):
             data = rep_svc.get_member_report(bid)
             self._fill_table(tbl, data); cnt.setText(f"{len(data)} records")
         def _exp():
-            path, _ = QFileDialog.getSaveFileName(self,"Save CSV","members_report.csv","CSV (*.csv)")
-            if path:
-                r = rep_svc.export_to_csv(cols, [list(row) for row in rep_svc.get_member_report(self._bf.currentData())], path)
-                InfoDialog("Export", r["message"], "success" if r["success"] else "error", self).exec()
+            self._export_report_flow("Member Report", cols, lambda: rep_svc.get_member_report(self._bf.currentData()))
         gen.clicked.connect(_gen); exp.clicked.connect(_exp)
         return w, tbl
 
@@ -138,10 +159,7 @@ class ReportsModule(QWidget):
             data = rep_svc.get_payment_report(bid, df, dt)
             self._fill_table(tbl, data); cnt.setText(f"{len(data)} records")
         def _exp():
-            path, _ = QFileDialog.getSaveFileName(self,"Save CSV","payments_report.csv","CSV (*.csv)")
-            if path:
-                r = rep_svc.export_to_csv(cols, [list(row) for row in rep_svc.get_payment_report(self._bf.currentData(), self._df.date().toPyDate(), self._dt.date().toPyDate())], path)
-                InfoDialog("Export", r["message"], "success" if r["success"] else "error", self).exec()
+            self._export_report_flow("Payment Report", cols, lambda: rep_svc.get_payment_report(self._bf.currentData(), self._df.date().toPyDate(), self._dt.date().toPyDate()))
         gen.clicked.connect(_gen); exp.clicked.connect(_exp)
         return w, tbl
 
@@ -155,10 +173,7 @@ class ReportsModule(QWidget):
             data = rep_svc.get_attendance_report(bid, df, dt)
             self._fill_table(tbl, data); cnt.setText(f"{len(data)} records")
         def _exp():
-            path, _ = QFileDialog.getSaveFileName(self,"Save CSV","attendance_report.csv","CSV (*.csv)")
-            if path:
-                r = rep_svc.export_to_csv(cols, [list(row) for row in rep_svc.get_attendance_report(self._bf.currentData(), self._df.date().toPyDate(), self._dt.date().toPyDate())], path)
-                InfoDialog("Export", r["message"], "success" if r["success"] else "error", self).exec()
+            self._export_report_flow("Attendance Report", cols, lambda: rep_svc.get_attendance_report(self._bf.currentData(), self._df.date().toPyDate(), self._dt.date().toPyDate()))
         gen.clicked.connect(_gen); exp.clicked.connect(_exp)
         return w, tbl
 
@@ -169,10 +184,7 @@ class ReportsModule(QWidget):
             data = rep_svc.get_trainer_performance_report(self._bf.currentData())
             self._fill_table(tbl, data); cnt.setText(f"{len(data)} trainers")
         def _exp():
-            path, _ = QFileDialog.getSaveFileName(self,"Save CSV","trainers_report.csv","CSV (*.csv)")
-            if path:
-                r = rep_svc.export_to_csv(cols, [list(row) for row in rep_svc.get_trainer_performance_report(self._bf.currentData())], path)
-                InfoDialog("Export", r["message"], "success" if r["success"] else "error", self).exec()
+            self._export_report_flow("Trainer Performance Report", cols, lambda: rep_svc.get_trainer_performance_report(self._bf.currentData()))
         gen.clicked.connect(_gen); exp.clicked.connect(_exp)
         return w, tbl
 
@@ -183,9 +195,6 @@ class ReportsModule(QWidget):
             data = rep_svc.get_equipment_report(self._bf.currentData())
             self._fill_table(tbl, data); cnt.setText(f"{len(data)} items")
         def _exp():
-            path, _ = QFileDialog.getSaveFileName(self,"Save CSV","equipment_report.csv","CSV (*.csv)")
-            if path:
-                r = rep_svc.export_to_csv(cols, [list(row) for row in rep_svc.get_equipment_report(self._bf.currentData())], path)
-                InfoDialog("Export", r["message"], "success" if r["success"] else "error", self).exec()
+            self._export_report_flow("Equipment Report", cols, lambda: rep_svc.get_equipment_report(self._bf.currentData()))
         gen.clicked.connect(_gen); exp.clicked.connect(_exp)
         return w, tbl
