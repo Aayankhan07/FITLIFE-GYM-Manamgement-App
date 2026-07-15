@@ -65,7 +65,7 @@ class AuditLogsModule(QWidget):
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         # Filters
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
 
         fr.addWidget(QLabel("From:"))
@@ -105,11 +105,11 @@ class AuditLogsModule(QWidget):
         self._tbl.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._tbl.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.12);}
-            QTableWidget::item:hover{background:rgba(124,58,237,0.08);}
-            QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
+            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.12);}
+            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.08);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
         """)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         QVBoxLayout(tc).addWidget(self._tbl); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -119,7 +119,7 @@ class AuditLogsModule(QWidget):
     # Colors for action badges
     _ACTION_COLORS = {
         "CREATE": "#00E676", "UPDATE": "#00F5FF", "DELETE": "#FF2D78",
-        "LOGIN": "#7C3AED", "LOGOUT": "#9CA3AF", "PAYMENT": "#FFB800",
+        "LOGIN": "#0066FF", "LOGOUT": "#9CA3AF", "PAYMENT": "#FFB800",
         "PLAN_APPROVE": "#00E676", "PLAN_REJECT": "#FF2D78",
         "LOGIN_FAILED": "#FF2D78",
     }
