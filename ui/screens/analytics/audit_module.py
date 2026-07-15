@@ -56,16 +56,16 @@ class AuditLogsModule(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(16)
 
         hdr = QHBoxLayout()
-        t = QLabel("🔍  Audit Logs"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("🔍  Audit Logs"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         # Filters
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
 
         fr.addWidget(QLabel("From:"))
@@ -94,7 +94,7 @@ class AuditLogsModule(QWidget):
         m.addWidget(ff)
 
         # Count label
-        self._cnt = QLabel(""); self._cnt.setStyleSheet("color:#9CA3AF;font-size: 13px;"); m.addWidget(self._cnt)
+        self._cnt = QLabel(""); self._cnt.setStyleSheet("QWidget { color:#9CA3AF;font-size: 13px; }"); m.addWidget(self._cnt)
 
         # Table
         self._tbl = QTableWidget()
@@ -109,7 +109,7 @@ class AuditLogsModule(QWidget):
             QTableWidget::item:hover{background:rgba(0, 102, 255, 0.08);}
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
         """)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         QVBoxLayout(tc).addWidget(self._tbl); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
