@@ -7,6 +7,7 @@ from PyQt6.QtWidgets import (
 )
 from PyQt6.QtCore import Qt
 from PyQt6.QtGui import QFont
+from ui.theme.theme_manager import ThemeManager
 
 
 class ConfirmDialog(QDialog):
@@ -38,12 +39,13 @@ class ConfirmDialog(QDialog):
         # Card container
         card = QFrame()
         card.setObjectName("glassCard")
-        card.setStyleSheet("""
-            QFrame#glassCard {
-                background: #1A1040;
-                border: 1px solid rgba(124,58,237,0.4);
+        c = ThemeManager.colors()
+        card.setStyleSheet(f"""
+            QFrame#glassCard {{
+                background: {c['bg_secondary']};
+                border: 1px solid {c['glass_border']};
                 border-radius: 16px;
-            }
+            }}
         """)
         card_layout = QVBoxLayout(card)
         card_layout.setContentsMargins(28, 28, 28, 24)
@@ -116,7 +118,8 @@ class InfoDialog(QDialog):
 
         card = QFrame()
         card.setObjectName("glassCard")
-        card.setStyleSheet("QFrame#glassCard { background:#1A1040; border:1px solid rgba(124,58,237,0.4); border-radius:16px; }")
+        c = ThemeManager.colors()
+        card.setStyleSheet(f"QFrame#glassCard {{ background:{c['bg_secondary']}; border:1px solid {c['glass_border']}; border-radius:16px; }}")
         cl = QVBoxLayout(card)
         cl.setContentsMargins(28, 28, 28, 24)
         cl.setSpacing(14)
