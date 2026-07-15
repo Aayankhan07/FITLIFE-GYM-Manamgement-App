@@ -61,7 +61,7 @@ class PlansScreen(QWidget):
 
         # KPIs
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_total  = KPICard("Total Plans",  "—", "📋","","#7C3AED")
+        self._kpi_total  = KPICard("Total Plans",  "—", "📋","","#0066FF")
         self._kpi_active = KPICard("Active Plans", "—", "✅","","#00E676")
         for k in [self._kpi_total, self._kpi_active]: krow.addWidget(k)
         krow.addStretch(); main.addLayout(krow)
@@ -78,10 +78,10 @@ class PlansScreen(QWidget):
         self.usage_table.horizontalHeader().setStretchLastSection(True)
         self.usage_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.usage_table.setStyleSheet("""
-            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);
+            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
             border-radius:12px;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.15);}
-            QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
+            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
         """)
         self.usage_table.setMaximumHeight(200)
         main.addWidget(self.usage_table)
@@ -90,7 +90,7 @@ class PlansScreen(QWidget):
         cols = ["ID","Plan Name","Duration (days)","Price","Description","Active","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -144,7 +144,7 @@ class PlansScreen(QWidget):
             toggle_lbl = "🔴 Deactivate" if is_active else "🟢 Activate"
             toggle_color = "#FF2D78" if is_active else "#00E676"
             for label, color, handler in [
-                ("✏️ Edit",     "#7C3AED", lambda _, i=pid: self.open_edit_form.emit(i)),
+                ("✏️ Edit",     "#0066FF", lambda _, i=pid: self.open_edit_form.emit(i)),
                 (toggle_lbl, toggle_color, lambda _, i=pid: self._toggle_active(i)),
                 ("🗑 Del",     "#FF2D78", lambda _, i=pid, n=p[1]: self._confirm_delete(i,n)),
             ]:
@@ -213,7 +213,7 @@ class PlanForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         grid = QGridLayout(card)
         grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1)
@@ -334,7 +334,7 @@ class AssignMembershipForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         grid = QGridLayout(card)
         grid.setContentsMargins(28,24,28,28); grid.setSpacing(16)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1)
