@@ -27,7 +27,7 @@ class ExpensesScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget()
         container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
@@ -37,7 +37,7 @@ class ExpensesScreen(QWidget):
         # Header
         hdr = QHBoxLayout()
         title = QLabel("📉 Extra Expenses")
-        title.setStyleSheet("font-size:24px; font-weight:bold; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:24px; font-weight:bold; color:#F0F4FF; }")
         hdr.addWidget(title)
         hdr.addStretch()
 
@@ -51,7 +51,7 @@ class ExpensesScreen(QWidget):
 
         # Filters
         filter_frame = QFrame()
-        filter_frame.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        filter_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(filter_frame)
         fr.setContentsMargins(16, 10, 16, 10)
         fr.setSpacing(12)
@@ -189,7 +189,7 @@ class ExpenseForm(QFrame):
 
         hdr = QHBoxLayout()
         title = QLabel("📉 Record Extra Expense")
-        title.setStyleSheet("font-size:18px;font-weight:bold;color:#FFB800;")
+        title.setStyleSheet("QWidget { font-size:18px;font-weight:bold;color:#FFB800; }")
         hdr.addWidget(title)
         hdr.addStretch()
         close = QPushButton("✕")
