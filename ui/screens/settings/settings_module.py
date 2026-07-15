@@ -40,9 +40,9 @@ class SettingsModule(QWidget):
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         tabs = QTabWidget(); tabs.setStyleSheet("""
-            QTabWidget::pane{background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;}
+            QTabWidget::pane{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;}
             QTabBar::tab{background:rgba(0,0,0,0.2);color:#9CA3AF;padding:10px 20px;border-radius:8px;margin-right:4px;}
-            QTabBar::tab:selected{background:rgba(124,58,237,0.3);color:#7C3AED;font-weight:bold;}
+            QTabBar::tab:selected{background:rgba(0, 102, 255, 0.3);color:#0066FF;font-weight:bold;}
         """)
         tabs.addTab(self._build_profile(), "👤 Profile")
         tabs.addTab(self._build_notifications(), "🔔 Notifications")
@@ -59,18 +59,18 @@ class SettingsModule(QWidget):
         lay = QVBoxLayout(w); lay.setContentsMargins(20,20,20,20); lay.setSpacing(20)
         lay.addWidget(SectionHeader("👤  My Profile"))
 
-        info_card = QFrame(); info_card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        info_card = QFrame(); info_card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         ig = QGridLayout(info_card); ig.setContentsMargins(24,20,24,20); ig.setSpacing(12)
         ig.setColumnStretch(1,1); ig.setColumnStretch(3,1)
 
         s = svc.get_setting  # not user data, but we can show session
         session = self._session
         ig.addWidget(_lbl("Full Name:"),0,0); name_lbl=_lbl(session.full_name,"color:#F0F4FF;font-size:14px;font-weight:bold;"); ig.addWidget(name_lbl,0,1)
-        ig.addWidget(_lbl("Role:"),0,2); ig.addWidget(_lbl(session.role,"color:#7C3AED;font-size:14px;font-weight:bold;"),0,3)
+        ig.addWidget(_lbl("Role:"),0,2); ig.addWidget(_lbl(session.role,"color:#0066FF;font-size:14px;font-weight:bold;"),0,3)
         lay.addWidget(info_card)
 
         lay.addWidget(SectionHeader("🔑  Change Password"))
-        pw_card = QFrame(); pw_card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        pw_card = QFrame(); pw_card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         pg = QGridLayout(pw_card); pg.setContentsMargins(24,20,24,20); pg.setSpacing(12)
         pg.setColumnStretch(1,1)
 
@@ -101,7 +101,7 @@ class SettingsModule(QWidget):
         lay.addWidget(SectionHeader("🔔  Notification Preferences"))
 
         ns = svc.get_notification_settings(self._session.user_id)
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         g = QGridLayout(card); g.setContentsMargins(24,20,24,20); g.setSpacing(14)
         g.setColumnStretch(1,1)
 
@@ -130,7 +130,7 @@ class SettingsModule(QWidget):
         lay.addWidget(SectionHeader("🛠  System Configuration"))
 
         all_s = svc.get_all_settings()
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         g = QGridLayout(card); g.setContentsMargins(24,20,24,20); g.setSpacing(14)
         g.setColumnStretch(1,1)
 
@@ -174,7 +174,7 @@ class SettingsModule(QWidget):
         lay.addWidget(desc)
 
         ai_s = svc.get_ai_settings()
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         g = QGridLayout(card); g.setContentsMargins(24,20,24,20); g.setSpacing(14)
         g.setColumnStretch(1,1)
 
@@ -202,7 +202,7 @@ class SettingsModule(QWidget):
         rb.clicked.connect(self._load_alerts); hdr.addWidget(rb); lay.addLayout(hdr)
 
         self._alerts_area = QTextEdit(); self._alerts_area.setReadOnly(True)
-        self._alerts_area.setStyleSheet("background:rgba(0,0,0,0.2);border:1px solid rgba(124,58,237,0.2);border-radius:12px;color:#F0F4FF;font-size:13px;padding:12px;")
+        self._alerts_area.setStyleSheet("background:rgba(0,0,0,0.2);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;color:#F0F4FF;font-size:13px;padding:12px;")
         self._alerts_area.setMinimumHeight(300)
         lay.addWidget(self._alerts_area); lay.addStretch()
         self._load_alerts(); return w
