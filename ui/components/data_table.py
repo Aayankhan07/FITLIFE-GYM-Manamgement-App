@@ -48,13 +48,13 @@ class DataTable(QWidget):
         self.search_input.setStyleSheet("""
             QLineEdit {
                 background: rgba(255,255,255,0.08);
-                border: 1px solid rgba(124,58,237,0.3);
+                border: 1px solid rgba(0, 102, 255, 0.3);
                 border-radius: 10px;
                 padding: 6px 14px;
                 color: #F0F4FF;
                 font-size: 14px;
             }
-            QLineEdit:focus { border: 1.5px solid #7C3AED; }
+            QLineEdit:focus { border: 1.5px solid #0066FF; }
         """)
         self._debounce_timer = QTimer()
         self._debounce_timer.setSingleShot(True)
@@ -85,11 +85,11 @@ class DataTable(QWidget):
         self.table.setMinimumHeight(300)
         self.table.setStyleSheet("""
             QTableWidget { background: transparent; border: none; }
-            QTableWidget::item { padding: 10px 12px; border-bottom: 1px solid rgba(124,58,237,0.15); }
-            QTableWidget::item:hover { background: rgba(124,58,237,0.1); }
-            QTableWidget::item:selected { background: #7C3AED; color: #FFFFFF; }
+            QTableWidget::item { padding: 10px 12px; border-bottom: 1px solid rgba(0, 102, 255, 0.15); }
+            QTableWidget::item:hover { background: rgba(0, 102, 255, 0.1); }
+            QTableWidget::item:selected { background: #0066FF; color: #FFFFFF; }
             QHeaderView::section {
-                background: rgba(124,58,237,0.2); color: #00F5FF;
+                background: rgba(0, 102, 255, 0.2); color: #00F5FF;
                 padding: 12px; border: none;
                 font-weight: bold; font-size: 13px;
             }
