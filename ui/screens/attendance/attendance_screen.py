@@ -48,7 +48,7 @@ class AttendanceScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28,24,28,24); main.setSpacing(20)
@@ -56,10 +56,10 @@ class AttendanceScreen(QWidget):
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("📅  Attendance Management")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         self.clock_lbl = QLabel()
-        self.clock_lbl.setStyleSheet("font-size:18px; color:#00F5FF; font-weight:bold;")
+        self.clock_lbl.setStyleSheet("QWidget { font-size:18px; color:#00F5FF; font-weight:bold; }")
         hdr.addWidget(self.clock_lbl)
         main.addLayout(hdr)
         self._update_clock()
@@ -101,7 +101,7 @@ class AttendanceScreen(QWidget):
 
         self.member_cb = QComboBox()
         self.member_cb.setMinimumHeight(40)
-        self.member_cb.setStyleSheet("font-size:14px;")
+        self.member_cb.setStyleSheet("QWidget { font-size:14px; }")
         self.member_cb.currentIndexChanged.connect(self._on_member_selected)
         left_layout.addWidget(self.member_cb)
 
