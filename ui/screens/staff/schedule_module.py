@@ -68,13 +68,13 @@ class _ScheduleList(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         # Header
         hdr = QHBoxLayout()
-        t = QLabel("📅  Training Schedule"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("📅  Training Schedule"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             b = QPushButton("➕ New Slot"); b.setObjectName("btnPrimary"); b.setMinimumHeight(40)
@@ -91,7 +91,7 @@ class _ScheduleList(QWidget):
         m.addLayout(kr)
 
         # Date + status filters
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Date:"))
         self._date = QDateEdit(); self._date.setCalendarPopup(True)
@@ -123,7 +123,7 @@ class _ScheduleList(QWidget):
 
         cols = ["ID","Trainer","Member","Date","Start","End","Type","Status","Notes","Actions"]
         self.table = DataTable(cols)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         QVBoxLayout(tc).addWidget(self.table); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -208,11 +208,11 @@ class _SlotForm(QWidget):
         self._build_ui()
         if self._is_edit: self._load()
 
-    def _lbl(self, t): l=QLabel(t); l.setStyleSheet("color:#9CA3AF;font-size:13px;"); return l
+    def _lbl(self, t): l=QLabel(t); l.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); return l
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
@@ -224,7 +224,7 @@ class _SlotForm(QWidget):
         sv.clicked.connect(self._save); hdr.addWidget(sv)
         m.addLayout(hdr)
 
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card = QFrame(); card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         g = QGridLayout(card); g.setContentsMargins(28,24,28,28); g.setSpacing(14)
         g.setColumnStretch(1,1); g.setColumnStretch(3,1)
 
