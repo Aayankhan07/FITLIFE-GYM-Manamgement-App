@@ -49,7 +49,7 @@ class BranchesScreen(QWidget):
 
         # KPI row
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_total  = KPICard("Total Branches", "—", "🏢","","#7C3AED")
+        self._kpi_total  = KPICard("Total Branches", "—", "🏢","","#0066FF")
         self._kpi_active = KPICard("Active",         "—", "✅","","#00E676")
         for k in [self._kpi_total, self._kpi_active]: krow.addWidget(k)
         krow.addStretch(); main.addLayout(krow)
@@ -58,7 +58,7 @@ class BranchesScreen(QWidget):
         cols = ["ID","Branch Name","City","Phone","Manager","Members","Trainers","Status","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(124,58,237,0.2); border-radius:16px;")
+        tc.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px;")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
         self._overlay = LoadingOverlay(self)
@@ -97,7 +97,7 @@ class BranchesScreen(QWidget):
             cell = QWidget()
             bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
             for label, color, handler in [
-                ("✏️ Edit", "#7C3AED", lambda _, i=bid: self.open_edit_form.emit(i)),
+                ("✏️ Edit", "#0066FF", lambda _, i=bid: self.open_edit_form.emit(i)),
                 ("🗑 Del",  "#FF2D78", lambda _, i=bid, n=b[1]: self._confirm_delete(i, n)),
             ]:
                 btn = QPushButton(label); btn.setFixedHeight(32)
@@ -163,7 +163,7 @@ class BranchForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         grid = QGridLayout(card)
         grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1)
