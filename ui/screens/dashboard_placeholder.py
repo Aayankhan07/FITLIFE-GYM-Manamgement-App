@@ -26,7 +26,7 @@ class DashboardPlaceholder(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border: none; background: transparent;")
+        scroll.setStyleSheet("QWidget { border: none; background: transparent; }")
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         container = QWidget()
@@ -39,7 +39,7 @@ class DashboardPlaceholder(QWidget):
         header_row = QHBoxLayout()
         greeting = QLabel(f"Welcome back, {self._session.full_name} 👋")
         greeting.setObjectName("heading1")
-        greeting.setStyleSheet("font-size: 30px; font-weight: 900; color: #F0F4FF;")
+        greeting.setStyleSheet("QWidget { font-size: 30px; font-weight: 900; color: #F0F4FF; }")
         header_row.addWidget(greeting)
         header_row.addStretch()
 
@@ -179,7 +179,7 @@ class DashboardPlaceholder(QWidget):
             "ℹ️  FitLife v1.0.0  |  Phase 1 Foundation Complete  |  "
             "Full modules load in Phase 2+  |  Database Connected"
         )
-        info_lbl.setStyleSheet("color: #00F5FF; font-size: 13px;")
+        info_lbl.setStyleSheet("QWidget { color: #00F5FF; font-size: 13px; }")
         info_layout.addWidget(info_lbl)
         layout.addWidget(info_frame)
 
@@ -270,7 +270,7 @@ class DashboardPlaceholder(QWidget):
         
         # 1. Calendar Panel
         cal_frame = QFrame()
-        cal_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        cal_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         cal_layout = QVBoxLayout(cal_frame)
         cal_layout.addWidget(SectionHeader("📅  My Attendance"))
         self.cal_widget = QCalendarWidget()
@@ -284,7 +284,7 @@ class DashboardPlaceholder(QWidget):
         
         # 2. Assigned Members & Progress
         mem_frame = QFrame()
-        mem_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        mem_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         mem_layout = QVBoxLayout(mem_frame)
         mem_layout.addWidget(SectionHeader("👥  Assigned Members"))
         self.mem_table = QTableWidget()
@@ -299,7 +299,7 @@ class DashboardPlaceholder(QWidget):
         
         # 3. Pending Approvals
         app_frame = QFrame()
-        app_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        app_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         app_layout = QVBoxLayout(app_frame)
         app_layout.addWidget(SectionHeader("📋  Pending Approvals"))
         self.app_table = QTableWidget()
@@ -314,7 +314,7 @@ class DashboardPlaceholder(QWidget):
         
         # 4. Schedule Panel
         sch_frame = QFrame()
-        sch_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        sch_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         sch_layout = QVBoxLayout(sch_frame)
         sch_layout.addWidget(SectionHeader("⏰  My Schedule"))
         self.sch_table = QTableWidget()
@@ -412,7 +412,7 @@ class DashboardPlaceholder(QWidget):
         
         # 1. Calendar Panel
         cal_frame = QFrame()
-        cal_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        cal_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         cal_layout = QVBoxLayout(cal_frame)
         cal_layout.addWidget(SectionHeader("📅  My Attendance"))
         self.mem_cal_widget = QCalendarWidget()
@@ -426,7 +426,7 @@ class DashboardPlaceholder(QWidget):
         
         # 2. My Workout Plan
         wo_frame = QFrame()
-        wo_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        wo_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         wo_layout = QVBoxLayout(wo_frame)
         self.wo_header = SectionHeader("🏋️  My Workout Plan")
         wo_layout.addWidget(self.wo_header)
@@ -442,7 +442,7 @@ class DashboardPlaceholder(QWidget):
         
         # 3. My Diet Plan
         dp_frame = QFrame()
-        dp_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
+        dp_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         dp_layout = QVBoxLayout(dp_frame)
         self.dp_header = SectionHeader("🥗  My Diet Plan")
         dp_layout.addWidget(self.dp_header)
