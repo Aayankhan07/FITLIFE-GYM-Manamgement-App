@@ -31,7 +31,7 @@ except ImportError:
 class _FallbackBarChart(QFrame):
     """Simple vertical bar chart — no external lib needed."""
 
-    def __init__(self, title: str, data: list, accent="#7C3AED",
+    def __init__(self, title: str, data: list, accent="#0066FF",
                  value_prefix="", parent=None):
         super().__init__(parent)
         self._title = title
@@ -40,7 +40,7 @@ class _FallbackBarChart(QFrame):
         self._prefix = value_prefix
         self.setMinimumHeight(200)
         self.setStyleSheet(
-            "background:rgba(13,17,23,0.8);border:1px solid rgba(124,58,237,0.2);"
+            "background:rgba(13,17,23,0.8);border:1px solid rgba(0, 102, 255, 0.2);"
             "border-radius:14px;"
         )
 
@@ -134,7 +134,7 @@ def _apply_chart_theme(fig, axes):
         ax.set_axisbelow(True)
 
 
-def _make_vertical_bar_chart(title, data, color='#7C3AED', prefix=''):
+def _make_vertical_bar_chart(title, data, color='#0066FF', prefix=''):
     """Create a dark-themed vertical bar chart."""
     fig = Figure(figsize=(4, 3), dpi=96)
     ax = fig.add_subplot(111)
@@ -205,7 +205,7 @@ def _make_donut_chart(title, data, colors=None):
 
     labels = [str(d[0]) for d in data]
     values = [float(d[1]) for d in data]
-    default_colors = ['#00E676', '#FFB800', '#FF2D78', '#6B7280', '#7C3AED', '#00F5FF']
+    default_colors = ['#00E676', '#FFB800', '#FF2D78', '#6B7280', '#0066FF', '#00F5FF']
     clrs = colors if colors else default_colors[:len(values)]
 
     wedges, texts, autotexts = ax.pie(
@@ -243,7 +243,7 @@ def _make_chart_widget(fig):
     frame = QFrame()
     frame.setStyleSheet(
         "QFrame{background:rgba(13,17,23,0.8);"
-        "border:1px solid rgba(124,58,237,0.2);border-radius:14px;}"
+        "border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;}"
     )
     frame.setSizePolicy(QSizePolicy.Policy.Expanding, QSizePolicy.Policy.Expanding)
     frame.setMinimumHeight(280)
@@ -290,7 +290,7 @@ class AnalyticsDashboard(QWidget):
 
         # KPI row 1
         kr1 = QHBoxLayout(); kr1.setSpacing(14)
-        self._k_mem   = KPICard("Total Members",    "—", "👥", "", "#7C3AED")
+        self._k_mem   = KPICard("Total Members",    "—", "👥", "", "#0066FF")
         self._k_act   = KPICard("Active Members",   "—", "✅", "", "#00E676")
         self._k_rev   = KPICard("Monthly Revenue",  "—", "💰", "", "#00F5FF")
         self._k_att   = KPICard("Attendance Today", "—", "📅", "", "#FFB800")
@@ -300,7 +300,7 @@ class AnalyticsDashboard(QWidget):
 
         # KPI row 2
         kr2 = QHBoxLayout(); kr2.setSpacing(14)
-        self._k_tr    = KPICard("Active Trainers",  "—", "💪", "", "#7C3AED")
+        self._k_tr    = KPICard("Active Trainers",  "—", "💪", "", "#0066FF")
         self._k_exp   = KPICard("Expiring (7d)",    "—", "⚠️", "", "#FF2D78")
         self._k_ppay  = KPICard("Pending Payments", "—", "📄", "", "#FFB800")
         self._k_pamt  = KPICard("Pending Amount",   "—", "💸", "", "#FF2D78")
@@ -328,7 +328,7 @@ class AnalyticsDashboard(QWidget):
         # Trainer leaderboard
         m.addWidget(SectionHeader("🏆  Top Trainers"))
         tf = QFrame()
-        tf.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:14px;")
+        tf.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
         tl = QVBoxLayout(tf); tl.setContentsMargins(16, 14, 16, 14); tl.setSpacing(8)
         self._trainer_rows = QVBoxLayout(); self._trainer_rows.setSpacing(6)
         tl.addLayout(self._trainer_rows)
@@ -344,7 +344,7 @@ class AnalyticsDashboard(QWidget):
         f = QFrame()
         f.setStyleSheet(
             "QFrame{background:rgba(13,17,23,0.8);"
-            "border:1px solid rgba(124,58,237,0.2);border-radius:14px;}"
+            "border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;}"
         )
         f.setMinimumHeight(280)
         lbl = QLabel(f"⏳ Loading {title}...")
@@ -394,7 +394,7 @@ class AnalyticsDashboard(QWidget):
         if HAS_MATPLOTLIB:
             # Revenue — vertical bar
             fig_rev = _make_vertical_bar_chart("Monthly Revenue", d["rev"],
-                                               color='#7C3AED', prefix='Rs.')
+                                               color='#0066FF', prefix='Rs.')
             self._chart_rev_frame = self._replace_chart(
                 self._chart_rev_frame, _make_chart_widget(fig_rev), 0, 0)
 
@@ -420,7 +420,7 @@ class AnalyticsDashboard(QWidget):
                     self._chart_goal_frame, _make_chart_widget(fig_goal), 1, 1)
         else:
             # Fallback inline charts
-            rev_w = _FallbackBarChart("Monthly Revenue (Rs.)", d["rev"], "#7C3AED", "Rs.")
+            rev_w = _FallbackBarChart("Monthly Revenue (Rs.)", d["rev"], "#0066FF", "Rs.")
             self._chart_rev_frame = self._replace_chart(self._chart_rev_frame, rev_w, 0, 0)
             grow_w = _FallbackBarChart("Member Growth", d["growth"], "#00F5FF")
             self._chart_grow_frame = self._replace_chart(self._chart_grow_frame, grow_w, 0, 1)
@@ -437,12 +437,12 @@ class AnalyticsDashboard(QWidget):
         for i, t in enumerate(d["trainers"]):
             row = QFrame()
             row.setStyleSheet(
-                "background:rgba(124,58,237,0.08);"
-                "border:1px solid rgba(124,58,237,0.15);border-radius:10px;"
+                "background:rgba(0, 102, 255, 0.08);"
+                "border:1px solid rgba(0, 102, 255, 0.15);border-radius:10px;"
             )
             rl = QHBoxLayout(row); rl.setContentsMargins(14, 10, 14, 10)
             num = QLabel(f"#{i+1}")
-            num.setStyleSheet("font-size:16px;font-weight:900;color:#7C3AED;min-width:28px;")
+            num.setStyleSheet("font-size:16px;font-weight:900;color:#0066FF;min-width:28px;")
             rl.addWidget(num)
             info = QVBoxLayout(); info.setSpacing(2)
             info.addWidget(_lbl(str(t[0]), "color:#F0F4FF;font-weight:bold;font-size:13px;"))
