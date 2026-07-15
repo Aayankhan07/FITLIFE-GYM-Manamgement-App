@@ -58,7 +58,7 @@ class SalaryScreen(QWidget):
 
         # ── KPI row ───────────────────────────────────────────────────────────
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_total   = KPICard("Total Records",  "—", "📋","","#7C3AED")
+        self._kpi_total   = KPICard("Total Records",  "—", "📋","","#0066FF")
         self._kpi_paid    = KPICard("Paid",           "—", "✅","","#00E676")
         self._kpi_pending = KPICard("Pending",        "—", "⏳","","#FFB800")
         self._kpi_payout  = KPICard("Total Payout",  "—", "💰","","#00F5FF")
@@ -70,7 +70,7 @@ class SalaryScreen(QWidget):
         filter_frame = QFrame()
         filter_frame.setStyleSheet(
             "background:rgba(255,255,255,0.04);"
-            "border:1px solid rgba(124,58,237,0.2);border-radius:12px;"
+            "border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;"
         )
         fr = QHBoxLayout(filter_frame)
         fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
@@ -111,7 +111,7 @@ class SalaryScreen(QWidget):
         tc = QFrame()
         tc.setStyleSheet(
             "background:rgba(255,255,255,0.04);"
-            "border:1px solid rgba(124,58,237,0.2);border-radius:16px;"
+            "border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;"
         )
         tcl = QVBoxLayout(tc)
         tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
@@ -181,11 +181,11 @@ class SalaryScreen(QWidget):
             edit_btn.setFixedHeight(32)
             edit_btn.setStyleSheet(
                 "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #7C3AED,stop:1 #5B21B6);"
+                "stop:0 #0066FF,stop:1 #004BCC);"
                 "border:none;border-radius:6px;color:#FFFFFF;"
                 "font-size: 13px;font-weight:600;padding:0 8px;}"
                 "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #8B5CF6,stop:1 #7C3AED);}"
+                "stop:0 #3B82F6,stop:1 #0066FF);}"
             )
             edit_btn.clicked.connect(
                 lambda _, i=rid, base=float(rec[5]), bon=float(rec[6] or 0),
@@ -294,7 +294,7 @@ class SalaryAdjustDialog(QDialog):
         layout.setContentsMargins(28,24,28,28); layout.setSpacing(14)
 
         title = QLabel("✏️  Adjust Salary Record")
-        title.setStyleSheet("font-size:18px; font-weight:bold; color:#7C3AED;")
+        title.setStyleSheet("font-size:18px; font-weight:bold; color:#0066FF;")
         layout.addWidget(title)
 
         base_lbl = QLabel(f"Base Salary:  Rs. {self._base:,.0f}")
@@ -335,9 +335,9 @@ class SalaryAdjustDialog(QDialog):
         btn_row.addWidget(cancel)
         save = QPushButton("💾 Save Adjustment"); save.setMinimumHeight(38)
         save.setStyleSheet(
-            "QPushButton{background:#7C3AED;border:none;border-radius:10px;"
+            "QPushButton{background:#0066FF;border:none;border-radius:10px;"
             "color:#fff;font-size:14px;font-weight:bold;padding:0 20px;}"
-            "QPushButton:hover{background:#8B5CF6;}"
+            "QPushButton:hover{background:#3B82F6;}"
         )
         save.clicked.connect(self._save)
         btn_row.addWidget(save)
@@ -378,7 +378,7 @@ class SalarySlipDialog(QDialog):
 
         # Header
         brand = QLabel("💪  FitLife")
-        brand.setStyleSheet("font-size:28px;font-weight:900;color:#7C3AED;")
+        brand.setStyleSheet("font-size:28px;font-weight:900;color:#0066FF;")
         brand.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(brand)
 
@@ -396,7 +396,7 @@ class SalarySlipDialog(QDialog):
         layout.addWidget(slip_title)
 
         div = QFrame(); div.setFrameShape(QFrame.Shape.HLine)
-        div.setStyleSheet("background:rgba(124,58,237,0.4);"); layout.addWidget(div)
+        div.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(div)
 
         # Employee info
         def row(label, val, color="#F0F4FF"):
@@ -415,14 +415,14 @@ class SalarySlipDialog(QDialog):
             row("Payment Date:", str(s['payment_date']))
 
         div2 = QFrame(); div2.setFrameShape(QFrame.Shape.HLine)
-        div2.setStyleSheet("background:rgba(124,58,237,0.4);"); layout.addWidget(div2)
+        div2.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(div2)
 
         row("Base Salary:",   f"Rs. {s['base_salary']:,.0f}", "#F0F4FF")
         row("Bonus:",         f"Rs. {s['bonus']:,.0f}",       "#00E676")
         row("Deduction:",     f"Rs. {s['deduction']:,.0f}",   "#FF2D78")
 
         div3 = QFrame(); div3.setFrameShape(QFrame.Shape.HLine)
-        div3.setStyleSheet("background:rgba(124,58,237,0.4);"); layout.addWidget(div3)
+        div3.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(div3)
 
         net_lbl = QLabel(f"Net Salary:  Rs. {s['net_salary']:,.0f}")
         net_lbl.setStyleSheet("font-size:20px;font-weight:bold;color:#00E676;")
@@ -441,9 +441,9 @@ class SalarySlipDialog(QDialog):
         close_btn = QPushButton("Close")
         close_btn.setFixedHeight(38)
         close_btn.setStyleSheet(
-            "QPushButton{background:rgba(124,58,237,0.2);border:1px solid #7C3AED;"
-            "border-radius:10px;color:#7C3AED;font-size:14px;}"
-            "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #8B5CF6,stop:1 #7C3AED);}"
+            "QPushButton{background:rgba(0, 102, 255, 0.2);border:1px solid #0066FF;"
+            "border-radius:10px;color:#0066FF;font-size:14px;}"
+            "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #3B82F6,stop:1 #0066FF);}"
         )
         close_btn.clicked.connect(self.accept)
         layout.addWidget(close_btn)
