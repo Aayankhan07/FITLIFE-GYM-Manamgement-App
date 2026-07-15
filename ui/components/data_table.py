@@ -38,38 +38,26 @@ class DataTable(QWidget):
         layout = QVBoxLayout(self)
         layout.setContentsMargins(0, 0, 0, 0)
         layout.setSpacing(8)
-
         # ── Search Bar ────────────────────────────────────────────────────────
         search_row = QHBoxLayout()
         self.search_input = QLineEdit()
         self.search_input.setPlaceholderText("  Search...")
         self.search_input.setObjectName("searchInput")
         self.search_input.setMinimumHeight(38)
-        self.search_input.setStyleSheet("""
-            QLineEdit {
-                background: rgba(255,255,255,0.08);
-                border: 1px solid rgba(0, 102, 255, 0.3);
-                border-radius: 10px;
-                padding: 6px 14px;
-                color: #F0F4FF;
-                font-size: 14px;
-            }
-            QLineEdit:focus { border: 1.5px solid #0066FF; }
-        """)
         self._debounce_timer = QTimer()
         self._debounce_timer.setSingleShot(True)
         self._debounce_timer.setInterval(SEARCH_DEBOUNCE_MS)
         self._debounce_timer.timeout.connect(self._apply_search)
         self.search_input.textChanged.connect(lambda: self._debounce_timer.start())
-
+ 
         self.result_label = QLabel("0 records")
         self.result_label.setObjectName("labelMuted")
         self.result_label.setStyleSheet("color: #6B7280; font-size: 13px;")
-
+ 
         search_row.addWidget(self.search_input)
         search_row.addWidget(self.result_label)
         layout.addLayout(search_row)
-
+ 
         # ── Table ─────────────────────────────────────────────────────────────
         self.table = QTableWidget()
         self.table.setColumnCount(len(self._columns))
@@ -83,17 +71,6 @@ class DataTable(QWidget):
         self.table.horizontalHeader().setStretchLastSection(True)
         self.table.horizontalHeader().setSectionResizeMode(QHeaderView.ResizeMode.ResizeToContents)
         self.table.setMinimumHeight(300)
-        self.table.setStyleSheet("""
-            QTableWidget { background: transparent; border: none; }
-            QTableWidget::item { padding: 10px 12px; border-bottom: 1px solid rgba(0, 102, 255, 0.15); }
-            QTableWidget::item:hover { background: rgba(0, 102, 255, 0.1); }
-            QTableWidget::item:selected { background: #0066FF; color: #FFFFFF; }
-            QHeaderView::section {
-                background: rgba(0, 102, 255, 0.2); color: #00F5FF;
-                padding: 12px; border: none;
-                font-weight: bold; font-size: 13px;
-            }
-        """)
         self.table.cellClicked.connect(lambda r, c: self.row_selected.emit(r))
         self.table.cellDoubleClicked.connect(lambda r, c: self.row_double_clicked.emit(r))
         layout.addWidget(self.table)
