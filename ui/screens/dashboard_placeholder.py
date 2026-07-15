@@ -45,8 +45,8 @@ class DashboardPlaceholder(QWidget):
 
         role_badge = QLabel(f"  {self._session.role}  ")
         role_badge.setStyleSheet(
-            "background: rgba(124,58,237,0.2); color: #7C3AED;"
-            "border: 1px solid #7C3AED; border-radius: 12px;"
+            "background: rgba(0, 102, 255, 0.2); color: #0066FF;"
+            "border: 1px solid #0066FF; border-radius: 12px;"
             "padding: 6px 14px; font-size: 13px; font-weight: bold;"
         )
         header_row.addWidget(role_badge)
@@ -66,7 +66,7 @@ class DashboardPlaceholder(QWidget):
             stats = analytics.get_dashboard_kpis(None)
             branches = branch_svc.get_all_branches_dropdown()
             kpis = [
-                ("Total Branches",   str(len(branches)),      "🏢", "",    "#7C3AED"),
+                ("Total Branches",   str(len(branches)),      "🏢", "",    "#0066FF"),
                 ("Total Members",    str(stats.get("total_members", 0)),     "👥", "",   "#00F5FF"),
                 ("Net Profit",       f"Rs. {stats.get('monthly_profit', 0):,.0f}",  "💰", "",    "#00E676"),
                 ("Active Trainers",  str(stats.get("active_trainers", 0)),      "💪", "",         "#FFB800"),
@@ -77,7 +77,7 @@ class DashboardPlaceholder(QWidget):
             kpis = [
                 ("Branch Members",   str(stats.get("total_members", 0)),  "👥", "", "#00F5FF"),
                 ("Net Profit",       f"Rs. {stats.get('monthly_profit', 0):,.0f}",  "💰", "", "#00E676"),
-                ("Attendance Today", str(stats.get("today_attendance", 0)),  "📅", "", "#7C3AED"),
+                ("Attendance Today", str(stats.get("today_attendance", 0)),  "📅", "", "#0066FF"),
                 ("Pending Invoices", str(stats.get("pending_payments", 0)),  "📄", "", "#FFB800"),
             ]
         elif role == ROLE_TRAINER:
@@ -100,14 +100,14 @@ class DashboardPlaceholder(QWidget):
                 monthly_days = str(len(cal_data))
                 
             kpis = [
-                ("Assigned Members", assigned_count, "👥", "", "#7C3AED"),
+                ("Assigned Members", assigned_count, "👥", "", "#0066FF"),
                 ("Days Present (Month)", monthly_days, "📅", "", "#00F5FF"),
             ]
         else:  # MEMBER
             kpis = [
                 ("Membership Status","Active","💳", "", "#00E676"),
                 ("Days Remaining",   "—",    "⏳", "", "#00F5FF"),
-                ("Attendance %",     "—",    "📅", "", "#7C3AED"),
+                ("Attendance %",     "—",    "📅", "", "#0066FF"),
                 ("Current Plan",     "—",    "🏋️","", "#FFB800"),
             ]
 
@@ -270,13 +270,13 @@ class DashboardPlaceholder(QWidget):
         
         # 1. Calendar Panel
         cal_frame = QFrame()
-        cal_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        cal_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         cal_layout = QVBoxLayout(cal_frame)
         cal_layout.addWidget(SectionHeader("📅  My Attendance"))
         self.cal_widget = QCalendarWidget()
         self.cal_widget.setStyleSheet("""
             QCalendarWidget QWidget { alternate-background-color: transparent; }
-            QCalendarWidget QAbstractItemView:enabled { color: #F0F4FF; background-color: transparent; selection-background-color: #7C3AED; }
+            QCalendarWidget QAbstractItemView:enabled { color: #F0F4FF; background-color: transparent; selection-background-color: #0066FF; }
             QCalendarWidget QToolButton { color: #00F5FF; font-weight: bold; }
         """)
         cal_layout.addWidget(self.cal_widget)
@@ -284,7 +284,7 @@ class DashboardPlaceholder(QWidget):
         
         # 2. Assigned Members & Progress
         mem_frame = QFrame()
-        mem_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        mem_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         mem_layout = QVBoxLayout(mem_frame)
         mem_layout.addWidget(SectionHeader("👥  Assigned Members"))
         self.mem_table = QTableWidget()
@@ -293,13 +293,13 @@ class DashboardPlaceholder(QWidget):
         self.mem_table.horizontalHeader().setStretchLastSection(True)
         self.mem_table.verticalHeader().setVisible(False)
         self.mem_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.mem_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(124,58,237,0.2); color: #00F5FF; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(124,58,237,0.1); }")
+        self.mem_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(0, 102, 255, 0.2); color: #00F5FF; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(0, 102, 255, 0.1); }")
         mem_layout.addWidget(self.mem_table)
         grid.addWidget(mem_frame, 0, 1)
         
         # 3. Pending Approvals
         app_frame = QFrame()
-        app_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        app_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         app_layout = QVBoxLayout(app_frame)
         app_layout.addWidget(SectionHeader("📋  Pending Approvals"))
         self.app_table = QTableWidget()
@@ -308,13 +308,13 @@ class DashboardPlaceholder(QWidget):
         self.app_table.horizontalHeader().setStretchLastSection(True)
         self.app_table.verticalHeader().setVisible(False)
         self.app_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.app_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(124,58,237,0.2); color: #FFB800; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(124,58,237,0.1); }")
+        self.app_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(0, 102, 255, 0.2); color: #FFB800; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(0, 102, 255, 0.1); }")
         app_layout.addWidget(self.app_table)
         grid.addWidget(app_frame, 1, 0)
         
         # 4. Schedule Panel
         sch_frame = QFrame()
-        sch_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        sch_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         sch_layout = QVBoxLayout(sch_frame)
         sch_layout.addWidget(SectionHeader("⏰  My Schedule"))
         self.sch_table = QTableWidget()
@@ -323,7 +323,7 @@ class DashboardPlaceholder(QWidget):
         self.sch_table.horizontalHeader().setStretchLastSection(True)
         self.sch_table.verticalHeader().setVisible(False)
         self.sch_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.sch_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(124,58,237,0.2); color: #FFB800; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(124,58,237,0.1); }")
+        self.sch_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(0, 102, 255, 0.2); color: #FFB800; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(0, 102, 255, 0.1); }")
         sch_layout.addWidget(self.sch_table)
         grid.addWidget(sch_frame, 1, 1)
         
@@ -412,13 +412,13 @@ class DashboardPlaceholder(QWidget):
         
         # 1. Calendar Panel
         cal_frame = QFrame()
-        cal_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        cal_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         cal_layout = QVBoxLayout(cal_frame)
         cal_layout.addWidget(SectionHeader("📅  My Attendance"))
         self.mem_cal_widget = QCalendarWidget()
         self.mem_cal_widget.setStyleSheet("""
             QCalendarWidget QWidget { alternate-background-color: transparent; }
-            QCalendarWidget QAbstractItemView:enabled { color: #F0F4FF; background-color: transparent; selection-background-color: #7C3AED; }
+            QCalendarWidget QAbstractItemView:enabled { color: #F0F4FF; background-color: transparent; selection-background-color: #0066FF; }
             QCalendarWidget QToolButton { color: #00F5FF; font-weight: bold; }
         """)
         cal_layout.addWidget(self.mem_cal_widget)
@@ -426,7 +426,7 @@ class DashboardPlaceholder(QWidget):
         
         # 2. My Workout Plan
         wo_frame = QFrame()
-        wo_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        wo_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         wo_layout = QVBoxLayout(wo_frame)
         self.wo_header = SectionHeader("🏋️  My Workout Plan")
         wo_layout.addWidget(self.wo_header)
@@ -436,13 +436,13 @@ class DashboardPlaceholder(QWidget):
         self.mem_wo_table.horizontalHeader().setStretchLastSection(True)
         self.mem_wo_table.verticalHeader().setVisible(False)
         self.mem_wo_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.mem_wo_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(124,58,237,0.2); color: #00F5FF; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(124,58,237,0.1); }")
+        self.mem_wo_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(0, 102, 255, 0.2); color: #00F5FF; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(0, 102, 255, 0.1); }")
         wo_layout.addWidget(self.mem_wo_table)
         grid.addWidget(wo_frame, 0, 1)
         
         # 3. My Diet Plan
         dp_frame = QFrame()
-        dp_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.3); border-radius:12px;")
+        dp_frame.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px;")
         dp_layout = QVBoxLayout(dp_frame)
         self.dp_header = SectionHeader("🥗  My Diet Plan")
         dp_layout.addWidget(self.dp_header)
@@ -452,7 +452,7 @@ class DashboardPlaceholder(QWidget):
         self.mem_dp_table.horizontalHeader().setStretchLastSection(True)
         self.mem_dp_table.verticalHeader().setVisible(False)
         self.mem_dp_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.mem_dp_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(124,58,237,0.2); color: #FFB800; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(124,58,237,0.1); }")
+        self.mem_dp_table.setStyleSheet("QTableWidget { background: transparent; color: #F0F4FF; border: none; } QHeaderView::section { background: rgba(0, 102, 255, 0.2); color: #FFB800; padding: 4px; } QTableWidget::item { padding: 4px; border-bottom: 1px solid rgba(0, 102, 255, 0.1); }")
         dp_layout.addWidget(self.mem_dp_table)
         grid.addWidget(dp_frame, 1, 0, 1, 2)
         
