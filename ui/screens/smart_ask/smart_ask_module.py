@@ -241,7 +241,7 @@ class SmartAskModule(QWidget):
 
         # Chat area
         self._chat_scroll = QScrollArea(); self._chat_scroll.setWidgetResizable(True)
-        self._chat_scroll.setStyleSheet("border:1px solid rgba(124,58,237,0.2);border-radius:14px;background:rgba(0,0,0,0.15);")
+        self._chat_scroll.setStyleSheet("border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;background:rgba(0,0,0,0.15);")
         self._chat_container = QWidget(); self._chat_container.setStyleSheet("background:transparent;")
         self._chat_layout = QVBoxLayout(self._chat_container)
         self._chat_layout.setContentsMargins(16,16,16,16); self._chat_layout.setSpacing(12)
@@ -255,7 +255,7 @@ class SmartAskModule(QWidget):
         qrow = QHBoxLayout(); qrow.setSpacing(8)
         for q in ["Revenue this month?","Pending payments?","Expiring memberships?"]:
             qb = QPushButton(q); qb.setFixedHeight(32)
-            qb.setStyleSheet("QPushButton{background:rgba(124,58,237,0.15);border:1px solid rgba(124,58,237,0.3);border-radius:16px;color:#9CA3AF;font-size: 13px;padding:0 12px;}QPushButton:hover{background:rgba(124,58,237,0.3);color:#F0F4FF;}")
+            qb.setStyleSheet("QPushButton{background:rgba(0, 102, 255, 0.15);border:1px solid rgba(0, 102, 255, 0.3);border-radius:16px;color:#9CA3AF;font-size: 13px;padding:0 12px;}QPushButton:hover{background:rgba(0, 102, 255, 0.3);color:#F0F4FF;}")
             qb.clicked.connect(lambda _, qq=q: self._send(qq)); qrow.addWidget(qb)
         qrow.addStretch(); m.addLayout(qrow)
 
@@ -263,7 +263,7 @@ class SmartAskModule(QWidget):
         inp_row = QHBoxLayout(); inp_row.setSpacing(10)
         self._inp = QLineEdit(); self._inp.setPlaceholderText("Message FitLife AI...")
         self._inp.setMinimumHeight(44)
-        self._inp.setStyleSheet("QLineEdit{background:rgba(255,255,255,0.06);border:1px solid rgba(124,58,237,0.3);border-radius:12px;color:#F0F4FF;font-size:14px;padding:0 16px;}QLineEdit:focus{border:1px solid #7C3AED;}")
+        self._inp.setStyleSheet("QLineEdit{background:rgba(255,255,255,0.06);border:1px solid rgba(0, 102, 255, 0.3);border-radius:12px;color:#F0F4FF;font-size:14px;padding:0 16px;}QLineEdit:focus{border:1px solid #0066FF;}")
         self._inp.returnPressed.connect(self._on_send); inp_row.addWidget(self._inp,1)
         sb = QPushButton("➤ Ask"); sb.setObjectName("btnPrimary"); sb.setMinimumHeight(44); sb.setMinimumWidth(80)
         sb.clicked.connect(self._on_send); inp_row.addWidget(sb)
@@ -273,7 +273,7 @@ class SmartAskModule(QWidget):
 
         # ── RIGHT: Canvas Pane ──
         self._canvas_pane = QFrame()
-        self._canvas_pane.setStyleSheet("background:rgba(0,0,0,0.25); border:1px solid rgba(124,58,237,0.3); border-radius:14px;")
+        self._canvas_pane.setStyleSheet("background:rgba(0,0,0,0.25); border:1px solid rgba(0, 102, 255, 0.3); border-radius:14px;")
         canvas_layout = QVBoxLayout(self._canvas_pane)
         canvas_layout.setContentsMargins(20, 20, 20, 20)
         
