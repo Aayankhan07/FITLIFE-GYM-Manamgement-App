@@ -10,7 +10,7 @@ import math
 class LoadingSpinner(QWidget):
     """Animated circular loading spinner overlay."""
 
-    def __init__(self, parent=None, color: str = "#7C3AED", size: int = 50):
+    def __init__(self, parent=None, color: str = "#0066FF", size: int = 50):
         super().__init__(parent)
         self._color = QColor(color)
         self._size = size
