@@ -51,7 +51,7 @@ class ExpensesScreen(QWidget):
 
         # Filters
         filter_frame = QFrame()
-        filter_frame.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        filter_frame.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(filter_frame)
         fr.setContentsMargins(16, 10, 16, 10)
         fr.setSpacing(12)
