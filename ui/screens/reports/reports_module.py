@@ -33,7 +33,7 @@ class ReportsModule(QWidget):
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         # Common filter bar
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Branch:"))
         self._bf = QComboBox(); self._bf.setFixedHeight(34)
@@ -55,9 +55,9 @@ class ReportsModule(QWidget):
         # Tabs
         self._tabs = QTabWidget()
         self._tabs.setStyleSheet("""
-            QTabWidget::pane{background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;}
+            QTabWidget::pane{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;}
             QTabBar::tab{background:rgba(0,0,0,0.2);color:#9CA3AF;padding:10px 20px;border-radius:8px;margin-right:4px;}
-            QTabBar::tab:selected{background:rgba(124,58,237,0.3);color:#7C3AED;font-weight:bold;}
+            QTabBar::tab:selected{background:rgba(0, 102, 255, 0.3);color:#0066FF;font-weight:bold;}
         """)
 
         reports = [
@@ -86,9 +86,9 @@ class ReportsModule(QWidget):
         t.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         t.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.12);}
-            QTableWidget::item:hover{background:rgba(124,58,237,0.08);}
-            QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
+            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.12);}
+            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.08);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
         """)
         return t
 
