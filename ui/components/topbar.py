@@ -32,7 +32,7 @@ class TopBar(QWidget):
         # ── App Title (left) ──────────────────────────────────────────────────
         title_lbl = QLabel("FitLife")
         title_lbl.setStyleSheet(
-            "font-size: 20px; font-weight: bold; color: #7C3AED; letter-spacing: 1px;"
+            "font-size: 20px; font-weight: bold; color: #0066FF; letter-spacing: 1px;"
         )
         layout.addWidget(title_lbl)
 
@@ -50,13 +50,13 @@ class TopBar(QWidget):
         self.search_input.setStyleSheet("""
             QLineEdit {
                 background: rgba(255,255,255,0.07);
-                border: 1px solid rgba(124,58,237,0.3);
+                border: 1px solid rgba(0, 102, 255, 0.3);
                 border-radius: 18px;
                 padding: 0 16px;
                 color: #F0F4FF;
                 font-size: 14px;
             }
-            QLineEdit:focus { border: 1.5px solid #7C3AED; }
+            QLineEdit:focus { border: 1.5px solid #0066FF; }
         """)
         self._debounce = QTimer()
         self._debounce.setSingleShot(True)
@@ -90,7 +90,7 @@ class TopBar(QWidget):
         # ── Separator ─────────────────────────────────────────────────────────
         sep = QFrame()
         sep.setFrameShape(QFrame.Shape.VLine)
-        sep.setStyleSheet("color: rgba(124,58,237,0.3);")
+        sep.setStyleSheet("color: rgba(0, 102, 255, 0.3);")
         sep.setFixedHeight(28)
         layout.addWidget(sep)
 
@@ -100,7 +100,7 @@ class TopBar(QWidget):
         layout.addWidget(user_lbl)
 
         role_lbl = QLabel(f"({self._role})")
-        role_lbl.setStyleSheet("color: #7C3AED; font-size: 12px;")
+        role_lbl.setStyleSheet("color: #0066FF; font-size: 12px;")
         layout.addWidget(role_lbl)
 
         # ── Logout ────────────────────────────────────────────────────────────
