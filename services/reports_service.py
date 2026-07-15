@@ -130,7 +130,155 @@ def export_to_csv(headers: list, rows: list, file_path: str) -> dict:
             w = csv.writer(f)
             w.writerow(headers)
             w.writerows([[str(v) if v is not None else "" for v in row] for row in rows])
-        return {"success": True, "message": f"Exported {len(rows)} rows to {file_path}"}
+        return {"success": True, "message": f"Exported {len(rows)} rows to CSV successfully."}
     except Exception as e:
         logger.error(f"export_to_csv: {e}")
+        return {"success": False, "message": str(e)}
+
+
+def export_to_excel(title: str, headers: list, rows: list, file_path: str) -> dict:
+    try:
+        from openpyxl import Workbook
+        from openpyxl.styles import Font, PatternFill, Alignment, Border, Side
+        
+        wb = Workbook()
+        ws = wb.active
+        ws.title = "Report"
+        ws.views.sheetView[0].showGridLines = True
+        
+        title_font = Font(name="Segoe UI", size=16, bold=True, color="0066FF")
+        header_font = Font(name="Segoe UI", size=11, bold=True, color="FFFFFF")
+        data_font = Font(name="Segoe UI", size=10)
+        
+        header_fill = PatternFill(start_color="0066FF", end_color="0066FF", fill_type="solid")
+        zebra_fill = PatternFill(start_color="F4F6F9", end_color="F4F6F9", fill_type="solid")
+        
+        thin_side = Side(border_style="thin", color="D1D5DB")
+        border = Border(left=thin_side, right=thin_side, top=thin_side, bottom=thin_side)
+        
+        # Title banner
+        ws.append([title])
+        ws.cell(row=1, column=1).font = title_font
+        ws.row_dimensions[1].height = 30
+        ws.append([]) # Spacer row
+        
+        # Header Row
+        ws.append(headers)
+        header_row_idx = 3
+        ws.row_dimensions[header_row_idx].height = 24
+        for col_idx in range(1, len(headers) + 1):
+            cell = ws.cell(row=header_row_idx, column=col_idx)
+            cell.font = header_font
+            cell.fill = header_fill
+            cell.alignment = Alignment(horizontal="left", vertical="center")
+            cell.border = border
+            
+        # Data Rows
+        for row_idx, row in enumerate(rows, start=4):
+            ws.append([v if v is not None else "" for v in row])
+            ws.row_dimensions[row_idx].height = 20
+            is_zebra = (row_idx % 2 == 0)
+            for col_idx in range(1, len(headers) + 1):
+                cell = ws.cell(row=row_idx, column=col_idx)
+                cell.font = data_font
+                cell.border = border
+                cell.alignment = Alignment(horizontal="left", vertical="center")
+                if is_zebra:
+                    cell.fill = zebra_fill
+                    
+        # Auto-adjust column widths
+        for col in ws.columns:
+            max_len = 0
+            for cell in col:
+                if cell.row > 1 and cell.value:
+                    max_len = max(max_len, len(str(cell.value)))
+            col_letter = col[0].column_letter
+            ws.column_dimensions[col_letter].width = max(max_len + 4, 12)
+            
+        wb.save(file_path)
+        return {"success": True, "message": f"Exported {len(rows)} rows to Excel successfully."}
+    except Exception as e:
+        logger.error(f"export_to_excel: {e}")
+        return {"success": False, "message": str(e)}
+
+
+def export_to_pdf(title: str, headers: list, rows: list, file_path: str) -> dict:
+    try:
+        from reportlab.lib.pagesizes import letter, landscape
+        from reportlab.lib import colors
+        from reportlab.platypus import SimpleDocTemplate, Paragraph, Spacer, Table, TableStyle
+        from reportlab.lib.styles import getSampleStyleSheet, ParagraphStyle
+        
+        # Determine page layout orientation based on column density
+        page_size = landscape(letter) if len(headers) > 6 else letter
+        doc = SimpleDocTemplate(file_path, pagesize=page_size,
+                                rightMargin=36, leftMargin=36, topMargin=36, bottomMargin=36)
+        
+        styles = getSampleStyleSheet()
+        
+        title_style = ParagraphStyle(
+            name="TitleStyle",
+            parent=styles["Heading1"],
+            fontName="Helvetica-Bold",
+            fontSize=16,
+            textColor=colors.HexColor("#0066FF"),
+            spaceAfter=10
+        )
+        
+        meta_style = ParagraphStyle(
+            name="MetaStyle",
+            parent=styles["Normal"],
+            fontName="Helvetica",
+            fontSize=9,
+            textColor=colors.HexColor("#4B5563"),
+            spaceAfter=15
+        )
+        
+        cell_header_style = ParagraphStyle(
+            name="CellHeaderStyle",
+            parent=styles["Normal"],
+            fontName="Helvetica-Bold",
+            fontSize=8,
+            textColor=colors.white
+        )
+        
+        cell_data_style = ParagraphStyle(
+            name="CellDataStyle",
+            parent=styles["Normal"],
+            fontName="Helvetica",
+            fontSize=8,
+            textColor=colors.HexColor("#1F2937")
+        )
+        
+        story = []
+        story.append(Paragraph(title, title_style))
+        story.append(Paragraph(f"Generated: {date.today().strftime('%B %d, %Y')} — FitLife Management System", meta_style))
+        story.append(Spacer(1, 8))
+        
+        # Setup table wrapper lists
+        table_data = []
+        table_data.append([Paragraph(h, cell_header_style) for h in headers])
+        for r in rows:
+            table_data.append([Paragraph(str(v) if v is not None else "", cell_data_style) for v in r])
+            
+        page_w = page_size[0] - 72
+        col_w = page_w / len(headers)
+        
+        t = Table(table_data, colWidths=[col_w] * len(headers))
+        t_style = TableStyle([
+            ('BACKGROUND', (0,0), (-1,0), colors.HexColor("#0066FF")),
+            ('ALIGN', (0,0), (-1,-1), 'LEFT'),
+            ('VALIGN', (0,0), (-1,-1), 'MIDDLE'),
+            ('TOPPADDING', (0,0), (-1,-1), 5),
+            ('BOTTOMPADDING', (0,0), (-1,-1), 5),
+            ('ROWBACKGROUNDS', (0,1), (-1,-1), [colors.white, colors.HexColor("#F9FAFB")]),
+            ('GRID', (0,0), (-1,-1), 0.5, colors.HexColor("#E5E7EB")),
+        ])
+        t.setStyle(t_style)
+        story.append(t)
+        
+        doc.build(story)
+        return {"success": True, "message": f"Exported {len(rows)} rows to PDF successfully."}
+    except Exception as e:
+        logger.error(f"export_to_pdf: {e}")
         return {"success": False, "message": str(e)}
