@@ -81,14 +81,14 @@ class _StaffList(QWidget):
         m.addLayout(hdr)
 
         kr = QHBoxLayout(); kr.setSpacing(14)
-        self._k_total    = KPICard("Total Staff","—","👥","","#7C3AED")
+        self._k_total    = KPICard("Total Staff","—","👥","","#0066FF")
         self._k_active   = KPICard("Active","—","✅","","#00E676")
         self._k_inactive = KPICard("Inactive","—","🔴","","#FF2D78")
         for k in [self._k_total,self._k_active,self._k_inactive]: kr.addWidget(k)
         kr.addStretch(); m.addLayout(kr)
 
         # Filters
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Role:"))
         self._rf = QComboBox(); self._rf.setFixedHeight(34)
@@ -110,7 +110,7 @@ class _StaffList(QWidget):
 
         cols = ["ID","Username","Full Name","Email","Phone","Role","Branch","Status","Last Login","Actions"]
         self.table = DataTable(cols)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         QVBoxLayout(tc).addWidget(self.table); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -143,7 +143,7 @@ class _StaffList(QWidget):
             uid, is_active = s[0], s[7]
             cell = QWidget(); bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
             if self._session.role == ROLE_ADMIN:
-                eb = QPushButton("✏️ Edit"); eb.setStyleSheet(_pill("",c:="#7C3AED"))
+                eb = QPushButton("✏️ Edit"); eb.setStyleSheet(_pill("",c:="#0066FF"))
                 eb.clicked.connect(lambda _, i=uid: self.open_edit.emit(i)); bl.addWidget(eb)
                 tb = QPushButton("🔒 Deactivate" if is_active else "✅ Activate")
                 tb.setStyleSheet(_pill("",c:="#FF2D78" if is_active else "#00E676"))
@@ -194,7 +194,7 @@ class _StaffForm(QWidget):
         sv.clicked.connect(self._save); hdr.addWidget(sv)
         m.addLayout(hdr)
 
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         g = QGridLayout(card); g.setContentsMargins(28,24,28,28); g.setSpacing(14)
         g.setColumnStretch(1,1); g.setColumnStretch(3,1)
 
@@ -296,7 +296,7 @@ class _ResetPasswordDialog(QDialog):
         cancel = QPushButton("Cancel"); cancel.setFixedHeight(36); cancel.clicked.connect(self.reject)
         brow.addWidget(cancel)
         save = QPushButton("✅ Reset Password")
-        save.setStyleSheet("QPushButton{background:#7C3AED;border:none;border-radius:10px;color:#fff;font-size:14px;padding:0 20px;}QPushButton:hover{background:#8B5CF6;}")
+        save.setStyleSheet("QPushButton{background:#0066FF;border:none;border-radius:10px;color:#fff;font-size:14px;padding:0 20px;}QPushButton:hover{background:#3B82F6;}")
         save.setFixedHeight(36); save.clicked.connect(self._save); brow.addWidget(save)
         layout.addLayout(brow)
 
