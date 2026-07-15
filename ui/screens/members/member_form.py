@@ -56,13 +56,13 @@ class MemberForm(QWidget):
 
     def _err_label(self) -> QLabel:
         lbl = QLabel("")
-        lbl.setStyleSheet("color:#FF2D78; font-size: 13px; margin-top:-6px;")
+        lbl.setStyleSheet("QWidget { color:#FF2D78; font-size: 13px; margin-top:-6px; }")
         return lbl
 
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
 
         container = QWidget()
         container.setStyleSheet("background:transparent;")
@@ -81,7 +81,7 @@ class MemberForm(QWidget):
 
         title_text = "Edit Member" if self._is_edit else "Add New Member"
         title = QLabel(f"{'✏️' if self._is_edit else '➕'}  {title_text}")
-        title.setStyleSheet("font-size:24px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:24px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title)
         hdr.addStretch()
 
@@ -112,7 +112,7 @@ class MemberForm(QWidget):
         r = 0
         # Section: Personal Info
         sec1 = QLabel("Personal Information")
-        sec1.setStyleSheet("font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px;")
+        sec1.setStyleSheet("QWidget { font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px; }")
         grid.addWidget(sec1, r, 0, 1, 4)
         r += 1
 
@@ -166,7 +166,7 @@ class MemberForm(QWidget):
 
         # Section: Physical Info
         sec2 = QLabel("Physical Information")
-        sec2.setStyleSheet("font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px;")
+        sec2.setStyleSheet("QWidget { font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px; }")
         grid.addWidget(sec2, r, 0, 1, 4)
         r += 1
 
@@ -193,7 +193,7 @@ class MemberForm(QWidget):
 
         # BMI display
         self.bmi_lbl = QLabel("BMI: — (auto-calculated)")
-        self.bmi_lbl.setStyleSheet("color:#00F5FF; font-size:13px; font-weight:600;")
+        self.bmi_lbl.setStyleSheet("QWidget { color:#00F5FF; font-size:13px; font-weight:600; }")
         grid.addWidget(self.bmi_lbl, r, 1, 1, 3)
         r += 1
 
@@ -213,7 +213,7 @@ class MemberForm(QWidget):
 
         # Section: Gym Assignment
         sec3 = QLabel("Gym Assignment")
-        sec3.setStyleSheet("font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px;")
+        sec3.setStyleSheet("QWidget { font-size:15px; font-weight:bold; color:#0066FF; margin-top:8px; }")
         grid.addWidget(sec3, r, 0, 1, 4)
         r += 1
 
@@ -270,7 +270,7 @@ class MemberForm(QWidget):
         r += 1
 
         self.expiry_note = QLabel("🔄 Expiry auto-calculates when a plan is selected.")
-        self.expiry_note.setStyleSheet("color:#6B7280; font-size: 13px;")
+        self.expiry_note.setStyleSheet("QWidget { color:#6B7280; font-size: 13px; }")
         grid.addWidget(self.expiry_note, r, 2, 1, 2)
         r += 1
 
@@ -330,10 +330,10 @@ class MemberForm(QWidget):
             exp = calculate_expiry(start, duration_days)
             self.expiry_date.setDate(QDate(exp.year, exp.month, exp.day))
             self.expiry_note.setText(f"✅ Expiry auto-set: {exp.strftime('%d %b %Y')} ({duration_days} days)")
-            self.expiry_note.setStyleSheet("color:#00E676; font-size: 13px;")
+            self.expiry_note.setStyleSheet("QWidget { color:#00E676; font-size: 13px; }")
         else:
             self.expiry_note.setText("🔄 Expiry auto-calculates when a plan is selected.")
-            self.expiry_note.setStyleSheet("color:#6B7280; font-size: 13px;")
+            self.expiry_note.setStyleSheet("QWidget { color:#6B7280; font-size: 13px; }")
 
     def _update_bmi(self):
         try:
@@ -414,7 +414,7 @@ class MemberForm(QWidget):
 
         if not self.full_name.text().strip():
             self._err_fn.setText("Full name is required.")
-            self.full_name.setStyleSheet("border: 1.5px solid #FF2D78;")
+            self.full_name.setStyleSheet("QWidget { border: 1.5px solid #FF2D78; }")
             valid = False
         else:
             self.full_name.setStyleSheet("")
@@ -422,7 +422,7 @@ class MemberForm(QWidget):
         cnic = self.cnic.text().strip()
         if not cnic or not cnic.isdigit() or len(cnic) != 13:
             self._err_cnic.setText("CNIC must be exactly 13 digits.")
-            self.cnic.setStyleSheet("border: 1.5px solid #FF2D78;")
+            self.cnic.setStyleSheet("QWidget { border: 1.5px solid #FF2D78; }")
             valid = False
         else:
             self.cnic.setStyleSheet("")
