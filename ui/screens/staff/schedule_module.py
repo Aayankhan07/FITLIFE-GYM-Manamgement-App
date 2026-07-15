@@ -83,7 +83,7 @@ class _ScheduleList(QWidget):
 
         # KPIs
         kr = QHBoxLayout(); kr.setSpacing(14)
-        self._k_total  = KPICard("Total Slots","—","📋","","#7C3AED")
+        self._k_total  = KPICard("Total Slots","—","📋","","#0066FF")
         self._k_booked = KPICard("Booked","—","✅","","#00E676")
         self._k_avail  = KPICard("Available","—","🕐","","#00F5FF")
         self._k_done   = KPICard("Completed","—","🏆","","#FFB800")
@@ -91,7 +91,7 @@ class _ScheduleList(QWidget):
         m.addLayout(kr)
 
         # Date + status filters
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Date:"))
         self._date = QDateEdit(); self._date.setCalendarPopup(True)
@@ -123,7 +123,7 @@ class _ScheduleList(QWidget):
 
         cols = ["ID","Trainer","Member","Date","Start","End","Type","Status","Notes","Actions"]
         self.table = DataTable(cols)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         QVBoxLayout(tc).addWidget(self.table); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -167,7 +167,7 @@ class _ScheduleList(QWidget):
             cell = QWidget(); bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
 
             if role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
-                eb = QPushButton("✏️"); eb.setStyleSheet(_P("#7C3AED")); eb.setFixedWidth(32)
+                eb = QPushButton("✏️"); eb.setStyleSheet(_P("#0066FF")); eb.setFixedWidth(32)
                 eb.clicked.connect(lambda _, i=sid: self.open_edit.emit(i)); bl.addWidget(eb)
 
             if status in ("Available","Booked") and role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
@@ -224,7 +224,7 @@ class _SlotForm(QWidget):
         sv.clicked.connect(self._save); hdr.addWidget(sv)
         m.addLayout(hdr)
 
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         g = QGridLayout(card); g.setContentsMargins(28,24,28,28); g.setSpacing(14)
         g.setColumnStretch(1,1); g.setColumnStretch(3,1)
 
