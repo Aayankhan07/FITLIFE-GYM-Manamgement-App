@@ -82,12 +82,12 @@ class _DietList(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("🥗  Diet Plans"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("🥗  Diet Plans"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             b = QPushButton("➕ New Plan"); b.setObjectName("btnPrimary"); b.setMinimumHeight(40)
@@ -101,7 +101,7 @@ class _DietList(QWidget):
         for k in [self._k_total, self._k_active, self._k_pending]: krow.addWidget(k)
         krow.addStretch(); m.addLayout(krow)
 
-        ff = QFrame(); ff.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
+        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Status:"))
         self._sf = QComboBox(); self._sf.setFixedHeight(34); self._sf.addItem("All",None)
@@ -117,7 +117,7 @@ class _DietList(QWidget):
         self.table.row_double_clicked.connect(
             lambda r: self.open_detail.emit(self.table._filtered_data[r][0])
             if r < len(self.table._filtered_data) else None)
-        tc = QFrame(); tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
+        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         QVBoxLayout(tc).addWidget(self.table)
         m.addWidget(tc)
 
@@ -181,7 +181,7 @@ class _DietDetail(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
@@ -193,11 +193,11 @@ class _DietDetail(QWidget):
             edit.clicked.connect(lambda: self.go_edit.emit(self._plan_id)); hdr.addWidget(edit)
         m.addLayout(hdr)
 
-        hc = QFrame(); hc.setStyleSheet("background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px;")
+        hc = QFrame(); hc.setStyleSheet("QFrame { background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px; }")
         hl = QHBoxLayout(hc); hl.setContentsMargins(24,18,24,18); hl.setSpacing(20)
         iv = QVBoxLayout(); iv.setSpacing(4)
-        self._title = QLabel("—"); self._title.setStyleSheet("font-size:20px;font-weight:900;color:#F0F4FF;")
-        self._sub   = QLabel("—"); self._sub.setStyleSheet("font-size:13px;color:#9CA3AF;")
+        self._title = QLabel("—"); self._title.setStyleSheet("QWidget { font-size:20px;font-weight:900;color:#F0F4FF; }")
+        self._sub   = QLabel("—"); self._sub.setStyleSheet("QWidget { font-size:13px;color:#9CA3AF; }")
         self._badge = StatusBadge("Draft")
         for w in [self._title, self._sub, self._badge]: iv.addWidget(w)
         hl.addLayout(iv); hl.addStretch()
@@ -211,7 +211,7 @@ class _DietDetail(QWidget):
 
         # Add meal row
         if self._session.role in (ROLE_ADMIN,ROLE_MANAGER,ROLE_TRAINER):
-            af = QFrame(); af.setStyleSheet("background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.2);border-radius:12px;")
+            af = QFrame(); af.setStyleSheet("QWidget { background:rgba(0,230,118,0.05);border:1px solid rgba(0,230,118,0.2);border-radius:12px; }")
             ag = QGridLayout(af); ag.setContentsMargins(16,12,16,12); ag.setSpacing(10)
             self._meal_type = QComboBox(); self._meal_type.setMinimumHeight(36)
             for mt in MEAL_TYPES: self._meal_type.addItem(mt,mt)
@@ -285,11 +285,11 @@ class _DietForm(QWidget):
         if self._is_edit: self._load()
 
     def _inp(self, ph=""): f=QLineEdit(); f.setPlaceholderText(ph); f.setMinimumHeight(38); return f
-    def _lbl(self, t): l=QLabel(t); l.setStyleSheet("color:#9CA3AF;font-size:13px;"); return l
+    def _lbl(self, t): l=QLabel(t); l.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); return l
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
@@ -301,7 +301,7 @@ class _DietForm(QWidget):
         sv.clicked.connect(self._save); hdr.addWidget(sv)
         m.addLayout(hdr)
 
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
+        card = QFrame(); card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px; }")
         g = QGridLayout(card); g.setContentsMargins(28,24,28,28); g.setSpacing(14)
         g.setColumnStretch(1,1); g.setColumnStretch(3,1)
 
