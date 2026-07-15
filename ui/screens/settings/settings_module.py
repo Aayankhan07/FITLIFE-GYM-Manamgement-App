@@ -31,12 +31,12 @@ class SettingsModule(QWidget):
 
     def _build_ui(self):
         scroll = QScrollArea(self); scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none;background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none;background:transparent; }")
         c = QWidget(); c.setStyleSheet("background:transparent;")
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("⚙️  Settings"); t.setStyleSheet("font-size:26px;font-weight:900;color:#F0F4FF;")
+        t = QLabel("⚙️  Settings"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         tabs = QTabWidget(); tabs.setStyleSheet("""
@@ -59,7 +59,8 @@ class SettingsModule(QWidget):
         lay = QVBoxLayout(w); lay.setContentsMargins(20,20,20,20); lay.setSpacing(20)
         lay.addWidget(SectionHeader("👤  My Profile"))
 
-        info_card = QFrame(); info_card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        info_card = QFrame(); info_card.setObjectName("infoCard")
+        info_card.setStyleSheet("QFrame#infoCard { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         ig = QGridLayout(info_card); ig.setContentsMargins(24,20,24,20); ig.setSpacing(12)
         ig.setColumnStretch(1,1); ig.setColumnStretch(3,1)
 
@@ -70,7 +71,8 @@ class SettingsModule(QWidget):
         lay.addWidget(info_card)
 
         lay.addWidget(SectionHeader("🔑  Change Password"))
-        pw_card = QFrame(); pw_card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        pw_card = QFrame(); pw_card.setObjectName("pwCard")
+        pw_card.setStyleSheet("QFrame#pwCard { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         pg = QGridLayout(pw_card); pg.setContentsMargins(24,20,24,20); pg.setSpacing(12)
         pg.setColumnStretch(1,1)
 
@@ -101,7 +103,8 @@ class SettingsModule(QWidget):
         lay.addWidget(SectionHeader("🔔  Notification Preferences"))
 
         ns = svc.get_notification_settings(self._session.user_id)
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        card = QFrame(); card.setObjectName("notifCard")
+        card.setStyleSheet("QFrame#notifCard { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         g = QGridLayout(card); g.setContentsMargins(24,20,24,20); g.setSpacing(14)
         g.setColumnStretch(1,1)
 
@@ -130,7 +133,8 @@ class SettingsModule(QWidget):
         lay.addWidget(SectionHeader("🛠  System Configuration"))
 
         all_s = svc.get_all_settings()
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        card = QFrame(); card.setObjectName("systemCard")
+        card.setStyleSheet("QFrame#systemCard { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         g = QGridLayout(card); g.setContentsMargins(24,20,24,20); g.setSpacing(14)
         g.setColumnStretch(1,1)
 
@@ -170,11 +174,12 @@ class SettingsModule(QWidget):
 
         desc = QLabel("Configure your API key below to unlock intelligent responses, automatic diet plan generation, and personalized workout programs in the Smart Ask module.")
         desc.setWordWrap(True)
-        desc.setStyleSheet("color:#9CA3AF;font-size:13px;")
+        desc.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }")
         lay.addWidget(desc)
 
         ai_s = svc.get_ai_settings()
-        card = QFrame(); card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;")
+        card = QFrame(); card.setObjectName("aiCard")
+        card.setStyleSheet("QFrame#aiCard { background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         g = QGridLayout(card); g.setContentsMargins(24,20,24,20); g.setSpacing(14)
         g.setColumnStretch(1,1)
 
@@ -202,7 +207,7 @@ class SettingsModule(QWidget):
         rb.clicked.connect(self._load_alerts); hdr.addWidget(rb); lay.addLayout(hdr)
 
         self._alerts_area = QTextEdit(); self._alerts_area.setReadOnly(True)
-        self._alerts_area.setStyleSheet("background:rgba(0,0,0,0.2);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;color:#F0F4FF;font-size:13px;padding:12px;")
+        self._alerts_area.setStyleSheet("QTextEdit { background:rgba(0,0,0,0.2);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;color:#F0F4FF;font-size:13px;padding:12px; }")
         self._alerts_area.setMinimumHeight(300)
         lay.addWidget(self._alerts_area); lay.addStretch()
         self._load_alerts(); return w
