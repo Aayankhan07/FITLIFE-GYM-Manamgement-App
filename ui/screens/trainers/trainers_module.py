@@ -37,7 +37,7 @@ class TrainersScreen(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget()
         container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
@@ -46,7 +46,7 @@ class TrainersScreen(QWidget):
 
         hdr = QHBoxLayout()
         title = QLabel("💪  Trainers Management")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#F0F4FF;")
+        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title)
         hdr.addStretch()
         self.add_btn = QPushButton("➕  Add Trainer")
@@ -69,7 +69,7 @@ class TrainersScreen(QWidget):
 
         # Filter bar
         fbar = QFrame()
-        fbar.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:12px;")
+        fbar.setStyleSheet("QFrame { background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:12px; }")
         fr = QHBoxLayout(fbar)
         fr.setContentsMargins(16, 10, 16, 10)
         fr.setSpacing(12)
@@ -98,7 +98,7 @@ class TrainersScreen(QWidget):
         self.table = DataTable(cols)
         self.table.row_double_clicked.connect(self._on_double_click)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px;")
+        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px; }")
         tc_l = QVBoxLayout(tc)
         tc_l.setContentsMargins(16, 16, 16, 16)
         tc_l.addWidget(self.table)
@@ -212,7 +212,7 @@ class TrainerForm(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28, 24, 28, 28)
@@ -230,7 +230,7 @@ class TrainerForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.25); border-radius:16px;")
+        card.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.25); border-radius:16px; }")
         grid = QGridLayout(card)
         grid.setContentsMargins(28, 24, 28, 28)
         grid.setSpacing(14)
@@ -374,7 +374,7 @@ class TrainerProfile(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("border:none; background:transparent;")
+        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
         main.setContentsMargins(28, 24, 28, 28); main.setSpacing(20)
@@ -389,13 +389,13 @@ class TrainerProfile(QWidget):
 
         # Header card
         hc = QFrame()
-        hc.setStyleSheet("background:rgba(0, 102, 255, 0.1); border:1px solid rgba(0, 102, 255, 0.4); border-radius:16px;")
+        hc.setStyleSheet("QFrame { background:rgba(0, 102, 255, 0.1); border:1px solid rgba(0, 102, 255, 0.4); border-radius:16px; }")
         hcl = QHBoxLayout(hc); hcl.setContentsMargins(24, 20, 24, 20); hcl.setSpacing(20)
-        self.avatar = QLabel("💪"); self.avatar.setStyleSheet("font-size:60px;"); self.avatar.setFixedWidth(80)
+        self.avatar = QLabel("💪"); self.avatar.setStyleSheet("QWidget { font-size:60px; }"); self.avatar.setFixedWidth(80)
         hcl.addWidget(self.avatar)
         info = QVBoxLayout(); info.setSpacing(4)
-        self.name_lbl = QLabel("—"); self.name_lbl.setStyleSheet("font-size:22px;font-weight:900;color:#F0F4FF;")
-        self.sub_lbl  = QLabel("—"); self.sub_lbl.setStyleSheet("font-size:14px;color:#9CA3AF;")
+        self.name_lbl = QLabel("—"); self.name_lbl.setStyleSheet("QWidget { font-size:22px;font-weight:900;color:#F0F4FF; }")
+        self.sub_lbl  = QLabel("—"); self.sub_lbl.setStyleSheet("QWidget { font-size:14px;color:#9CA3AF; }")
         self.stat_badge = StatusBadge("Active")
         for w in [self.name_lbl, self.sub_lbl, self.stat_badge]: info.addWidget(w)
         hcl.addLayout(info); hcl.addStretch()
@@ -408,7 +408,7 @@ class TrainerProfile(QWidget):
 
         # Assigned members table
         sec = QLabel("👥  Assigned Members")
-        sec.setStyleSheet("font-size:16px;font-weight:bold;color:#F0F4FF;")
+        sec.setStyleSheet("QWidget { font-size:16px;font-weight:bold;color:#F0F4FF; }")
         main.addWidget(sec)
         self.members_table = QTableWidget()
         self.members_table.setColumnCount(5)
