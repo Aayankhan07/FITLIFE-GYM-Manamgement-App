@@ -60,7 +60,7 @@ class TrainersScreen(QWidget):
         # KPIs
         kpi_row = QHBoxLayout()
         kpi_row.setSpacing(14)
-        self._kpi_total  = KPICard("Total Trainers",  "—", "💪", "", "#7C3AED")
+        self._kpi_total  = KPICard("Total Trainers",  "—", "💪", "", "#0066FF")
         self._kpi_salary = KPICard("Avg Salary",      "—", "💰", "", "#00E676")
         for k in [self._kpi_total, self._kpi_salary]:
             kpi_row.addWidget(k)
@@ -69,7 +69,7 @@ class TrainersScreen(QWidget):
 
         # Filter bar
         fbar = QFrame()
-        fbar.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(124,58,237,0.2); border-radius:12px;")
+        fbar.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:12px;")
         fr = QHBoxLayout(fbar)
         fr.setContentsMargins(16, 10, 16, 10)
         fr.setSpacing(12)
@@ -98,7 +98,7 @@ class TrainersScreen(QWidget):
         self.table = DataTable(cols)
         self.table.row_double_clicked.connect(self._on_double_click)
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(124,58,237,0.2); border-radius:16px;")
+        tc.setStyleSheet("background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px;")
         tc_l = QVBoxLayout(tc)
         tc_l.setContentsMargins(16, 16, 16, 16)
         tc_l.addWidget(self.table)
@@ -151,7 +151,7 @@ class TrainersScreen(QWidget):
             bl.setSpacing(4)
             for label, color, signal in [
                 ("👁 View", "#00F5FF", lambda _, i=tid: self.open_profile.emit(i)),
-                ("✏️ Edit", "#7C3AED", lambda _, i=tid: self.open_edit_form.emit(i)),
+                ("✏️ Edit", "#0066FF", lambda _, i=tid: self.open_edit_form.emit(i)),
                 ("🗑 Del",  "#FF2D78", lambda _, i=tid, n=t[1]: self._confirm_delete(i, n)),
             ]:
                 btn = QPushButton(label)
@@ -230,7 +230,7 @@ class TrainerForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(124,58,237,0.25); border-radius:16px;")
+        card.setStyleSheet("background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.25); border-radius:16px;")
         grid = QGridLayout(card)
         grid.setContentsMargins(28, 24, 28, 28)
         grid.setSpacing(14)
@@ -389,7 +389,7 @@ class TrainerProfile(QWidget):
 
         # Header card
         hc = QFrame()
-        hc.setStyleSheet("background:rgba(124,58,237,0.1); border:1px solid rgba(124,58,237,0.4); border-radius:16px;")
+        hc.setStyleSheet("background:rgba(0, 102, 255, 0.1); border:1px solid rgba(0, 102, 255, 0.4); border-radius:16px;")
         hcl = QHBoxLayout(hc); hcl.setContentsMargins(24, 20, 24, 20); hcl.setSpacing(20)
         self.avatar = QLabel("💪"); self.avatar.setStyleSheet("font-size:60px;"); self.avatar.setFixedWidth(80)
         hcl.addWidget(self.avatar)
@@ -401,7 +401,7 @@ class TrainerProfile(QWidget):
         hcl.addLayout(info); hcl.addStretch()
         krow = QHBoxLayout()
         self.kpi_salary  = KPICard("Salary",    "—", "💰","","#00E676")
-        self.kpi_members = KPICard("Members",   "—", "👥","","#7C3AED")
+        self.kpi_members = KPICard("Members",   "—", "👥","","#0066FF")
         for k in [self.kpi_salary, self.kpi_members]:
             k.setFixedWidth(160); krow.addWidget(k)
         hcl.addLayout(krow); main.addWidget(hc)
@@ -417,10 +417,10 @@ class TrainerProfile(QWidget):
         self.members_table.horizontalHeader().setStretchLastSection(True)
         self.members_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.members_table.setStyleSheet("""
-            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);
+            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
             border-radius:12px;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.15);}
-            QHeaderView::section{background:rgba(124,58,237,0.2);color:#00F5FF;
+            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
         main.addWidget(self.members_table)
