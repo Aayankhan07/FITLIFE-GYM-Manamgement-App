@@ -26,12 +26,12 @@ class GradientBackground(QWidget):
         g = QLinearGradient(0, 0, self.width(), self.height())
         if ThemeManager.current_theme() == "dark":
             g.setColorAt(0.0, QColor(10, 14, 42))
-            g.setColorAt(0.5, QColor(26, 16, 64))
+            g.setColorAt(0.5, QColor(13, 27, 64))
             g.setColorAt(1.0, QColor(13, 27, 42))
         else:
-            g.setColorAt(0.0, QColor(248, 240, 255))
+            g.setColorAt(0.0, QColor(240, 246, 255))
             g.setColorAt(0.5, QColor(232, 244, 255))
-            g.setColorAt(1.0, QColor(255, 240, 248))
+            g.setColorAt(1.0, QColor(230, 242, 255))
         painter.fillRect(self.rect(), QBrush(g))
 
 
