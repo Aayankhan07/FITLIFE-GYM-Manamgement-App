@@ -77,7 +77,7 @@ class FinanceCenterModule(QWidget):
     def _style_tabs(self):
         active_style = """
             QPushButton {
-                background: rgba(124,58,237,0.2); border: 1px solid #7C3AED;
+                background: rgba(0, 102, 255, 0.2); border: 1px solid #0066FF;
                 border-radius: 10px; color: #FFFFFF; font-weight: bold; padding: 0 20px;
             }
         """
