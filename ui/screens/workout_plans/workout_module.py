@@ -59,7 +59,7 @@ class WorkoutPlansScreen(QWidget):
 
         # KPIs
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_total   = KPICard("Total Plans", "—","📋","","#7C3AED")
+        self._kpi_total   = KPICard("Total Plans", "—","📋","","#0066FF")
         self._kpi_active  = KPICard("Active",      "—","✅","","#00E676")
         self._kpi_pending = KPICard("Pending",     "—","⏳","","#FFB800")
         self._kpi_approved= KPICard("Approved",    "—","🏆","","#00F5FF")
@@ -69,7 +69,7 @@ class WorkoutPlansScreen(QWidget):
 
         # Status filter
         fbar = QFrame()
-        fbar.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        fbar.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Status:"))
         self.status_filter = QComboBox(); self.status_filter.setFixedHeight(34)
@@ -89,7 +89,7 @@ class WorkoutPlansScreen(QWidget):
             if r < len(self.table._filtered_data) else None
         )
         tc = QFrame()
-        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:16px;")
+        tc.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -153,7 +153,7 @@ class WorkoutPlansScreen(QWidget):
             if role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
                 edit_btn = QPushButton("✏️ Edit")
                 edit_btn.setFixedHeight(32)
-                edit_btn.setStyleSheet("QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #7C3AED,stop:1 #5B21B6);border:none;border-radius:6px;color:#FFFFFF;font-weight:600;font-size: 13px;padding:0 8px;}QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #8B5CF6,stop:1 #7C3AED);}")
+                edit_btn.setStyleSheet("QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #0066FF,stop:1 #004BCC);border:none;border-radius:6px;color:#FFFFFF;font-weight:600;font-size: 13px;padding:0 8px;}QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #3B82F6,stop:1 #0066FF);}")
                 edit_btn.clicked.connect(lambda _, i=pid: self.open_edit.emit(i))
                 bl.addWidget(edit_btn)
 
@@ -211,7 +211,7 @@ class WorkoutPlanDetail(QWidget):
 
         # Header card
         hc = QFrame()
-        hc.setStyleSheet("background:rgba(124,58,237,0.1);border:1px solid rgba(124,58,237,0.4);border-radius:16px;")
+        hc.setStyleSheet("background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px;")
         hcl = QHBoxLayout(hc); hcl.setContentsMargins(24,20,24,20); hcl.setSpacing(20)
         info = QVBoxLayout(); info.setSpacing(6)
         self.title_lbl = QLabel("—")
@@ -221,7 +221,7 @@ class WorkoutPlanDetail(QWidget):
         for w in [self.title_lbl, self.sub_lbl, self.status_badge]: info.addWidget(w)
         hcl.addLayout(info); hcl.addStretch()
         krow = QHBoxLayout()
-        self.kpi_weeks = KPICard("Weeks","—","📅","","#7C3AED")
+        self.kpi_weeks = KPICard("Weeks","—","📅","","#0066FF")
         self.kpi_exercises = KPICard("Exercises","—","💪","","#00F5FF")
         for k in [self.kpi_weeks, self.kpi_exercises]: k.setFixedWidth(160); krow.addWidget(k)
         hcl.addLayout(krow); main.addWidget(hc)
@@ -275,12 +275,12 @@ class WorkoutPlanDetail(QWidget):
         self.ex_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.ex_table.setAlternatingRowColors(True)
         self.ex_table.setStyleSheet("""
-            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);
-            border-radius:12px;color:#F0F4FF;gridline-color:rgba(124,58,237,0.1);}
-            QTableWidget::item{padding:10px 8px;border-bottom:1px solid rgba(124,58,237,0.1);}
-            QTableWidget::item:alternate{background:rgba(124,58,237,0.05);}
-            QTableWidget::item:selected{background:rgba(124,58,237,0.25);}
-            QHeaderView::section{background:rgba(124,58,237,0.25);color:#00F5FF;
+            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
+            border-radius:12px;color:#F0F4FF;gridline-color:rgba(0, 102, 255, 0.1);}
+            QTableWidget::item{padding:10px 8px;border-bottom:1px solid rgba(0, 102, 255, 0.1);}
+            QTableWidget::item:alternate{background:rgba(0, 102, 255, 0.05);}
+            QTableWidget::item:selected{background:rgba(0, 102, 255, 0.25);}
+            QHeaderView::section{background:rgba(0, 102, 255, 0.25);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;font-size:13px;}
         """)
         main.addWidget(self.ex_table)
@@ -407,7 +407,7 @@ class WorkoutPlanForm(QWidget):
         main.addLayout(hdr)
 
         card = QFrame()
-        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(124,58,237,0.25);border-radius:16px;")
+        card.setStyleSheet("background:rgba(255,255,255,0.05);border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;")
         grid = QGridLayout(card); grid.setContentsMargins(28,24,28,28); grid.setSpacing(14)
         grid.setColumnStretch(1,1); grid.setColumnStretch(3,1); r=0
 
