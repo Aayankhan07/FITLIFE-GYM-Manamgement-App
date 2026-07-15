@@ -18,7 +18,7 @@ class NotificationItem(QFrame):
             "success": "#00E676",
             "warning": "#FFB800",
             "error":   "#FF2D78",
-            "alert":   "#7C3AED",
+            "alert":   "#0066FF",
         }
         color = colors.get(notif_type, "#3B82F6")
 
@@ -62,7 +62,7 @@ class NotificationPanel(QWidget):
         self.setStyleSheet("""
             QWidget#notifPanel {
                 background: rgba(20, 20, 40, 0.96);
-                border: 1px solid rgba(124,58,237,0.4);
+                border: 1px solid rgba(0, 102, 255, 0.4);
                 border-radius: 14px;
             }
         """)
@@ -92,7 +92,7 @@ class NotificationPanel(QWidget):
 
         read_btn = QPushButton("Mark All Read")
         read_btn.setStyleSheet(
-            "QPushButton{background:transparent;color:#7C3AED;border:none;font-size:11px;}"
+            "QPushButton{background:transparent;color:#0066FF;border:none;font-size:11px;}"
             "QPushButton:hover{color:#9B59B6;}"
         )
         read_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -103,7 +103,7 @@ class NotificationPanel(QWidget):
         # Divider
         div = QFrame()
         div.setFrameShape(QFrame.Shape.HLine)
-        div.setStyleSheet("color: rgba(124,58,237,0.3);")
+        div.setStyleSheet("color: rgba(0, 102, 255, 0.3);")
         layout.addWidget(div)
 
         # Scroll area for notification items
