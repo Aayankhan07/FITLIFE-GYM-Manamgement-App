@@ -57,7 +57,7 @@ class BillingScreen(QWidget):
         krow = QHBoxLayout(); krow.setSpacing(14)
         self._kpi_collected  = KPICard("Collected (Month)", "—", "💰","","#00E676")
         self._kpi_pending    = KPICard("Pending",           "—", "⚠️","","#FFB800")
-        self._kpi_paid_count = KPICard("Paid Invoices",     "—", "✅","","#7C3AED")
+        self._kpi_paid_count = KPICard("Paid Invoices",     "—", "✅","","#0066FF")
         self._kpi_overdue    = KPICard("Overdue",           "—", "🔴","","#FF2D78")
         for k in [self._kpi_collected, self._kpi_pending, self._kpi_paid_count, self._kpi_overdue]:
             krow.addWidget(k)
@@ -65,7 +65,7 @@ class BillingScreen(QWidget):
 
         # ── Month Filter ──────────────────────────────────────────────────────
         filter_frame = QFrame()
-        filter_frame.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(124,58,237,0.2);border-radius:12px;")
+        filter_frame.setStyleSheet("background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;")
         fr = QHBoxLayout(filter_frame)
         fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
 
@@ -107,10 +107,10 @@ class BillingScreen(QWidget):
         self.tabs = QTabWidget()
         self.tabs.setStyleSheet("""
             QTabWidget::pane{background:rgba(255,255,255,0.04);
-            border:1px solid rgba(124,58,237,0.2);border-radius:12px;}
+            border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;}
             QTabBar::tab{background:transparent;color:#9CA3AF;padding:10px 20px;
             border:none;border-bottom:2px solid transparent;}
-            QTabBar::tab:selected{color:#7C3AED;border-bottom:2px solid #7C3AED;font-weight:bold;}
+            QTabBar::tab:selected{color:#0066FF;border-bottom:2px solid #0066FF;font-weight:bold;}
         """)
 
         # Tab 1: Payment history
@@ -134,7 +134,7 @@ class BillingScreen(QWidget):
         self.unpaid_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.unpaid_table.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(124,58,237,0.15);}
+            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
             QHeaderView::section{background:rgba(255,45,120,0.2);color:#FF2D78;
             padding:10px;border:none;font-weight:bold;}
         """)
@@ -415,7 +415,7 @@ class InvoiceDialog(QWidget):
             return
 
         title = QLabel("🧾  INVOICE")
-        title.setStyleSheet("font-size:26px; font-weight:900; color:#7C3AED; text-align:center;")
+        title.setStyleSheet("font-size:26px; font-weight:900; color:#0066FF; text-align:center;")
         title.setAlignment(Qt.AlignmentFlag.AlignCenter)
         layout.addWidget(title)
 
@@ -425,7 +425,7 @@ class InvoiceDialog(QWidget):
         layout.addWidget(inv_num)
 
         line = QFrame(); line.setFrameShape(QFrame.Shape.HLine)
-        line.setStyleSheet("background:rgba(124,58,237,0.4);"); layout.addWidget(line)
+        line.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(line)
 
         def row(label, val):
             h = QHBoxLayout()
@@ -447,7 +447,7 @@ class InvoiceDialog(QWidget):
         if p[13]: row("Notes:", p[13])
 
         line2 = QFrame(); line2.setFrameShape(QFrame.Shape.HLine)
-        line2.setStyleSheet("background:rgba(124,58,237,0.4);"); layout.addWidget(line2)
+        line2.setStyleSheet("background:rgba(0, 102, 255, 0.4);"); layout.addWidget(line2)
 
         total_lbl = QLabel(f"Total:  Rs. {float(p[8]):,.2f}")
         total_lbl.setStyleSheet(
