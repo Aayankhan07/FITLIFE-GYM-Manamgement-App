@@ -105,8 +105,8 @@ class AnimatedBackground(QWidget):
 
         # Soft glow orb at top-right
         orb = QRadialGradient(W * 0.8, H * 0.2, H * 0.45)
-        orb.setColorAt(0.0, QColor(124, 58, 237, 35))
-        orb.setColorAt(1.0, QColor(124, 58, 237, 0))
+        orb.setColorAt(0.0, QColor(0, 102, 255, 35))
+        orb.setColorAt(1.0, QColor(0, 102, 255, 0))
         painter.fillRect(self.rect(), QBrush(orb))
 
         # Soft glow orb at bottom-left
@@ -122,7 +122,7 @@ class AnimatedBackground(QWidget):
             r = p['r']
             alpha = int(p['opacity'] * 255)
             painter.setPen(Qt.PenStyle.NoPen)
-            painter.setBrush(QBrush(QColor(180, 140, 255, alpha)))
+            painter.setBrush(QBrush(QColor(140, 180, 255, alpha)))
             painter.drawEllipse(QPoint(px, py), int(r), int(r))
 
         painter.end()
@@ -171,7 +171,7 @@ class LoginWindow(QWidget):
         # Glow shadow
         shadow = QGraphicsDropShadowEffect()
         shadow.setBlurRadius(70)
-        shadow.setColor(QColor(124, 58, 237, 100))
+        shadow.setColor(QColor(0, 102, 255, 100))
         shadow.setOffset(0, 0)
         self.card.setGraphicsEffect(shadow)
 
@@ -191,7 +191,7 @@ class LoginWindow(QWidget):
             font-size: 34px;
             font-weight: 900;
             color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 #A78BFA, stop:1 #00F5FF);
+                stop:0 #38BDF8, stop:1 #00F5FF);
             background: transparent;
             letter-spacing: 2px;
         """)
@@ -239,11 +239,11 @@ class LoginWindow(QWidget):
                 padding: 0 14px;
                 color: #F0F4FF;
                 font-size: 14px;
-                selection-background-color: #7C3AED;
+                selection-background-color: #0066FF;
             }
             QLineEdit:focus {
                 border: none;
-                background: rgba(124,58,237,0.12);
+                background: rgba(0,102,255,0.12);
             }
         """)
         user_row.addWidget(self.username_input)
@@ -289,11 +289,11 @@ class LoginWindow(QWidget):
                 padding: 0 14px;
                 color: #F0F4FF;
                 font-size: 14px;
-                selection-background-color: #7C3AED;
+                selection-background-color: #0066FF;
             }
             QLineEdit:focus {
                 border: none;
-                background: rgba(124,58,237,0.12);
+                background: rgba(0,102,255,0.12);
             }
         """)
         self.password_input.returnPressed.connect(self._attempt_login)
@@ -310,7 +310,7 @@ class LoginWindow(QWidget):
                 color: rgba(255,255,255,0.5);
                 font-size: 16px;
             }
-            QPushButton:hover { color: #A78BFA; background: rgba(124,58,237,0.15); }
+            QPushButton:hover { color: #38BDF8; background: rgba(0,102,255,0.15); }
         """)
         self.eye_btn.clicked.connect(self._toggle_password)
         pass_row.addWidget(self.eye_btn)
@@ -348,7 +348,7 @@ class LoginWindow(QWidget):
         self.login_btn.setStyleSheet("""
             QPushButton {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #7C3AED, stop:1 #5B21B6);
+                    stop:0 #0066FF, stop:1 #1D4ED8);
                 border: none;
                 border-radius: 12px;
                 color: #FFFFFF;
@@ -358,11 +358,11 @@ class LoginWindow(QWidget):
             }
             QPushButton:hover {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #8B5CF6, stop:1 #7C3AED);
+                    stop:0 #3B82F6, stop:1 #0066FF);
             }
             QPushButton:pressed {
                 background: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                    stop:0 #6D28D9, stop:1 #4C1D95);
+                    stop:0 #1D4ED8, stop:1 #1E3A8A);
                 padding-top: 2px;
             }
             QPushButton:disabled {
