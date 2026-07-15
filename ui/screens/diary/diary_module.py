@@ -205,11 +205,11 @@ class DiaryModule(QWidget):
         ep_layout = QVBoxLayout(empty_page)
         ep_layout.setAlignment(Qt.AlignmentFlag.AlignCenter)
         ep_icon = QLabel("📓"); ep_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        ep_icon.setStyleSheet("font-size:64px;background:transparent;")
+        ep_icon.setStyleSheet("QWidget { font-size:64px;background:transparent; }")
         ep_text = QLabel("Select an entry to view\nor click New Entry to start writing")
         ep_text.setAlignment(Qt.AlignmentFlag.AlignCenter)
         ep_text.setWordWrap(True)
-        ep_text.setStyleSheet("color:rgba(255,255,255,0.35);font-size:14px;background:transparent;")
+        ep_text.setStyleSheet("QWidget { color:rgba(255,255,255,0.35);font-size:14px;background:transparent; }")
         ep_layout.addWidget(ep_icon)
         ep_layout.addSpacing(16)
         ep_layout.addWidget(ep_text)
@@ -279,7 +279,7 @@ class DiaryModule(QWidget):
         self._pin_btn.toggled.connect(lambda _: self._mark_dirty())
 
         self._save_status = QLabel("All saved ✓")
-        self._save_status.setStyleSheet("color:rgba(255,255,255,0.35);font-size: 13px;")
+        self._save_status.setStyleSheet("QWidget { color:rgba(255,255,255,0.35);font-size: 13px; }")
 
         meta_row.addWidget(self._date_edit)
         meta_row.addWidget(self._tag_combo)
@@ -306,7 +306,7 @@ class DiaryModule(QWidget):
         # Bottom row
         bottom_row = QHBoxLayout(); bottom_row.setSpacing(8)
         self._char_count = QLabel("0 characters")
-        self._char_count.setStyleSheet("color:rgba(255,255,255,0.3);font-size: 13px;")
+        self._char_count.setStyleSheet("QWidget { color:rgba(255,255,255,0.3);font-size: 13px; }")
 
         self._btn_save = QPushButton("💾 Save Entry")
         self._btn_save.setStyleSheet("""
@@ -407,7 +407,7 @@ class DiaryModule(QWidget):
         if not filtered:
             lbl = QLabel("📭 No entries found")
             lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-            lbl.setStyleSheet("color:rgba(255,255,255,0.3);font-size:13px;padding:20px;")
+            lbl.setStyleSheet("QWidget { color:rgba(255,255,255,0.3);font-size:13px;padding:20px; }")
             self._list_layout.insertWidget(0, lbl)
             return
 
@@ -451,15 +451,15 @@ class DiaryModule(QWidget):
         top = QHBoxLayout(); top.setSpacing(4)
         if pinned:
             pin_lbl = QLabel("📌")
-            pin_lbl.setStyleSheet("font-size: 13px;background:transparent;")
+            pin_lbl.setStyleSheet("QWidget { font-size: 13px;background:transparent; }")
             top.addWidget(pin_lbl)
 
         title_lbl = QLabel((title[:28] + "…") if len(title) > 28 else title)
-        title_lbl.setStyleSheet("color:#F0F4FF;font-weight:bold;font-size:13px;background:transparent;")
+        title_lbl.setStyleSheet("QWidget { color:#F0F4FF;font-weight:bold;font-size:13px;background:transparent; }")
         top.addWidget(title_lbl, 1)
 
         date_lbl = QLabel(str(edate)[:10])
-        date_lbl.setStyleSheet("color:rgba(255,255,255,0.35);font-size: 13px;background:transparent;")
+        date_lbl.setStyleSheet("QWidget { color:rgba(255,255,255,0.35);font-size: 13px;background:transparent; }")
         top.addWidget(date_lbl)
         lay.addLayout(top)
 
@@ -468,7 +468,7 @@ class DiaryModule(QWidget):
         if len(body or "") > 55:
             preview += "…"
         prev_lbl = QLabel(preview)
-        prev_lbl.setStyleSheet("color:rgba(255,255,255,0.45);font-size: 13px;background:transparent;")
+        prev_lbl.setStyleSheet("QWidget { color:rgba(255,255,255,0.45);font-size: 13px;background:transparent; }")
         lay.addWidget(prev_lbl)
 
         # Tag chip
