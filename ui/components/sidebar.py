@@ -1,6 +1,6 @@
 """FitLife — Sidebar Component"""
 from PyQt6.QtWidgets import (
-    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFrame, QSizePolicy
+    QWidget, QVBoxLayout, QHBoxLayout, QPushButton, QLabel, QFrame, QSizePolicy, QScrollArea
 )
 from PyQt6.QtCore import Qt, QSize, pyqtSignal, QPropertyAnimation, QEasingCurve
 from PyQt6.QtGui import QFont, QIcon
@@ -95,10 +95,7 @@ class Sidebar(QWidget):
         self.logo_lbl = QLabel("💪")
         self.logo_lbl.setStyleSheet("font-size: 28px;")
         self.app_name_lbl = QLabel("FitLife")
-        self.app_name_lbl.setStyleSheet(
-            "font-size: 22px; font-weight: bold; "
-            "color: #0066FF; letter-spacing: 1px;"
-        )
+        self.app_name_lbl.setObjectName("sidebarLogoText")
         brand_row.addWidget(self.logo_lbl)
         brand_row.addWidget(self.app_name_lbl)
         brand_row.addStretch()
@@ -111,16 +108,32 @@ class Sidebar(QWidget):
         layout.addWidget(div)
         layout.addSpacing(8)
 
-        # ── Nav Items ─────────────────────────────────────────────────────────
+        # ── Scroll Area for Nav Items ─────────────────────────────────────────
+        scroll = QScrollArea()
+        scroll.setWidgetResizable(True)
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
+        scroll.setVerticalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAsNeeded)
+        scroll.setStyleSheet("QScrollArea { background: transparent; border: none; }")
+        
+        scroll_content = QWidget()
+        scroll_content.setObjectName("sidebarScrollContent")
+        scroll_content.setStyleSheet("QWidget#sidebarScrollContent { background: transparent; }")
+        scroll_layout = QVBoxLayout(scroll_content)
+        scroll_layout.setContentsMargins(0, 0, 0, 0)
+        scroll_layout.setSpacing(4)
+        
         for label, icon, key, roles in NAV_ITEMS:
             if self._role not in roles:
                 continue
             btn = SidebarButton(icon, label, key)
             btn.clicked.connect(lambda checked, k=key: self._on_nav_click(k))
             self._buttons.append(btn)
-            layout.addWidget(btn)
-
-        layout.addStretch()
+            scroll_layout.addWidget(btn)
+            
+        scroll_layout.addStretch()
+        scroll.setWidget(scroll_content)
+        layout.addWidget(scroll, 1)
 
         # Divider
         div2 = QFrame()
@@ -152,9 +165,9 @@ class Sidebar(QWidget):
 
         self.user_info = QVBoxLayout()
         self.user_name_lbl = QLabel(self._user_name)
-        self.user_name_lbl.setStyleSheet("font-weight: bold; font-size: 13px; color: #F0F4FF;")
+        self.user_name_lbl.setObjectName("userNameLbl")
         self.user_role_lbl = QLabel(self._role)
-        self.user_role_lbl.setStyleSheet("font-size: 11px; color: #0066FF;")
+        self.user_role_lbl.setObjectName("userRoleLbl")
         self.user_info.addWidget(self.user_name_lbl)
         self.user_info.addWidget(self.user_role_lbl)
         user_layout.addLayout(self.user_info)
