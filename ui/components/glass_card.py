@@ -28,6 +28,43 @@ class GlassCard(QFrame):
         return self._layout
 
 
+EMOJI_MAP = {
+    "🏠": "dashboard",
+    "👥": "members",
+    "💪": "trainers",
+    "🏢": "branches",
+    "📋": "plans",
+    "📅": "attendance",
+    "💳": "finance",
+    "🏋️": "workout_plans",
+    "🏋": "workout_plans",
+    "🥗": "diet_plans",
+    "📈": "progress",
+    "🔧": "equipment",
+    "👔": "staff",
+    "📊": "analytics",
+    "📄": "reports",
+    "📓": "diary",
+    "🔍": "audit",
+    "⚙️": "settings",
+    "⚙": "settings",
+    "💰": "finance",
+    "⏳": "schedule",
+    "🕐": "schedule",
+    "🏆": "progress",
+    "🔴": "error",
+    "⚠️": "warning",
+    "❌": "error",
+    "✅": "success",
+    "🔥": "progress",
+    "🌾": "plans",
+    "🥑": "diet_plans",
+    "⚖️": "progress",
+    "⚖": "progress",
+    "🔔": "bell"
+}
+
+
 class KPICard(QFrame):
     """KPI metric card with title, value, icon, and trend indicator."""
 
@@ -37,23 +74,24 @@ class KPICard(QFrame):
         self.setObjectName("kpiCard")
         self.setMinimumSize(180, 115)
         self.setMaximumHeight(135)
+        self._icon_str = icon
         
         # Map color to standard names for style properties
         h = accent_color.upper()
         if "0066FF" in h or "PRIMARY" in h:
-            accent_name = "primary"
+            self._accent_name = "primary"
         elif "00F5FF" in h or "SECONDARY" in h:
-            accent_name = "secondary"
+            self._accent_name = "secondary"
         elif "00E676" in h or "SUCCESS" in h or "16A34A" in h:
-            accent_name = "success"
+            self._accent_name = "success"
         elif "FFB800" in h or "WARNING" in h or "D97706" in h:
-            accent_name = "warning"
+            self._accent_name = "warning"
         elif "FF2D78" in h or "DANGER" in h or "DC2626" in h or "C0155A" in h:
-            accent_name = "danger"
+            self._accent_name = "danger"
         else:
-            accent_name = "primary"
+            self._accent_name = "primary"
 
-        self.setProperty("accent", accent_name)
+        self.setProperty("accent", self._accent_name)
 
         # Soft colored glow shadow
         from PyQt6.QtWidgets import QGraphicsDropShadowEffect
@@ -70,10 +108,13 @@ class KPICard(QFrame):
 
         # Top row: icon badge + trend
         top = QHBoxLayout()
-        icon_lbl = QLabel(icon)
-        icon_lbl.setObjectName("kpiIconBadge")
-        icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        top.addWidget(icon_lbl)
+        self.icon_lbl = QLabel()
+        self.icon_lbl.setObjectName("kpiIconBadge")
+        self.icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        self.refresh_icon()
+        
+        top.addWidget(self.icon_lbl)
         top.addStretch()
         if trend:
             trend_lbl = QLabel(trend)
@@ -91,6 +132,17 @@ class KPICard(QFrame):
         title_lbl = QLabel(title)
         title_lbl.setObjectName("kpiTitle")
         main.addWidget(title_lbl)
+
+    def refresh_icon(self):
+        from ui.components.icons import get_icon, SVG_ICONS
+        from ui.theme.theme_manager import ThemeManager
+        
+        icon_key = EMOJI_MAP.get(self._icon_str, self._icon_str)
+        if icon_key in SVG_ICONS:
+            color = ThemeManager.color("accent_" + self._accent_name)
+            self.icon_lbl.setPixmap(get_icon(icon_key, color=color, size=18).pixmap(18, 18))
+        else:
+            self.icon_lbl.setText(self._icon_str)
 
     def set_value(self, value: str):
         self.val_lbl.setText(value)
@@ -143,25 +195,25 @@ class StatusBadge(QLabel):
     }
 
     STATUS_LABELS = {
-        "Active":    "✓ Active",
-        "Inactive":  "✗ Inactive",
-        "Maintenance":"🔧 Maintenance",
-        "Suspended": "⛔ Suspended",
-        "Expired":   "⌛ Expired",
-        "Paid":      "✓ Paid",
-        "Unpaid":    "✗ Unpaid",
-        "Partial":   "~ Partial",
-        "Overdue":   "⚠ Overdue",
-        "Pending":   "⏳ Pending",
-        "Approved":  "✓ Approved",
-        "Rejected":  "✗ Rejected",
-        "Present":   "✓ Present",
-        "Absent":    "✗ Absent",
-        "Late":      "~ Late",
-        "Good":      "✓ Good",
-        "Fair":      "~ Fair",
-        "Damaged":   "⚠ Damaged",
-        "Retired":   "⌛ Retired",
+        "Active":    "Active",
+        "Inactive":  "Inactive",
+        "Maintenance":"Maintenance",
+        "Suspended": "Suspended",
+        "Expired":   "Expired",
+        "Paid":      "Paid",
+        "Unpaid":    "Unpaid",
+        "Partial":   "Partial",
+        "Overdue":   "Overdue",
+        "Pending":   "Pending",
+        "Approved":  "Approved",
+        "Rejected":  "Rejected",
+        "Present":   "Present",
+        "Absent":    "Absent",
+        "Late":      "Late",
+        "Good":      "Good",
+        "Fair":      "Fair",
+        "Damaged":   "Damaged",
+        "Retired":   "Retired",
     }
 
     def __init__(self, status: str, parent=None):
