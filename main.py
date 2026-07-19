@@ -21,6 +21,18 @@ os.environ.setdefault("QT_AUTO_SCREEN_SCALE_FACTOR", "1")
 
 from PyQt6.QtWidgets import QApplication
 from PyQt6.QtCore import Qt
+ 
+# ── Patch QScrollArea.setStyleSheet to prevent broad QWidget style overrides ──
+from PyQt6.QtWidgets import QScrollArea
+_orig_scroll_set_stylesheet = QScrollArea.setStyleSheet
+ 
+def _safe_scroll_set_stylesheet(self, style: str):
+    cleaned = style.strip().replace(" ", "").replace("\n", "").replace("\r", "")
+    if "QWidget{border:none;background:transparent" in cleaned:
+        style = "QScrollArea { border: none; background: transparent; }"
+    _orig_scroll_set_stylesheet(self, style)
+ 
+QScrollArea.setStyleSheet = _safe_scroll_set_stylesheet
 
 
 def main():
