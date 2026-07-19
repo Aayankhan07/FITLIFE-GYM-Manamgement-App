@@ -323,12 +323,21 @@ QComboBox::down-arrow {{
     margin-right: 8px;
 }}
 QComboBox QAbstractItemView {{
-    background: {c['bg_secondary']};
+    background-color: {c['bg_secondary']};
     border: 1px solid {c['glass_border']};
-    border-radius: 10px;
+    border-radius: 8px;
     color: {c['text_primary']};
     selection-background-color: {c['accent_primary']};
-    padding: 4px;
+    outline: none;
+}}
+QComboBox QAbstractItemView::item {{
+    background-color: {c['bg_secondary']};
+    color: {c['text_primary']};
+    padding: 6px 12px;
+}}
+QComboBox QAbstractItemView::item:selected {{
+    background-color: {c['accent_primary']};
+    color: #FFFFFF;
 }}
 
 /* ── BUTTONS ─────────────────────────────────────── */
