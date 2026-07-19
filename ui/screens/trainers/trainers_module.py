@@ -401,14 +401,14 @@ class TrainerProfile(QWidget):
         for w in [self.name_lbl, self.sub_lbl, self.stat_badge]: info.addWidget(w)
         hcl.addLayout(info); hcl.addStretch()
         krow = QHBoxLayout()
-        self.kpi_salary  = KPICard("Salary",    "—", "💰","","#00E676")
-        self.kpi_members = KPICard("Members",   "—", "👥","","#0066FF")
+        self.kpi_salary  = KPICard("Salary",    "—", "finance","","#00E676")
+        self.kpi_members = KPICard("Members",   "—", "members","","#0066FF")
         for k in [self.kpi_salary, self.kpi_members]:
             k.setFixedWidth(160); krow.addWidget(k)
         hcl.addLayout(krow); main.addWidget(hc)
 
         # Assigned members table
-        sec = QLabel("👥  Assigned Members")
+        sec = QLabel("Assigned Members")
         sec.setStyleSheet("QWidget { font-size:16px;font-weight:bold;color:#F0F4FF; }")
         main.addWidget(sec)
         self.members_table = QTableWidget()
