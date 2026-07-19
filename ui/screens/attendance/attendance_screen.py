@@ -45,14 +45,15 @@ class AttendanceScreen(QWidget):
         self._populate_member_dropdown()
         self._load_daily_log()
 
-    def _setup_ui(self):
+    def _setup_ui(self):        # ── Layout setup ──────────────────────────────────────────────────────
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("QWidget { border:none; background:transparent; }")
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setStyleSheet("QScrollArea { border:none; background:transparent; }")
         container = QWidget(); container.setStyleSheet("background:transparent;")
         main = QVBoxLayout(container)
-        main.setContentsMargins(28,24,28,24); main.setSpacing(20)
-
+        main.setContentsMargins(28,12,28,20); main.setSpacing(14)
+ 
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("Attendance Management")
@@ -64,7 +65,6 @@ class AttendanceScreen(QWidget):
         main.addLayout(hdr)
         self._update_clock()
  
-        # ── KPI row ───────────────────────────────────────────────────────────
         krow = QHBoxLayout(); krow.setSpacing(14)
         self._kpi_present = KPICard("Present Today", "—", "success","","#00E676")
         self._kpi_late    = KPICard("Late Today",    "—", "warning","","#FFB800")
@@ -215,7 +215,7 @@ class AttendanceScreen(QWidget):
         right_layout.addWidget(self.log_table)
         splitter.addWidget(right_frame)
         splitter.setSizes([380, 800])
-        main.addWidget(splitter)
+        main.addWidget(splitter, 1)
 
         self._overlay = LoadingOverlay(self)
         scroll.setWidget(container)
