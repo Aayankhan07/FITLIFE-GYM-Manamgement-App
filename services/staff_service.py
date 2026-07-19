@@ -88,8 +88,9 @@ def create_staff(data: dict, created_by: int) -> dict:
         for f in ["username", "full_name", "password", "role_id"]:
             if not data.get(f):
                 return {"success": False, "message": f"Field '{f}' is required."}
-        if len(data["password"]) < 8:
-            return {"success": False, "message": "Password must be at least 8 characters."}
+        is_strong, err_msg = auth_svc.validate_password_strength(data["password"])
+        if not is_strong:
+            return {"success": False, "message": err_msg}
         pw_hash = auth_svc.hash_password(data["password"])
         with DatabaseConnection() as (conn, cursor):
             cursor.execute("""
