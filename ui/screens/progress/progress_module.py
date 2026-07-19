@@ -70,7 +70,6 @@ class _ProgressOverview(QWidget):
         self._table.setColumnCount(6)
         self._table.setHorizontalHeaderLabels(["Member","Current Weight","Fitness Goal","Last Log","Total Logs","View Progress"])
         self._table.verticalHeader().setVisible(False)
-        self._table.horizontalHeader().setStretchLastSection(True)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._table.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
@@ -79,6 +78,10 @@ class _ProgressOverview(QWidget):
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
+        header = self._table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        for i in range(1, 6):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
         tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
         QVBoxLayout(tc).addWidget(self._table)
         m.addWidget(tc)
@@ -207,9 +210,12 @@ class _MemberProgress(QWidget):
         self._hist.setColumnCount(9)
         self._hist.setHorizontalHeaderLabels(["Date","Weight","Body Fat","Chest","Waist","Hips","Arms","Legs","Notes"])
         self._hist.verticalHeader().setVisible(False)
-        self._hist.horizontalHeader().setStretchLastSection(True)
         self._hist.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self._hist.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
+        header = self._hist.horizontalHeader()
+        header.setStretchLastSection(True)
+        for i in range(8):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
         tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
         QVBoxLayout(tc).addWidget(self._hist)
         m.addWidget(tc); m.addStretch(); scroll.setWidget(c)
