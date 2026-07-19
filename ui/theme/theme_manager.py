@@ -216,7 +216,10 @@ QLabel#topbarRoleLbl {{
 
 /* KPI Icon Badge */
 QLabel#kpiIconBadge {{
-    font-size: 16px;
+    font-size: 0px;
+    line-height: 0px;
+    padding: 0px;
+    margin: 0px;
     border-radius: 18px;
     min-width: 36px;
     max-width: 36px;
