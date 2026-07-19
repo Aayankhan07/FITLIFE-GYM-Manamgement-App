@@ -33,6 +33,74 @@ def _safe_scroll_set_stylesheet(self, style: str):
     _orig_scroll_set_stylesheet(self, style)
  
 QScrollArea.setStyleSheet = _safe_scroll_set_stylesheet
+ 
+ 
+# ── Global Emoji Purger for clean professional design ────────────────────────
+def strip_emojis(text: str) -> str:
+    if not isinstance(text, str):
+        return text
+    chars = []
+    for char in text:
+        ord_c = ord(char)
+        if (0x2600 <= ord_c <= 0x27BF) or (0x1F000 <= ord_c <= 0x1F9FF) or (0x1F600 <= ord_c <= 0x1F6FF) or (0x1F1E0 <= ord_c <= 0x1F1FF):
+            continue
+        if ord_c in (0x2139, 0x23F3, 0x23F0, 0x23E9, 0x23EA, 0x23EB, 0x23EC, 0x25B6, 0x25C0, 0x2705, 0xFE0F, 0x200D):
+            continue
+        chars.append(char)
+    return "".join(chars).strip()
+ 
+from PyQt6.QtWidgets import QLabel, QPushButton, QTabWidget, QTabBar
+ 
+_orig_label_init = QLabel.__init__
+_orig_label_set_text = QLabel.setText
+ 
+def _safe_label_init(self, *args, **kwargs):
+    if args and isinstance(args[0], str):
+        args = (strip_emojis(args[0]),) + args[1:]
+    elif "text" in kwargs and isinstance(kwargs["text"], str):
+        kwargs["text"] = strip_emojis(kwargs["text"])
+    _orig_label_init(self, *args, **kwargs)
+ 
+def _safe_label_set_text(self, text: str):
+    _orig_label_set_text(self, strip_emojis(text))
+ 
+QLabel.__init__ = _safe_label_init
+QLabel.setText = _safe_label_set_text
+ 
+_orig_btn_init = QPushButton.__init__
+_orig_btn_set_text = QPushButton.setText
+ 
+def _safe_btn_init(self, *args, **kwargs):
+    if args and isinstance(args[0], str):
+        args = (strip_emojis(args[0]),) + args[1:]
+    elif "text" in kwargs and isinstance(kwargs["text"], str):
+        kwargs["text"] = strip_emojis(kwargs["text"])
+    _orig_btn_init(self, *args, **kwargs)
+ 
+def _safe_btn_set_text(self, text: str):
+    _orig_btn_set_text(self, strip_emojis(text))
+ 
+QPushButton.__init__ = _safe_btn_init
+QPushButton.setText = _safe_btn_set_text
+ 
+_orig_tab_add = QTabWidget.addTab
+_orig_tab_insert = QTabWidget.insertTab
+ 
+def _safe_tab_add(self, widget, label: str):
+    return _orig_tab_add(self, widget, strip_emojis(label))
+ 
+def _safe_tab_insert(self, index, widget, label: str):
+    return _orig_tab_insert(self, index, widget, strip_emojis(label))
+ 
+QTabWidget.addTab = _safe_tab_add
+QTabWidget.insertTab = _safe_tab_insert
+ 
+_orig_tabbar_set_text = QTabBar.setTabText
+ 
+def _safe_tabbar_set_text(self, index, text: str):
+    _orig_tabbar_set_text(self, index, strip_emojis(text))
+ 
+QTabBar.setTabText = _safe_tabbar_set_text
 
 
 def main():
