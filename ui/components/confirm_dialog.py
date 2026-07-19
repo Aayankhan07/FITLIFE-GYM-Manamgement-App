@@ -1,6 +1,6 @@
 """
 FitLife — Confirm Dialog Component
-Used for all destructive actions.
+Used for all destructive actions and notifications without emojis.
 """
 from PyQt6.QtWidgets import (
     QDialog, QVBoxLayout, QHBoxLayout, QLabel, QPushButton, QFrame
@@ -52,10 +52,18 @@ class ConfirmDialog(QDialog):
         card_layout.setSpacing(16)
 
         # Icon row
-        icon_map = {"danger": "⚠️", "primary": "ℹ️", "warning": "🔔"}
-        icon_lbl = QLabel(icon_map.get(confirm_type, "⚠️"))
-        icon_lbl.setStyleSheet("font-size: 36px;")
+        icon_lbl = QLabel()
         icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        from ui.components.icons import get_icon
+        accent_key = {
+            "danger": ("error", "accent_danger"),
+            "primary": ("info", "accent_primary"),
+            "warning": ("warning", "accent_warning"),
+        }
+        icon_name, color_var = accent_key.get(confirm_type, ("warning", "accent_warning"))
+        color = ThemeManager.color(color_var)
+        icon_lbl.setPixmap(get_icon(icon_name, color=color, size=48).pixmap(48, 48))
         card_layout.addWidget(icon_lbl)
 
         # Title
@@ -124,21 +132,23 @@ class InfoDialog(QDialog):
         cl.setContentsMargins(28, 28, 28, 24)
         cl.setSpacing(14)
 
-        icons = {"info": "ℹ️", "success": "✅", "error": "❌", "warning": "⚠️"}
         accent_key = {
-            "info": "accent_primary",
-            "success": "accent_success",
-            "error": "accent_danger",
-            "warning": "accent_warning",
+            "info": ("info", "accent_primary"),
+            "success": ("success", "accent_success"),
+            "error": ("error", "accent_danger"),
+            "warning": ("warning", "accent_warning"),
         }
 
-        icon_lbl = QLabel(icons.get(dialog_type, "ℹ️"))
-        icon_lbl.setStyleSheet("font-size: 36px;")
+        icon_lbl = QLabel()
         icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        
+        from ui.components.icons import get_icon
+        icon_name, color_var = accent_key.get(dialog_type, ("info", "accent_primary"))
+        color = ThemeManager.color(color_var)
+        icon_lbl.setPixmap(get_icon(icon_name, color=color, size=48).pixmap(48, 48))
         cl.addWidget(icon_lbl)
 
         title_lbl = QLabel(title)
-        color = ThemeManager.color(accent_key.get(dialog_type, "text_primary"))
         title_lbl.setStyleSheet(f"font-size: 18px; font-weight: bold; color: {color};")
         title_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         cl.addWidget(title_lbl)
