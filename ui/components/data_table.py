@@ -77,19 +77,19 @@ class DataTable(QWidget):
 
         # ── Pagination ────────────────────────────────────────────────────────
         pag_row = QHBoxLayout()
-        self.prev_btn = QPushButton("◀  Prev")
+        self.prev_btn = QPushButton("Prev")
         self.prev_btn.setObjectName("btnSecondary")
-        self.prev_btn.setFixedHeight(34)
+        self.prev_btn.setFixedHeight(38)
         self.prev_btn.clicked.connect(self._prev_page)
-
+ 
         self.page_label = QLabel("Page 1 of 1")
         self.page_label.setObjectName("labelMuted")
         self.page_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.page_label.setStyleSheet("color: #9CA3AF; font-size: 13px;")
-
-        self.next_btn = QPushButton("Next  ▶")
+ 
+        self.next_btn = QPushButton("Next")
         self.next_btn.setObjectName("btnSecondary")
-        self.next_btn.setFixedHeight(34)
+        self.next_btn.setFixedHeight(38)
         self.next_btn.clicked.connect(self._next_page)
 
         pag_row.addStretch()
