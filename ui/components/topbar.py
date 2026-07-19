@@ -2,8 +2,8 @@
 from PyQt6.QtWidgets import (
     QWidget, QHBoxLayout, QLabel, QPushButton, QLineEdit, QFrame
 )
-from PyQt6.QtCore import Qt, pyqtSignal, QTimer
-from PyQt6.QtGui import QFont
+from PyQt6.QtCore import Qt, pyqtSignal, QTimer, QSize
+from PyQt6.QtGui import QFont, QIcon
 from config.constants import SEARCH_DEBOUNCE_MS, TOPBAR_HEIGHT
 
 
@@ -20,6 +20,7 @@ class TopBar(QWidget):
         super().__init__(parent)
         self._user_name = user_name
         self._role = role
+        self._notif_count = 0
         self.setObjectName("topbar")
         self.setFixedHeight(TOPBAR_HEIGHT)
         self._setup_ui()
@@ -38,7 +39,7 @@ class TopBar(QWidget):
  
         # ── Global Search (center) ────────────────────────────────────────────
         self.search_input = QLineEdit()
-        self.search_input.setPlaceholderText("  🔍  Global search...")
+        self.search_input.setPlaceholderText("Global search...")
         self.search_input.setFixedWidth(320)
         self.search_input.setFixedHeight(36)
         self.search_input.setObjectName("topbarSearch")
@@ -54,7 +55,7 @@ class TopBar(QWidget):
         layout.addStretch()
  
         # ── Theme Toggle ──────────────────────────────────────────────────────
-        self.theme_btn = QPushButton("🌙")
+        self.theme_btn = QPushButton()
         self.theme_btn.setObjectName("btnIcon")
         self.theme_btn.setFixedSize(36, 36)
         self.theme_btn.setToolTip("Toggle Dark/Light Theme")
@@ -63,9 +64,9 @@ class TopBar(QWidget):
         layout.addWidget(self.theme_btn)
  
         # ── Notification Bell ─────────────────────────────────────────────────
-        self.notif_btn = QPushButton("🔔")
+        self.notif_btn = QPushButton()
         self.notif_btn.setObjectName("btnIcon")
-        self.notif_btn.setFixedSize(36, 36)
+        self.notif_btn.setFixedSize(48, 36) # slightly wider to accommodate count text
         self.notif_btn.setToolTip("Notifications")
         self.notif_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.notif_btn.clicked.connect(self.notif_clicked.emit)
@@ -79,7 +80,10 @@ class TopBar(QWidget):
         layout.addWidget(sep)
  
         # ── User Chip ─────────────────────────────────────────────────────────
-        user_lbl = QLabel(f"👤  {self._user_name}")
+        self.user_avatar = QLabel()
+        layout.addWidget(self.user_avatar)
+
+        user_lbl = QLabel(self._user_name)
         user_lbl.setObjectName("topbarUserLbl")
         layout.addWidget(user_lbl)
  
@@ -105,17 +109,39 @@ class TopBar(QWidget):
         """)
         logout_btn.clicked.connect(self.logout_clicked.emit)
         layout.addWidget(logout_btn)
- 
+        
+        self.update_icons()
+
+    def update_icons(self):
+        from ui.components.icons import get_icon
+        from ui.theme.theme_manager import ThemeManager
+        
+        c = ThemeManager.color("text_secondary")
+        primary_color = ThemeManager.color("accent_primary")
+        
+        # User avatar icon
+        self.user_avatar.setPixmap(get_icon("user", color=primary_color, size=18).pixmap(18, 18))
+        
+        # Notification bell icon
+        self.notif_btn.setIcon(get_icon("bell", color=c, size=18))
+        self.notif_btn.setIconSize(QSize(18, 18))
+        
+        # Theme toggle icon
+        is_dark = ThemeManager.current_theme() == "dark"
+        icon_name = "sun" if is_dark else "moon"
+        self.theme_btn.setIcon(get_icon(icon_name, color=c, size=18))
+        self.theme_btn.setIconSize(QSize(18, 18))
+
     def _on_theme_toggle(self):
         self.theme_toggled.emit()
-        is_dark = self.theme_btn.text() == "🌙"
-        self.theme_btn.setText("☀️" if is_dark else "🌙")
+        self.update_icons()
  
     def set_notification_count(self, count: int):
+        self._notif_count = count
         if count > 0:
-            self.notif_btn.setText(f"🔔 {count}")
+            self.notif_btn.setText(f" {count}")
         else:
-            self.notif_btn.setText("🔔")
+            self.notif_btn.setText("")
             
     def set_page_title(self, title: str):
         self.page_title_lbl.setText(title)
