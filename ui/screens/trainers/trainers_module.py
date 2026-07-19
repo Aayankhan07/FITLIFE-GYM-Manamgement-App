@@ -415,7 +415,6 @@ class TrainerProfile(QWidget):
         self.members_table.setColumnCount(5)
         self.members_table.setHorizontalHeaderLabels(["Name","Phone","Goal","Status","Expiry"])
         self.members_table.verticalHeader().setVisible(False)
-        self.members_table.horizontalHeader().setStretchLastSection(True)
         self.members_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.members_table.setStyleSheet("""
             QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
@@ -424,6 +423,10 @@ class TrainerProfile(QWidget):
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
+        header = self.members_table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        for i in range(1, 5):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
         main.addWidget(self.members_table)
         main.addStretch()
         scroll.setWidget(container)
