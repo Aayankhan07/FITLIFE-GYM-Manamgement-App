@@ -25,13 +25,13 @@ class GradientBackground(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         g = QLinearGradient(0, 0, self.width(), self.height())
         if ThemeManager.current_theme() == "dark":
-            g.setColorAt(0.0, QColor(10, 14, 42))
-            g.setColorAt(0.5, QColor(13, 27, 64))
-            g.setColorAt(1.0, QColor(13, 27, 42))
+            g.setColorAt(0.0, QColor(11, 15, 25))    # #0B0F19
+            g.setColorAt(0.5, QColor(21, 32, 51))    # #152033
+            g.setColorAt(1.0, QColor(15, 23, 42))    # #0F172A
         else:
-            g.setColorAt(0.0, QColor(240, 246, 255))
-            g.setColorAt(0.5, QColor(232, 244, 255))
-            g.setColorAt(1.0, QColor(230, 242, 255))
+            g.setColorAt(0.0, QColor(248, 250, 252)) # #F8FAFC
+            g.setColorAt(0.5, QColor(241, 245, 249)) # #F1F5F9
+            g.setColorAt(1.0, QColor(226, 232, 240)) # #E2E8F0
         painter.fillRect(self.rect(), QBrush(g))
 
 
@@ -173,6 +173,32 @@ class MainWindow(QMainWindow):
         if screen:
             self.content_stack.setCurrentWidget(screen)
             self.sidebar.set_active(key)
+            
+            # Map navigation keys to user-friendly page titles
+            titles = {
+                "dashboard": "Dashboard Overview",
+                "members": "Members Directory",
+                "trainers": "Trainers Directory",
+                "branches": "Branch Management",
+                "plans": "Membership Plans",
+                "attendance": "Attendance Register",
+                "finance": "Finance Center",
+                "workout_plans": "Workout Plans",
+                "diet_plans": "Diet Plans",
+                "progress": "Progress Logs",
+                "equipment": "Equipment Inventory",
+                "schedule": "Class & Trainer Schedule",
+                "staff": "Staff Management",
+                "analytics": "Business Analytics",
+                "reports": "System Reports",
+                "diary": "My Daily Diary",
+                "audit": "System Audit Logs",
+                "settings": "Account Settings",
+                "smart_ask": "Smart Ask Assistant"
+            }
+            title = titles.get(key, key.replace("_", " ").title())
+            self.topbar.set_page_title(title)
+            
             if hasattr(screen, "refresh"):
                 screen.refresh()
         else:
