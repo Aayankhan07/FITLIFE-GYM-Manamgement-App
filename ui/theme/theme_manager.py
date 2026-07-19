@@ -81,19 +81,47 @@ QMainWindow, QDialog {{
 
 QScrollArea {{ border: none; background: transparent; }}
 QScrollBar:vertical {{
-    background: transparent; width: 6px; margin: 0;
+    background: transparent;
+    width: 8px;
+    margin: 0px;
 }}
 QScrollBar::handle:vertical {{
-    background: {c['accent_primary']}; border-radius: 3px; min-height: 30px;
+    background: {c['text_muted']};
+    border-radius: 4px;
+    min-height: 30px;
 }}
-QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{ height: 0; }}
+QScrollBar::handle:vertical:hover {{
+    background: {c['accent_primary']};
+}}
+QScrollBar::add-line:vertical, QScrollBar::sub-line:vertical {{
+    height: 0px;
+    background: none;
+    border: none;
+}}
+QScrollBar::add-page:vertical, QScrollBar::sub-page:vertical {{
+    background: none;
+}}
 QScrollBar:horizontal {{
-    background: transparent; height: 6px; margin: 0;
+    background: transparent;
+    height: 8px;
+    margin: 0px;
 }}
 QScrollBar::handle:horizontal {{
-    background: {c['accent_primary']}; border-radius: 3px; min-width: 30px;
+    background: {c['text_muted']};
+    border-radius: 4px;
+    min-width: 30px;
 }}
-QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {{ width: 0; }}
+QScrollBar::handle:horizontal:hover {{
+    background: {c['accent_primary']};
+}}
+QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {{
+    width: 0px;
+    background: none;
+    border: none;
+}}
+QScrollBar::add-page:horizontal, QScrollBar::sub-page:horizontal {{
+    background: none;
+}}
 
 /* ── GLASS CARD ─────────────────────────────────── */
 #glassCard {{
