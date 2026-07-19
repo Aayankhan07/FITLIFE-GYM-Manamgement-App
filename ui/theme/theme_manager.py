@@ -350,22 +350,25 @@ QComboBox::down-arrow {{
     border-top: 6px solid {c['text_secondary']};
     margin-right: 8px;
 }}
-QComboBox QAbstractItemView {{
-    background-color: {c['bg_secondary']};
+QComboBox QAbstractItemView, QComboBox QListView {{
+    background-color: {c['bg_secondary']} !important;
+    background: {c['bg_secondary']} !important;
     border: 1px solid {c['glass_border']};
     border-radius: 8px;
-    color: {c['text_primary']};
-    selection-background-color: {c['accent_primary']};
+    color: {c['text_primary']} !important;
+    selection-background-color: {c['accent_primary']} !important;
     outline: none;
 }}
-QComboBox QAbstractItemView::item {{
-    background-color: {c['bg_secondary']};
-    color: {c['text_primary']};
+QComboBox QAbstractItemView::item, QComboBox QListView::item {{
+    background-color: {c['bg_secondary']} !important;
+    background: {c['bg_secondary']} !important;
+    color: {c['text_primary']} !important;
     padding: 6px 12px;
 }}
-QComboBox QAbstractItemView::item:selected {{
-    background-color: {c['accent_primary']};
-    color: #FFFFFF;
+QComboBox QAbstractItemView::item:selected, QComboBox QListView::item:selected {{
+    background-color: {c['accent_primary']} !important;
+    background: {c['accent_primary']} !important;
+    color: #FFFFFF !important;
 }}
 
 /* ── BUTTONS ─────────────────────────────────────── */
