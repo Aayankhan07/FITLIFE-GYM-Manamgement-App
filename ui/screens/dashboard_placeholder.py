@@ -39,7 +39,6 @@ class DashboardPlaceholder(QWidget):
         header_row = QHBoxLayout()
         greeting = QLabel(f"Welcome back, {self._session.full_name} 👋")
         greeting.setObjectName("heading1")
-        greeting.setStyleSheet("QWidget { font-size: 30px; font-weight: 900; color: #F0F4FF; }")
         header_row.addWidget(greeting)
         header_row.addStretch()
 
@@ -164,14 +163,7 @@ class DashboardPlaceholder(QWidget):
         # ── System Info Banner ─────────────────────────────────────────────────
         layout.addSpacing(12)
         info_frame = QFrame()
-        info_frame.setObjectName("glassCard")
-        info_frame.setStyleSheet("""
-            QFrame#glassCard {
-                background: rgba(0,245,255,0.05);
-                border: 1px solid rgba(0,245,255,0.2);
-                border-radius: 14px;
-            }
-        """)
+        info_frame.setObjectName("infoBanner")
         info_layout = QHBoxLayout(info_frame)
         info_layout.setContentsMargins(20, 16, 20, 16)
 
@@ -179,7 +171,7 @@ class DashboardPlaceholder(QWidget):
             "ℹ️  FitLife v1.0.0  |  Phase 1 Foundation Complete  |  "
             "Full modules load in Phase 2+  |  Database Connected"
         )
-        info_lbl.setStyleSheet("QWidget { color: #00F5FF; font-size: 13px; }")
+        info_lbl.setObjectName("infoBannerText")
         info_layout.addWidget(info_lbl)
         layout.addWidget(info_frame)
 
