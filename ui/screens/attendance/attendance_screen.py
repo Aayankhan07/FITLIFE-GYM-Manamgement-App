@@ -88,7 +88,7 @@ class AttendanceScreen(QWidget):
         left_layout = QVBoxLayout(left_frame)
         left_layout.setContentsMargins(20,20,20,20); left_layout.setSpacing(14)
 
-        sec_in = SectionHeader("🏃  Check In / Out")
+        sec_in = SectionHeader("Check In / Out")
         left_layout.addWidget(sec_in)
 
         # Member selector (search + dropdown)
@@ -124,7 +124,7 @@ class AttendanceScreen(QWidget):
 
         # Check-in / Check-out buttons
         btn_row = QHBoxLayout(); btn_row.setSpacing(8)
-        self.checkin_btn = QPushButton("✅  Check IN")
+        self.checkin_btn = QPushButton("Check IN")
         self.checkin_btn.setObjectName("btnSuccess")
         self.checkin_btn.setMinimumHeight(46)
         self.checkin_btn.setStyleSheet("""
@@ -133,8 +133,8 @@ class AttendanceScreen(QWidget):
             QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #33FF99,stop:1 #00E676);}
         """)
         self.checkin_btn.clicked.connect(self._do_checkin)
-
-        self.checkout_btn = QPushButton("🔴  Check OUT")
+ 
+        self.checkout_btn = QPushButton("Check OUT")
         self.checkout_btn.setMinimumHeight(46)
         self.checkout_btn.setStyleSheet("""
             QPushButton{background:rgba(255,45,120,0.15);border:1px solid #FF2D78;
@@ -189,7 +189,7 @@ class AttendanceScreen(QWidget):
         self.date_picker.dateChanged.connect(self._load_daily_log)
         filter_row.addWidget(self.date_picker)
         filter_row.addStretch()
-        refresh_btn = QPushButton("🔄 Refresh")
+        refresh_btn = QPushButton("Refresh")
         refresh_btn.setObjectName("btnSecondary")
         refresh_btn.setFixedHeight(34)
         refresh_btn.clicked.connect(self._load_daily_log)
@@ -240,7 +240,7 @@ class AttendanceScreen(QWidget):
         self.member_cb.addItem("— Select Person —", None)
         for etype, m in entities:
             label = f"[{etype}] {m[1]}  ({m[2]})"
-            if m[3]: label += "  ✅ In"
+            if m[3]: label += "  (In)"
             self.member_cb.addItem(label, (etype, m[0]))
         self.member_cb.blockSignals(False)
         self._on_member_selected(self.member_cb.currentIndex())
