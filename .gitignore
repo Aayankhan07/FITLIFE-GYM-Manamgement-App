@@ -43,3 +43,15 @@ build/
 
 # Dev / test scripts
 verify_all.py
+
+# Databases (Local fallback state)
+database/fitlife.db
+*.db
+*.sqlite
+*.sqlite3
+
+# Test and coverage artifacts
+.pytest_cache/
+.coverage
+htmlcov/
+.ipynb_checkpoints/
