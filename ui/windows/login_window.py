@@ -180,8 +180,9 @@ class LoginWindow(QWidget):
         card_layout.setSpacing(0)
 
         # ── Logo area ─────────────────────────────────────────────────────────
-        icon_lbl = QLabel("🏋️")
-        icon_lbl.setStyleSheet("font-size: 56px; background: transparent;")
+        icon_lbl = QLabel()
+        from ui.components.icons import get_icon
+        icon_lbl.setPixmap(get_icon("brand", color="#00F5FF", size=56).pixmap(56, 56))
         icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_layout.addWidget(icon_lbl)
         card_layout.addSpacing(8)
@@ -219,11 +220,13 @@ class LoginWindow(QWidget):
         # Username row with icon overlay
         user_row = QHBoxLayout()
         user_row.setSpacing(0)
-        user_icon = QLabel("👤")
+        user_icon = QLabel()
         user_icon.setFixedSize(44, 44)
+        from ui.components.icons import get_icon
+        user_icon.setPixmap(get_icon("user", color="rgba(255,255,255,0.6)", size=18).pixmap(18, 18))
         user_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         user_icon.setStyleSheet(
-            "font-size: 16px; background: rgba(255,255,255,0.08); "
+            "background: rgba(255,255,255,0.08); "
             "border: none; border-radius: 12px 0 0 12px;"
         )
         user_row.addWidget(user_icon)
@@ -268,11 +271,13 @@ class LoginWindow(QWidget):
         pass_row = QHBoxLayout()
         pass_row.setSpacing(0)
 
-        pass_icon = QLabel("🔒")
+        pass_icon = QLabel()
         pass_icon.setFixedSize(44, 44)
+        from ui.components.icons import get_icon
+        pass_icon.setPixmap(get_icon("lock", color="rgba(255,255,255,0.6)", size=18).pixmap(18, 18))
         pass_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         pass_icon.setStyleSheet(
-            "font-size: 16px; background: rgba(255,255,255,0.08); "
+            "background: rgba(255,255,255,0.08); "
             "border: none; border-radius: 12px 0 0 12px;"
         )
         pass_row.addWidget(pass_icon)
@@ -299,7 +304,7 @@ class LoginWindow(QWidget):
         self.password_input.returnPressed.connect(self._attempt_login)
         pass_row.addWidget(self.password_input)
 
-        self.eye_btn = QPushButton("👁")
+        self.eye_btn = QPushButton()
         self.eye_btn.setFixedSize(44, 44)
         self.eye_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.eye_btn.setStyleSheet("""
@@ -307,14 +312,15 @@ class LoginWindow(QWidget):
                 background: rgba(255,255,255,0.08);
                 border: none;
                 border-radius: 0 12px 12px 0;
-                color: rgba(255,255,255,0.5);
-                font-size: 16px;
             }
-            QPushButton:hover { color: #38BDF8; background: rgba(0,102,255,0.15); }
+            QPushButton:hover { background: rgba(0,102,255,0.15); }
         """)
         self.eye_btn.clicked.connect(self._toggle_password)
         pass_row.addWidget(self.eye_btn)
         card_layout.addLayout(pass_row)
+        
+        # Initial eye icon
+        self._update_eye_icon()
 
         self.pass_err = QLabel("")
         self.pass_err.setStyleSheet(
@@ -412,10 +418,16 @@ class LoginWindow(QWidget):
     def _toggle_password(self):
         if self.password_input.echoMode() == QLineEdit.EchoMode.Password:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Normal)
-            self.eye_btn.setText("🙈")
         else:
             self.password_input.setEchoMode(QLineEdit.EchoMode.Password)
-            self.eye_btn.setText("👁")
+        self._update_eye_icon()
+
+    def _update_eye_icon(self):
+        from ui.components.icons import get_icon
+        is_visible = self.password_input.echoMode() == QLineEdit.EchoMode.Normal
+        icon_name = "eye-off" if is_visible else "eye"
+        self.eye_btn.setIcon(get_icon(icon_name, color="rgba(255,255,255,0.65)", size=18))
+        self.eye_btn.setIconSize(QSize(18, 18))
 
     def _attempt_login(self):
         self.username_err.setText("")
