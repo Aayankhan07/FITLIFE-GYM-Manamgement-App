@@ -35,18 +35,32 @@ class KPICard(QFrame):
                  trend: str = "", accent_color: str = "#0066FF", parent=None):
         super().__init__(parent)
         self.setObjectName("kpiCard")
-        self.setMinimumSize(180, 110)
-        self.setMaximumHeight(130)
+        self.setMinimumSize(180, 115)
+        self.setMaximumHeight(135)
         
+        # Map color to standard names for style properties
+        h = accent_color.upper()
+        if "0066FF" in h or "PRIMARY" in h:
+            accent_name = "primary"
+        elif "00F5FF" in h or "SECONDARY" in h:
+            accent_name = "secondary"
+        elif "00E676" in h or "SUCCESS" in h or "16A34A" in h:
+            accent_name = "success"
+        elif "FFB800" in h or "WARNING" in h or "D97706" in h:
+            accent_name = "warning"
+        elif "FF2D78" in h or "DANGER" in h or "DC2626" in h or "C0155A" in h:
+            accent_name = "danger"
+        else:
+            accent_name = "primary"
+
+        self.setProperty("accent", accent_name)
+
         # Soft colored glow shadow
         from PyQt6.QtWidgets import QGraphicsDropShadowEffect
         from PyQt6.QtGui import QColor
         shadow = QGraphicsDropShadowEffect(self)
         shadow.setBlurRadius(20)
-        # Parse hex accent color to add a soft glowing shadow
-        glow_color = QColor(accent_color)
-        glow_color.setAlpha(35)  # low opacity glow
-        shadow.setColor(glow_color)
+        shadow.setColor(QColor(0, 0, 0, 40))
         shadow.setOffset(0, 4)
         self.setGraphicsEffect(shadow)
 
@@ -54,36 +68,29 @@ class KPICard(QFrame):
         main.setContentsMargins(18, 16, 18, 16)
         main.setSpacing(6)
 
-        # Top row: icon + trend
+        # Top row: icon badge + trend
         top = QHBoxLayout()
         icon_lbl = QLabel(icon)
-        icon_lbl.setStyleSheet(f"font-size: 22px; color: {accent_color};")
+        icon_lbl.setObjectName("kpiIconBadge")
+        icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         top.addWidget(icon_lbl)
         top.addStretch()
         if trend:
             trend_lbl = QLabel(trend)
-            color = "#00E676" if trend.startswith("▲") else "#FF2D78"
-            trend_lbl.setStyleSheet(f"font-size: 12px; color: {color}; font-weight:bold;")
+            color = "#10B981" if trend.startswith("▲") else "#F43F5E"
+            trend_lbl.setStyleSheet(f"font-size: 12px; color: {color}; font-weight: bold;")
             top.addWidget(trend_lbl)
         main.addLayout(top)
 
         # Value
         self.val_lbl = QLabel(value)
-        self.val_lbl.setStyleSheet(
-            f"font-size: 26px; font-weight: bold; color: {accent_color};"
-        )
+        self.val_lbl.setObjectName("kpiValue")
         main.addWidget(self.val_lbl)
 
         # Title
         title_lbl = QLabel(title)
-        title_lbl.setObjectName("labelMuted")
-        title_lbl.setStyleSheet("font-size: 12px;")
+        title_lbl.setObjectName("kpiTitle")
         main.addWidget(title_lbl)
-
-        # Accent top border via stylesheet
-        self.setStyleSheet(
-            f"QFrame#kpiCard {{ border-top: 3px solid {accent_color}; }}"
-        )
 
     def set_value(self, value: str):
         self.val_lbl.setText(value)
