@@ -10,34 +10,34 @@ from config.constants import (
 )
 
 
-# Nav item definition: (label, icon_emoji, module_key, allowed_roles)
+# Nav item definition: (label, icon_name, module_key, allowed_roles)
 NAV_ITEMS = [
-    ("Dashboard",       "🏠", "dashboard",      [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
-    ("Members",         "👥", "members",         [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Trainers",        "💪", "trainers",         [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Branches",        "🏢", "branches",         [ROLE_ADMIN]),
-    ("Membership Plans","📋", "plans",            [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Attendance",      "📅", "attendance",       [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER]),
-    ("Finance Center",  "💳", "finance",          [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Workout Plans",   "🏋️", "workout_plans",   [ROLE_ADMIN, ROLE_MANAGER, ROLE_MEMBER]),
-    ("Diet Plans",      "🥗", "diet_plans",       [ROLE_ADMIN, ROLE_MANAGER, ROLE_MEMBER]),
-    ("Progress",        "📈", "progress",         [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
-    ("Equipment",       "🔧", "equipment",        [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Schedule",        "📅", "schedule",         [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER]),
-    ("Staff",           "👔", "staff",            [ROLE_ADMIN]),
-    ("Analytics",       "📊", "analytics",        [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Reports",         "📄", "reports",          [ROLE_ADMIN, ROLE_MANAGER]),
-    ("Diary",           "📓", "diary",            [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
-    ("Audit Logs",      "🔍", "audit",            [ROLE_ADMIN]),
-    ("Settings",        "⚙️", "settings",         [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
+    ("Dashboard",       "dashboard",      "dashboard",      [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
+    ("Members",         "members",        "members",         [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Trainers",        "trainers",       "trainers",         [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Branches",        "branches",       "branches",         [ROLE_ADMIN]),
+    ("Membership Plans","plans",          "plans",            [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Attendance",      "attendance",     "attendance",       [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER]),
+    ("Finance Center",  "finance",        "finance",          [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Workout Plans",   "workout_plans",  "workout_plans",   [ROLE_ADMIN, ROLE_MANAGER, ROLE_MEMBER]),
+    ("Diet Plans",      "diet_plans",     "diet_plans",       [ROLE_ADMIN, ROLE_MANAGER, ROLE_MEMBER]),
+    ("Progress",        "progress",       "progress",         [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
+    ("Equipment",       "equipment",      "equipment",        [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Schedule",        "schedule",       "schedule",         [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER]),
+    ("Staff",           "staff",          "staff",            [ROLE_ADMIN]),
+    ("Analytics",       "analytics",      "analytics",        [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Reports",         "reports",        "reports",          [ROLE_ADMIN, ROLE_MANAGER]),
+    ("Diary",           "diary",          "diary",            [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
+    ("Audit Logs",      "audit",          "audit",            [ROLE_ADMIN]),
+    ("Settings",        "settings",       "settings",         [ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER]),
 ]
 
 
 class SidebarButton(QPushButton):
-    def __init__(self, icon: str, label: str, module_key: str, parent=None):
+    def __init__(self, icon_name: str, label: str, module_key: str, parent=None):
         super().__init__(parent)
         self.module_key = module_key
-        self._icon = icon
+        self._icon_name = icon_name
         self._label = label
         self._expanded = True
         self.setObjectName("sidebarBtn")
@@ -45,14 +45,22 @@ class SidebarButton(QPushButton):
         self.setCursor(Qt.CursorShape.PointingHandCursor)
         self.setCheckable(True)
         self.setProperty("collapsed", "false")
-        self._update_text()
+        self._update_icon_and_text()
 
-    def _update_text(self):
+    def _update_icon_and_text(self):
+        from ui.components.icons import get_icon
+        from ui.theme.theme_manager import ThemeManager
+        
+        color_var = "accent_primary" if self.isChecked() else "text_secondary"
+        color = ThemeManager.color(color_var)
+        self.setIcon(get_icon(self._icon_name, color=color, size=20))
+        self.setIconSize(QSize(20, 20))
+        
         if self._expanded:
-            self.setText(f"  {self._icon}   {self._label}")
+            self.setText(f"   {self._label}")
             self.setFixedHeight(44)
         else:
-            self.setText(self._icon)
+            self.setText("")
             self.setFixedHeight(44)
 
     def set_expanded(self, expanded: bool):
@@ -60,13 +68,14 @@ class SidebarButton(QPushButton):
         self.setProperty("collapsed", "true" if not expanded else "false")
         self.style().unpolish(self)
         self.style().polish(self)
-        self._update_text()
+        self._update_icon_and_text()
 
     def set_active(self, active: bool):
         self.setChecked(active)
         self.setProperty("active", "true" if active else "false")
         self.style().unpolish(self)
         self.style().polish(self)
+        self._update_icon_and_text()
 
 
 class Sidebar(QWidget):
@@ -92,8 +101,11 @@ class Sidebar(QWidget):
 
         # ── Logo / Brand ──────────────────────────────────────────────────────
         brand_row = QHBoxLayout()
-        self.logo_lbl = QLabel("💪")
-        self.logo_lbl.setStyleSheet("font-size: 28px;")
+        self.logo_lbl = QLabel()
+        from ui.components.icons import get_icon
+        from ui.theme.theme_manager import ThemeManager
+        self.logo_lbl.setPixmap(get_icon("brand", color=ThemeManager.color("accent_primary"), size=28).pixmap(28, 28))
+        
         self.app_name_lbl = QLabel("FitLife")
         self.app_name_lbl.setObjectName("sidebarLogoText")
         brand_row.addWidget(self.logo_lbl)
@@ -159,9 +171,9 @@ class Sidebar(QWidget):
         user_layout.setContentsMargins(8, 8, 8, 8)
         user_layout.setSpacing(8)
 
-        avatar = QLabel("👤")
-        avatar.setStyleSheet("font-size: 24px;")
-        user_layout.addWidget(avatar)
+        self.avatar_lbl = QLabel()
+        self.avatar_lbl.setPixmap(get_icon("user", color=ThemeManager.color("accent_primary"), size=24).pixmap(24, 24))
+        user_layout.addWidget(self.avatar_lbl)
 
         self.user_info = QVBoxLayout()
         self.user_name_lbl = QLabel(self._user_name)
@@ -184,6 +196,17 @@ class Sidebar(QWidget):
         self._active_key = key
         for btn in self._buttons:
             btn.set_active(btn.module_key == key)
+
+    def refresh_icons(self):
+        from ui.components.icons import get_icon
+        from ui.theme.theme_manager import ThemeManager
+        # Refresh brand logo icon
+        self.logo_lbl.setPixmap(get_icon("brand", color=ThemeManager.color("accent_primary"), size=28).pixmap(28, 28))
+        self.avatar_lbl.setPixmap(get_icon("user", color=ThemeManager.color("accent_primary"), size=24).pixmap(24, 24))
+        
+        # Refresh all nav buttons
+        for btn in self._buttons:
+            btn._update_icon_and_text()
 
     def toggle_collapse(self):
         self._expanded = not self._expanded
