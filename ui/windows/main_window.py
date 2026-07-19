@@ -155,7 +155,7 @@ class MainWindow(QMainWindow):
     def _placeholder(self, key: str) -> QWidget:
         w = QWidget(); w.setStyleSheet("background: transparent;")
         lay = QVBoxLayout(w); lay.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        lbl = QLabel(f"🚧  {key.replace('_',' ').title()}\nComing in Phase 6")
+        lbl = QLabel(f"{key.replace('_',' ').title()}\nUnder Construction")
         lbl.setStyleSheet("font-size:22px; color:#6B7280;")
         lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         lay.addWidget(lbl)
@@ -215,6 +215,16 @@ class MainWindow(QMainWindow):
         new_theme = ThemeManager.toggle_theme()
         auth.save_theme_preference(self._session.user_id, new_theme)
         self.toast.show_message("Theme Changed", f"Switched to {new_theme.title()} mode.", "info")
+        
+        # Refresh dynamic vector colors across sidebar and topbar
+        self.sidebar.refresh_icons()
+        self.topbar.update_icons()
+        
+        # Refresh current screen's dynamic elements (like KPI cards)
+        current_screen = self.content_stack.currentWidget()
+        if current_screen and hasattr(current_screen, "refresh"):
+            current_screen.refresh()
+            
         self.centralWidget().update()
 
     def _check_session(self):
