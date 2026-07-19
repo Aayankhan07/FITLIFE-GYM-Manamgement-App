@@ -96,14 +96,14 @@ QScrollBar::handle:horizontal {{
 QScrollBar::add-line:horizontal, QScrollBar::sub-line:horizontal {{ width: 0; }}
 
 /* ── GLASS CARD ─────────────────────────────────── */
-QFrame#glassCard {{
+#glassCard {{
     background: {c['glass_bg']};
     border: 1px solid {c['glass_border']};
     border-radius: 16px;
 }}
 
 /* ── SIDEBAR ─────────────────────────────────────── */
-QWidget#sidebar {{
+#sidebar {{
     background: {c['sidebar_bg']};
     border-right: 1px solid {c['glass_border']};
 }}
@@ -152,7 +152,7 @@ QLabel#sidebarLogoText {{
 }}
 
 /* User Info Frame inside Sidebar */
-QFrame#userFrame {{
+#userFrame {{
     background: {c['hover_bg']};
     border: 1px solid {c['glass_border']};
     border-radius: 12px;
@@ -169,7 +169,7 @@ QLabel#userRoleLbl {{
 }}
 
 /* ── TOPBAR ──────────────────────────────────────── */
-QWidget#topbar {{
+#topbar {{
     background: {c['glass_bg']};
     border-bottom: 1px solid {c['glass_border']};
 }}
@@ -202,17 +202,17 @@ QLabel#topbarRoleLbl {{
 }}
 
 /* ── KPI CARD ────────────────────────────────────── */
-QFrame#kpiCard {{
+#kpiCard {{
     background-color: {c['card_bg']};
     border: 1px solid {c['glass_border']};
     border-radius: 16px;
 }}
 
-QFrame#kpiCard[accent="primary"] {{ border-top: 3px solid {c['accent_primary']}; }}
-QFrame#kpiCard[accent="secondary"] {{ border-top: 3px solid {c['accent_secondary']}; }}
-QFrame#kpiCard[accent="success"] {{ border-top: 3px solid {c['accent_success']}; }}
-QFrame#kpiCard[accent="warning"] {{ border-top: 3px solid {c['accent_warning']}; }}
-QFrame#kpiCard[accent="danger"] {{ border-top: 3px solid {c['accent_danger']}; }}
+#kpiCard[accent="primary"] {{ border-top: 3px solid {c['accent_primary']}; }}
+#kpiCard[accent="secondary"] {{ border-top: 3px solid {c['accent_secondary']}; }}
+#kpiCard[accent="success"] {{ border-top: 3px solid {c['accent_success']}; }}
+#kpiCard[accent="warning"] {{ border-top: 3px solid {c['accent_warning']}; }}
+#kpiCard[accent="danger"] {{ border-top: 3px solid {c['accent_danger']}; }}
 
 /* KPI Icon Badge */
 QLabel#kpiIconBadge {{
@@ -224,19 +224,19 @@ QLabel#kpiIconBadge {{
     max-height: 36px;
 }}
 
-QFrame#kpiCard[accent="primary"] QLabel#kpiIconBadge {{
+#kpiCard[accent="primary"] QLabel#kpiIconBadge {{
     background-color: rgba(59, 130, 246, 0.15);
 }}
-QFrame#kpiCard[accent="secondary"] QLabel#kpiIconBadge {{
+#kpiCard[accent="secondary"] QLabel#kpiIconBadge {{
     background-color: rgba(6, 182, 212, 0.15);
 }}
-QFrame#kpiCard[accent="success"] QLabel#kpiIconBadge {{
+#kpiCard[accent="success"] QLabel#kpiIconBadge {{
     background-color: rgba(16, 185, 129, 0.15);
 }}
-QFrame#kpiCard[accent="warning"] QLabel#kpiIconBadge {{
+#kpiCard[accent="warning"] QLabel#kpiIconBadge {{
     background-color: rgba(245, 158, 11, 0.15);
 }}
-QFrame#kpiCard[accent="danger"] QLabel#kpiIconBadge {{
+#kpiCard[accent="danger"] QLabel#kpiIconBadge {{
     background-color: rgba(244, 63, 94, 0.15);
 }}
 
@@ -433,7 +433,7 @@ QPushButton#btnIcon:hover {{
 }}
 
 /* Info Banner Frame */
-QFrame#infoBanner {{
+#infoBanner {{
     background: rgba(6, 182, 212, 0.08);
     border: 1px solid rgba(6, 182, 212, 0.25);
     border-radius: 12px;
