@@ -60,6 +60,11 @@ class DashboardPlaceholder(QWidget):
         kpi_row = QHBoxLayout()
         kpi_row.setSpacing(16)
 
+        if role == ROLE_ADMIN:
+            import services.analytics_service as analytics
+            import services.branch_service as branch_svc
+            stats = analytics.get_dashboard_kpis(None)
+            branches = branch_svc.get_all_branches_dropdown()
             kpis = [
                 ("Total Branches",   str(len(branches)),      "branches", "",    "#0066FF"),
                 ("Total Members",    str(stats.get("total_members", 0)),     "members", "",   "#00F5FF"),
