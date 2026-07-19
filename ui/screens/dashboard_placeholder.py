@@ -26,7 +26,8 @@ class DashboardPlaceholder(QWidget):
     def _setup_ui(self):
         scroll = QScrollArea(self)
         scroll.setWidgetResizable(True)
-        scroll.setStyleSheet("QWidget { border: none; background: transparent; }")
+        scroll.setFrameShape(QFrame.Shape.NoFrame)
+        scroll.setStyleSheet("QScrollArea { background: transparent; }")
         scroll.setHorizontalScrollBarPolicy(Qt.ScrollBarPolicy.ScrollBarAlwaysOff)
 
         container = QWidget()
