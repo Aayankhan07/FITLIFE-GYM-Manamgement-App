@@ -130,6 +130,9 @@ def main():
 
     # ── Custom App Icon ───────────────────────────────────────────────────────
     def create_app_icon():
+        from ui.components.icons import get_icon
+        brand_icon = get_icon("brand", color="#00F5FF", size=96)
+        
         pixmap = QPixmap(128, 128)
         pixmap.fill(Qt.GlobalColor.transparent)
         painter = QPainter(pixmap)
@@ -143,10 +146,9 @@ def main():
         painter.setPen(Qt.PenStyle.NoPen)
         painter.drawRoundedRect(4, 4, 120, 120, 28, 28)
         
-        # Icon emoji centered
-        font = QFont("Inter", 54)
-        painter.setFont(font)
-        painter.drawText(pixmap.rect(), Qt.AlignmentFlag.AlignCenter, "💪")
+        # Draw the brand icon in the center
+        icon_pixmap = brand_icon.pixmap(72, 72)
+        painter.drawPixmap(28, 28, icon_pixmap)
         painter.end()
         return QIcon(pixmap)
 
