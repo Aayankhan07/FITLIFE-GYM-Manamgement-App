@@ -75,7 +75,6 @@ class PlansScreen(QWidget):
         self.usage_table.setColumnCount(4)
         self.usage_table.setHorizontalHeaderLabels(["Plan Name","Active Members","Duration","Price"])
         self.usage_table.verticalHeader().setVisible(False)
-        self.usage_table.horizontalHeader().setStretchLastSection(True)
         self.usage_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.usage_table.setStyleSheet("""
             QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
@@ -83,6 +82,10 @@ class PlansScreen(QWidget):
             QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
         """)
+        header = self.usage_table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
+        for i in range(1, 4):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
         self.usage_table.setMaximumHeight(200)
         main.addWidget(self.usage_table)
 
