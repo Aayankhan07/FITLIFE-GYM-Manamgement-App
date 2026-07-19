@@ -47,8 +47,8 @@ class MembersScreen(QWidget):
         container = QWidget()
         container.setStyleSheet("background: transparent;")
         self._main_layout = QVBoxLayout(container)
-        self._main_layout.setContentsMargins(28, 24, 28, 24)
-        self._main_layout.setSpacing(20)
+        self._main_layout.setContentsMargins(28, 12, 28, 20)
+        self._main_layout.setSpacing(14)
 
         # ── Header row ────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
@@ -144,7 +144,7 @@ class MembersScreen(QWidget):
         tc_layout = QVBoxLayout(table_card)
         tc_layout.setContentsMargins(16, 16, 16, 16)
         tc_layout.addWidget(self.table)
-        self._main_layout.addWidget(table_card)
+        self._main_layout.addWidget(table_card, 1)
 
         # Loading overlay
         self._overlay = LoadingOverlay(self)
