@@ -203,7 +203,6 @@ class AttendanceScreen(QWidget):
             ["Member","CNIC","Check In","Check Out","Status","Notes","Actions"]
         )
         self.log_table.verticalHeader().setVisible(False)
-        self.log_table.horizontalHeader().setStretchLastSection(True)
         self.log_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.log_table.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
@@ -212,6 +211,16 @@ class AttendanceScreen(QWidget):
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
             padding:10px;border:none;font-weight:bold;}
         """)
+        header = self.log_table.horizontalHeader()
+        header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)  # Member stretches
+        header.setSectionResizeMode(1, QHeaderView.ResizeMode.ResizeToContents) # CNIC
+        header.setSectionResizeMode(2, QHeaderView.ResizeMode.ResizeToContents) # Check In
+        header.setSectionResizeMode(3, QHeaderView.ResizeMode.ResizeToContents) # Check Out
+        header.setSectionResizeMode(4, QHeaderView.ResizeMode.Interactive)       # Status
+        self.log_table.setColumnWidth(4, 105)
+        header.setSectionResizeMode(5, QHeaderView.ResizeMode.Stretch)  # Notes stretches
+        header.setSectionResizeMode(6, QHeaderView.ResizeMode.Interactive)       # Actions
+        self.log_table.setColumnWidth(6, 120)
         right_layout.addWidget(self.log_table)
         splitter.addWidget(right_frame)
         splitter.setSizes([380, 800])
