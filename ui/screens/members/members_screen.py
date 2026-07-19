@@ -68,10 +68,10 @@ class MembersScreen(QWidget):
         # ── KPI row ───────────────────────────────────────────────────────────
         self._kpi_row = QHBoxLayout()
         self._kpi_row.setSpacing(14)
-        self._kpi_total    = KPICard("Total Members",    "—", "👥", "", "#0066FF")
-        self._kpi_active   = KPICard("Active",           "—", "✅", "", "#00E676")
-        self._kpi_expired  = KPICard("Expired",          "—", "⚠️","", "#FFB800")
-        self._kpi_inactive = KPICard("Inactive/Suspend", "—", "❌","", "#FF2D78")
+        self._kpi_total    = KPICard("Total Members",    "—", "members", "", "#0066FF")
+        self._kpi_active   = KPICard("Active",           "—", "success", "", "#00E676")
+        self._kpi_expired  = KPICard("Expired",          "—", "warning","", "#FFB800")
+        self._kpi_inactive = KPICard("Inactive/Suspend", "—", "error","", "#FF2D78")
         for card in [self._kpi_total, self._kpi_active, self._kpi_expired, self._kpi_inactive]:
             self._kpi_row.addWidget(card)
         self._main_layout.addLayout(self._kpi_row)
