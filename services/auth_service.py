@@ -96,6 +96,26 @@ def verify_password(plain: str, hashed: str) -> bool:
         return False
 
 
+def validate_password_strength(password: str) -> tuple[bool, str]:
+    """
+    Validate password strength.
+    Returns (is_strong, error_message).
+    """
+    if len(password) < 8:
+        return False, "Password must be at least 8 characters long."
+    if not any(c.isupper() for c in password):
+        return False, "Password must contain at least one uppercase letter (A-Z)."
+    if not any(c.islower() for c in password):
+        return False, "Password must contain at least one lowercase letter (a-z)."
+    if not any(c.isdigit() for c in password):
+        return False, "Password must contain at least one number (0-9)."
+    
+    special_chars = "@#$!%*?&()_+-=[]{}|;':\",./<>?^~`"
+    if not any(c in special_chars or not c.isalnum() for c in password):
+        return False, "Password must contain at least one special character (e.g. @, #, $, %, etc.)."
+    return True, ""
+
+
 # ─── Lockout Helpers ─────────────────────────────────────────────────────────
 def _is_locked(locked_until: Optional[datetime]) -> tuple[bool, int]:
     """Returns (is_locked, seconds_remaining)."""
@@ -126,6 +146,14 @@ def _reset_failed_attempts(user_id: int):
     with DatabaseConnection() as (conn, cursor):
         cursor.execute(
             "UPDATE users SET failed_attempts=0, locked_until=NULL, last_login=GETDATE(), updated_at=GETDATE() WHERE id=?",
+            (user_id,)
+        )
+
+
+def _clear_expired_lockout(user_id: int):
+    with DatabaseConnection() as (conn, cursor):
+        cursor.execute(
+            "UPDATE users SET failed_attempts=0, locked_until=NULL, updated_at=GETDATE() WHERE id=?",
             (user_id,)
         )
 
@@ -190,6 +218,9 @@ def login(username: str, password: str) -> dict:
                 "locked": True,
                 "lock_seconds": secs
             }
+        elif locked_until is not None:
+            _clear_expired_lockout(uid)
+            failed_attempts = 0
 
         # Verify password
         if not verify_password(password, pw_hash):
@@ -247,8 +278,9 @@ def change_password(user_id: int, old_password: str, new_password: str) -> dict:
             return {"success": False, "message": "User not found."}
         if not verify_password(old_password, row[0]):
             return {"success": False, "message": "Current password is incorrect."}
-        if len(new_password) < 8:
-            return {"success": False, "message": "New password must be at least 8 characters."}
+        is_strong, err_msg = validate_password_strength(new_password)
+        if not is_strong:
+            return {"success": False, "message": err_msg}
         new_hash = hash_password(new_password)
         with DatabaseConnection() as (conn, cursor):
             cursor.execute("UPDATE users SET password_hash=?, updated_at=GETDATE() WHERE id=?", (new_hash, user_id))
@@ -262,8 +294,9 @@ def change_password(user_id: int, old_password: str, new_password: str) -> dict:
 def admin_reset_password(admin_user_id: int, target_user_id: int, new_password: str) -> dict:
     """Admin resets another user's password."""
     try:
-        if len(new_password) < 8:
-            return {"success": False, "message": "Password must be at least 8 characters."}
+        is_strong, err_msg = validate_password_strength(new_password)
+        if not is_strong:
+            return {"success": False, "message": err_msg}
         new_hash = hash_password(new_password)
         with DatabaseConnection() as (conn, cursor):
             cursor.execute(
