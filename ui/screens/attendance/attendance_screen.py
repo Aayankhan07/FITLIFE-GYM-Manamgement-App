@@ -55,7 +55,7 @@ class AttendanceScreen(QWidget):
 
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
-        title = QLabel("📅  Attendance Management")
+        title = QLabel("Attendance Management")
         title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         self.clock_lbl = QLabel()
@@ -63,12 +63,12 @@ class AttendanceScreen(QWidget):
         hdr.addWidget(self.clock_lbl)
         main.addLayout(hdr)
         self._update_clock()
-
+ 
         # ── KPI row ───────────────────────────────────────────────────────────
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_present = KPICard("Present Today", "—", "✅","","#00E676")
-        self._kpi_late    = KPICard("Late Today",    "—", "⚠️","","#FFB800")
-        self._kpi_total   = KPICard("Total Logged",  "—", "📊","","#0066FF")
+        self._kpi_present = KPICard("Present Today", "—", "success","","#00E676")
+        self._kpi_late    = KPICard("Late Today",    "—", "warning","","#FFB800")
+        self._kpi_total   = KPICard("Total Logged",  "—", "analytics","","#0066FF")
         for k in [self._kpi_present, self._kpi_late, self._kpi_total]:
             krow.addWidget(k)
         krow.addStretch(); main.addLayout(krow)
