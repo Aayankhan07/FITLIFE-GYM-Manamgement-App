@@ -82,7 +82,6 @@ class ReportsModule(QWidget):
         t = QTableWidget(); t.setColumnCount(len(cols))
         t.setHorizontalHeaderLabels(cols)
         t.verticalHeader().setVisible(False)
-        t.horizontalHeader().setStretchLastSection(True)
         t.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         t.setStyleSheet("""
             QTableWidget{background:transparent;border:none;color:#F0F4FF;}
@@ -90,6 +89,10 @@ class ReportsModule(QWidget):
             QTableWidget::item:hover{background:rgba(0, 102, 255, 0.08);}
             QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
         """)
+        header = t.horizontalHeader()
+        header.setStretchLastSection(True)
+        for i in range(len(cols) - 1):
+            header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
         return t
 
     def _tab_shell(self, title: str, cols: list):
