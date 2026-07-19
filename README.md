@@ -86,7 +86,9 @@ FitLife/
 ├── ui/
 │   ├── theme/                 # ThemeManager: dark/light glassmorphism
 │   ├── components/            # Sidebar, TopBar, DataTable, GlassCard, Dialogs, Spinner
+│   │   └── icons.py           # Centralized dynamic XML SVG icon engine
 │   ├── windows/
+│   │   ├── login_window.py    # Animated login window with credentials verification
 │   │   └── main_window.py     # Shell: stack of all 19 screens + RBAC gating
 │   └── screens/               # 19 feature modules
 │       ├── dashboard_placeholder.py
@@ -110,11 +112,19 @@ FitLife/
 │   ├── error_handler.py       # Global crash handler (sys.excepthook)
 │   ├── logging_config.py      # Rotating 10MB file log + console
 │   ├── validators.py          # Sanitizers + validators for all input types
-│   └── health_check.py        # Startup check: packages, services, DB
-├── models/                    # Dataclass models
-├── assets/                    # Icons, fonts
-├── logs/                      # Auto-created, gitignored
-└── reports/                   # CSV/PDF export output, gitignored
+│   ├── health_check.py        # Startup check: packages, services, DB
+│   ├── formatters.py          # Date, currency, name text formatting utilities
+│   └── bmi_calculator.py      # Body Mass Index metrics processor
+├── models/                    # Dataclass entities mapping database records
+│   ├── user.py
+│   ├── member.py
+│   ├── trainer.py
+│   ├── branch.py
+│   ├── attendance.py
+│   ├── payment.py
+│   └── ...
+├── logs/                      # Auto-created, rotating log destination
+└── reports/                   # CSV export output
 ```
 
 ---
