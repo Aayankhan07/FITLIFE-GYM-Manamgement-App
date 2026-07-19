@@ -161,6 +161,28 @@ class DataTable(QWidget):
         self.prev_btn.setEnabled(self._current_page > 0)
         self.next_btn.setEnabled(self._current_page < total_pages - 1)
 
+        # Dynamic header sizing to prevent badge/button overlap and fill empty space
+        header = self.table.horizontalHeader()
+        stretch_col = -1
+        for i, col in enumerate(self._columns):
+            name_lower = col.lower()
+            if "name" in name_lower or "member" in name_lower or "description" in name_lower or "branch" in name_lower:
+                stretch_col = i
+                break
+        header.setStretchLastSection(stretch_col == -1)
+        for c_idx in range(self.table.columnCount()):
+            col_name = self._columns[c_idx].lower()
+            if c_idx == stretch_col:
+                header.setSectionResizeMode(c_idx, QHeaderView.ResizeMode.Stretch)
+            elif "status" in col_name:
+                header.setSectionResizeMode(c_idx, QHeaderView.ResizeMode.Interactive)
+                self.table.setColumnWidth(c_idx, 105)
+            elif "actions" in col_name:
+                header.setSectionResizeMode(c_idx, QHeaderView.ResizeMode.Interactive)
+                self.table.setColumnWidth(c_idx, 220)
+            else:
+                header.setSectionResizeMode(c_idx, QHeaderView.ResizeMode.ResizeToContents)
+
     def _prev_page(self):
         if self._current_page > 0:
             self._current_page -= 1
