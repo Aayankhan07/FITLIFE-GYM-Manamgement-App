@@ -223,7 +223,7 @@ class LoginWindow(QWidget):
         user_icon = QLabel()
         user_icon.setFixedSize(44, 44)
         from ui.components.icons import get_icon
-        user_icon.setPixmap(get_icon("user", color="rgba(255,255,255,0.6)", size=18).pixmap(18, 18))
+        user_icon.setPixmap(get_icon("user", color="#94A3B8", size=18).pixmap(18, 18))
         user_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         user_icon.setStyleSheet(
             "background: rgba(255,255,255,0.08); "
@@ -274,7 +274,7 @@ class LoginWindow(QWidget):
         pass_icon = QLabel()
         pass_icon.setFixedSize(44, 44)
         from ui.components.icons import get_icon
-        pass_icon.setPixmap(get_icon("lock", color="rgba(255,255,255,0.6)", size=18).pixmap(18, 18))
+        pass_icon.setPixmap(get_icon("lock", color="#94A3B8", size=18).pixmap(18, 18))
         pass_icon.setAlignment(Qt.AlignmentFlag.AlignCenter)
         pass_icon.setStyleSheet(
             "background: rgba(255,255,255,0.08); "
@@ -426,7 +426,7 @@ class LoginWindow(QWidget):
         from ui.components.icons import get_icon
         is_visible = self.password_input.echoMode() == QLineEdit.EchoMode.Normal
         icon_name = "eye-off" if is_visible else "eye"
-        self.eye_btn.setIcon(get_icon(icon_name, color="rgba(255,255,255,0.65)", size=18))
+        self.eye_btn.setIcon(get_icon(icon_name, color="#94A3B8", size=18))
         self.eye_btn.setIconSize(QSize(18, 18))
 
     def _attempt_login(self):
