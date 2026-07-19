@@ -62,14 +62,14 @@ class ConfirmDialog(QDialog):
         title_lbl = QLabel(title)
         title_lbl.setObjectName("heading2")
         title_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        title_lbl.setStyleSheet("font-size: 18px; font-weight: bold; color: #F0F4FF;")
+        title_lbl.setStyleSheet("font-size: 18px; font-weight: bold;")
         card_layout.addWidget(title_lbl)
 
         # Message
         msg_lbl = QLabel(message)
+        msg_lbl.setObjectName("labelMuted")
         msg_lbl.setWordWrap(True)
         msg_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        msg_lbl.setStyleSheet("color: #9CA3AF; font-size: 14px; line-height: 1.5;")
         card_layout.addWidget(msg_lbl)
 
         card_layout.addSpacing(8)
@@ -125,7 +125,12 @@ class InfoDialog(QDialog):
         cl.setSpacing(14)
 
         icons = {"info": "ℹ️", "success": "✅", "error": "❌", "warning": "⚠️"}
-        colors = {"info": "#00F5FF", "success": "#00E676", "error": "#FF2D78", "warning": "#FFB800"}
+        accent_key = {
+            "info": "accent_primary",
+            "success": "accent_success",
+            "error": "accent_danger",
+            "warning": "accent_warning",
+        }
 
         icon_lbl = QLabel(icons.get(dialog_type, "ℹ️"))
         icon_lbl.setStyleSheet("font-size: 36px;")
@@ -133,14 +138,15 @@ class InfoDialog(QDialog):
         cl.addWidget(icon_lbl)
 
         title_lbl = QLabel(title)
-        title_lbl.setStyleSheet(f"font-size:18px; font-weight:bold; color:{colors.get(dialog_type,'#F0F4FF')};")
+        color = ThemeManager.color(accent_key.get(dialog_type, "text_primary"))
+        title_lbl.setStyleSheet(f"font-size: 18px; font-weight: bold; color: {color};")
         title_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         cl.addWidget(title_lbl)
 
         msg_lbl = QLabel(message)
+        msg_lbl.setObjectName("labelMuted")
         msg_lbl.setWordWrap(True)
         msg_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        msg_lbl.setStyleSheet("color:#9CA3AF; font-size:14px;")
         cl.addWidget(msg_lbl)
 
         ok_btn = QPushButton("OK")
