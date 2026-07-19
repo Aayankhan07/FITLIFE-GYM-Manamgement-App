@@ -38,7 +38,7 @@ class DashboardPlaceholder(QWidget):
 
         # ── Welcome Header ─────────────────────────────────────────────────────
         header_row = QHBoxLayout()
-        greeting = QLabel(f"Welcome back, {self._session.full_name} 👋")
+        greeting = QLabel(f"Welcome back, {self._session.full_name}")
         greeting.setObjectName("heading1")
         header_row.addWidget(greeting)
         header_row.addStretch()
@@ -60,25 +60,20 @@ class DashboardPlaceholder(QWidget):
         kpi_row = QHBoxLayout()
         kpi_row.setSpacing(16)
 
-        if role == ROLE_ADMIN:
-            import services.analytics_service as analytics
-            import services.branch_service as branch_svc
-            stats = analytics.get_dashboard_kpis(None)
-            branches = branch_svc.get_all_branches_dropdown()
             kpis = [
-                ("Total Branches",   str(len(branches)),      "🏢", "",    "#0066FF"),
-                ("Total Members",    str(stats.get("total_members", 0)),     "👥", "",   "#00F5FF"),
-                ("Net Profit",       f"Rs. {stats.get('monthly_profit', 0):,.0f}",  "💰", "",    "#00E676"),
-                ("Active Trainers",  str(stats.get("active_trainers", 0)),      "💪", "",         "#FFB800"),
+                ("Total Branches",   str(len(branches)),      "branches", "",    "#0066FF"),
+                ("Total Members",    str(stats.get("total_members", 0)),     "members", "",   "#00F5FF"),
+                ("Net Profit",       f"Rs. {stats.get('monthly_profit', 0):,.0f}",  "finance", "",    "#00E676"),
+                ("Active Trainers",  str(stats.get("active_trainers", 0)),      "trainers", "",         "#FFB800"),
             ]
         elif role == ROLE_MANAGER:
             import services.analytics_service as analytics
             stats = analytics.get_dashboard_kpis(self._session.branch_id)
             kpis = [
-                ("Branch Members",   str(stats.get("total_members", 0)),  "👥", "", "#00F5FF"),
-                ("Net Profit",       f"Rs. {stats.get('monthly_profit', 0):,.0f}",  "💰", "", "#00E676"),
-                ("Attendance Today", str(stats.get("today_attendance", 0)),  "📅", "", "#0066FF"),
-                ("Pending Invoices", str(stats.get("pending_payments", 0)),  "📄", "", "#FFB800"),
+                ("Branch Members",   str(stats.get("total_members", 0)),  "members", "", "#00F5FF"),
+                ("Net Profit",       f"Rs. {stats.get('monthly_profit', 0):,.0f}",  "finance", "", "#00E676"),
+                ("Attendance Today", str(stats.get("today_attendance", 0)),  "attendance", "", "#0066FF"),
+                ("Pending Invoices", str(stats.get("pending_payments", 0)),  "plans", "", "#FFB800"),
             ]
         elif role == ROLE_TRAINER:
             import services.trainer_service as t_svc
@@ -100,15 +95,15 @@ class DashboardPlaceholder(QWidget):
                 monthly_days = str(len(cal_data))
                 
             kpis = [
-                ("Assigned Members", assigned_count, "👥", "", "#0066FF"),
-                ("Days Present (Month)", monthly_days, "📅", "", "#00F5FF"),
+                ("Assigned Members", assigned_count, "members", "", "#0066FF"),
+                ("Days Present (Month)", monthly_days, "attendance", "", "#00F5FF"),
             ]
         else:  # MEMBER
             kpis = [
-                ("Membership Status","Active","💳", "", "#00E676"),
-                ("Days Remaining",   "—",    "⏳", "", "#00F5FF"),
-                ("Attendance %",     "—",    "📅", "", "#0066FF"),
-                ("Current Plan",     "—",    "🏋️","", "#FFB800"),
+                ("Membership Status","Active","plans", "", "#00E676"),
+                ("Days Remaining",   "—",    "schedule", "", "#00F5FF"),
+                ("Attendance %",     "—",    "attendance", "", "#0066FF"),
+                ("Current Plan",     "—",    "plans", "", "#FFB800"),
             ]
 
         self._cards = []
@@ -134,22 +129,22 @@ class DashboardPlaceholder(QWidget):
         from PyQt6.QtWidgets import QPushButton
         if role in (ROLE_ADMIN, ROLE_MANAGER):
             actions = [
-                ("➕ Add Member",    "members"),
-                ("📅 Record Attendance", "attendance"),
-                ("💰 Finance Center", "finance"),
-                ("📊 View Analytics", "analytics"),
+                ("Add Member",    "members"),
+                ("Record Attendance", "attendance"),
+                ("Finance Center", "finance"),
+                ("View Analytics", "analytics"),
             ]
         elif role == ROLE_TRAINER:
             actions = [
-                ("📅 View Attendance", "attendance"),
-                ("📈 Log Progress",  "progress"),
-                ("⏰ Manage Schedule", "schedule"),
+                ("View Attendance", "attendance"),
+                ("Log Progress",  "progress"),
+                ("Manage Schedule", "schedule"),
             ]
         else:
             actions = [
-                ("🏋️ My Workout",   "workout_plans"),
-                ("🥗 My Diet Plan", "diet_plans"),
-                ("📅 My Attendance","attendance"),
+                ("My Workout",   "workout_plans"),
+                ("My Diet Plan", "diet_plans"),
+                ("My Attendance","attendance"),
             ]
 
         for label, key in actions:
@@ -169,7 +164,7 @@ class DashboardPlaceholder(QWidget):
         info_layout.setContentsMargins(20, 16, 20, 16)
 
         info_lbl = QLabel(
-            "ℹ️  FitLife v1.0.0  |  Phase 1 Foundation Complete  |  "
+            "FitLife v1.0.0  |  Phase 1 Foundation Complete  |  "
             "Full modules load in Phase 2+  |  Database Connected"
         )
         info_lbl.setObjectName("infoBannerText")
@@ -265,7 +260,7 @@ class DashboardPlaceholder(QWidget):
         cal_frame = QFrame()
         cal_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         cal_layout = QVBoxLayout(cal_frame)
-        cal_layout.addWidget(SectionHeader("📅  My Attendance"))
+        cal_layout.addWidget(SectionHeader("My Attendance"))
         self.cal_widget = QCalendarWidget()
         self.cal_widget.setStyleSheet("""
             QCalendarWidget QWidget { alternate-background-color: transparent; }
@@ -279,7 +274,7 @@ class DashboardPlaceholder(QWidget):
         mem_frame = QFrame()
         mem_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         mem_layout = QVBoxLayout(mem_frame)
-        mem_layout.addWidget(SectionHeader("👥  Assigned Members"))
+        mem_layout.addWidget(SectionHeader("Assigned Members"))
         self.mem_table = QTableWidget()
         self.mem_table.setColumnCount(3)
         self.mem_table.setHorizontalHeaderLabels(["Member Name", "Status", "Goal"])
@@ -294,7 +289,7 @@ class DashboardPlaceholder(QWidget):
         app_frame = QFrame()
         app_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         app_layout = QVBoxLayout(app_frame)
-        app_layout.addWidget(SectionHeader("📋  Pending Approvals"))
+        app_layout.addWidget(SectionHeader("Pending Approvals"))
         self.app_table = QTableWidget()
         self.app_table.setColumnCount(4)
         self.app_table.setHorizontalHeaderLabels(["Type", "Plan Name", "Member", "Action"])
@@ -309,7 +304,7 @@ class DashboardPlaceholder(QWidget):
         sch_frame = QFrame()
         sch_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         sch_layout = QVBoxLayout(sch_frame)
-        sch_layout.addWidget(SectionHeader("⏰  My Schedule"))
+        sch_layout.addWidget(SectionHeader("My Schedule"))
         self.sch_table = QTableWidget()
         self.sch_table.setColumnCount(3)
         self.sch_table.setHorizontalHeaderLabels(["Time", "Member", "Status"])
@@ -365,7 +360,7 @@ class DashboardPlaceholder(QWidget):
             self.app_table.setItem(r, 0, QTableWidgetItem(ptype))
             self.app_table.setItem(r, 1, QTableWidgetItem(plan[3]))
             self.app_table.setItem(r, 2, QTableWidgetItem(plan[1]))
-            btn = QPushButton("✅ Approve")
+            btn = QPushButton("Approve")
             btn.setStyleSheet("QPushButton{background:#00E676; color:#000; font-weight:bold; border-radius:4px;} QPushButton:hover{background:#00B248;}")
             btn.clicked.connect(lambda _, pid=plan[0]: self._do_approve(ptype, pid, approve_fn))
             self.app_table.setCellWidget(r, 3, btn)
@@ -407,7 +402,7 @@ class DashboardPlaceholder(QWidget):
         cal_frame = QFrame()
         cal_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         cal_layout = QVBoxLayout(cal_frame)
-        cal_layout.addWidget(SectionHeader("📅  My Attendance"))
+        cal_layout.addWidget(SectionHeader("My Attendance"))
         self.mem_cal_widget = QCalendarWidget()
         self.mem_cal_widget.setStyleSheet("""
             QCalendarWidget QWidget { alternate-background-color: transparent; }
@@ -421,7 +416,7 @@ class DashboardPlaceholder(QWidget):
         wo_frame = QFrame()
         wo_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         wo_layout = QVBoxLayout(wo_frame)
-        self.wo_header = SectionHeader("🏋️  My Workout Plan")
+        self.wo_header = SectionHeader("My Workout Plan")
         wo_layout.addWidget(self.wo_header)
         self.mem_wo_table = QTableWidget()
         self.mem_wo_table.setColumnCount(4)
@@ -437,7 +432,7 @@ class DashboardPlaceholder(QWidget):
         dp_frame = QFrame()
         dp_frame.setStyleSheet("QFrame { background:rgba(255,255,255,0.05); border:1px solid rgba(0, 102, 255, 0.3); border-radius:12px; }")
         dp_layout = QVBoxLayout(dp_frame)
-        self.dp_header = SectionHeader("🥗  My Diet Plan")
+        self.dp_header = SectionHeader("My Diet Plan")
         dp_layout.addWidget(self.dp_header)
         self.mem_dp_table = QTableWidget()
         self.mem_dp_table.setColumnCount(4)
