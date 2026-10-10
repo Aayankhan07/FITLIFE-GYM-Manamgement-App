@@ -67,21 +67,47 @@ def ask_question(question: str, role: str, user_id: int,
 
 def generate_workout_plan(member_name: str, goal: str, weeks: int,
                           fitness_level: str = "Intermediate") -> dict:
-    prompt = (f"Create a {weeks}-week workout plan for {member_name}. "
-              f"Goal: {goal}. Level: {fitness_level}. Format: Day|Exercise|Sets|Reps|Rest")
+    # Anonymize PII: strip real name and identity before sending to third-party LLM
+    anonymous_label = "Member"
+    prompt = (f"Create a {weeks}-week workout plan for a {anonymous_label}. "
+              f"Goal: {goal}. Level: {fitness_level}. Format: Day|Exercise|Sets|Reps|Rest. "
+              f"Note: Status must be Pending Trainer Review before activation.")
     if not is_api_configured():
-        return {"success": True, "plan": _fallback_workout(goal, weeks), "source": "rule_based"}
+        return {
+            "success": True,
+            "plan": _fallback_workout(goal, weeks),
+            "source": "rule_based",
+            "status": "Pending Trainer Review"
+        }
     r = ask_question(prompt, ROLE_TRAINER, 0)
-    return {"success": True, "plan": r.get("answer", ""), "source": r.get("source")}
+    return {
+        "success": True,
+        "plan": r.get("answer", ""),
+        "source": r.get("source"),
+        "status": "Pending Trainer Review"
+    }
 
 
 def generate_diet_plan(member_name: str, goal: str, calories: int) -> dict:
-    prompt = (f"Create a daily diet plan for {member_name}. "
-              f"Goal: {goal}. Calories: {calories} kcal. Format: Meal|Food|Qty|Cal|Protein|Carbs|Fat")
+    # Anonymize PII: strip real name and identity before sending to third-party LLM
+    anonymous_label = "Member"
+    prompt = (f"Create a daily diet plan for a {anonymous_label}. "
+              f"Goal: {goal}. Calories: {calories} kcal. Format: Meal|Food|Qty|Cal|Protein|Carbs|Fat. "
+              f"Note: Status must be Pending Trainer Review before activation.")
     if not is_api_configured():
-        return {"success": True, "plan": _fallback_diet(goal, calories), "source": "rule_based"}
+        return {
+            "success": True,
+            "plan": _fallback_diet(goal, calories),
+            "source": "rule_based",
+            "status": "Pending Trainer Review"
+        }
     r = ask_question(prompt, ROLE_TRAINER, 0)
-    return {"success": True, "plan": r.get("answer", ""), "source": r.get("source")}
+    return {
+        "success": True,
+        "plan": r.get("answer", ""),
+        "source": r.get("source"),
+        "status": "Pending Trainer Review"
+    }
 
 
 def _build_system_prompt(role: str) -> str:

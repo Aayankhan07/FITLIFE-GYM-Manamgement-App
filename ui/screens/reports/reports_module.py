@@ -13,6 +13,7 @@ import services.reports_service as rep_svc
 import services.branch_service as branch_svc
 from config.constants import ROLE_ADMIN, MEMBER_STATUSES
 from ui.components.confirm_dialog import InfoDialog
+from ui.theme.theme_manager import ThemeManager
 
 
 class ReportsModule(QWidget):
@@ -54,10 +55,10 @@ class ReportsModule(QWidget):
 
         # Tabs
         self._tabs = QTabWidget()
-        self._tabs.setStyleSheet("""
-            QTabWidget::pane{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;}
-            QTabBar::tab{background:rgba(0,0,0,0.2);color:#9CA3AF;padding:10px 20px;border-radius:8px;margin-right:4px;}
-            QTabBar::tab:selected{background:rgba(0, 102, 255, 0.3);color:#0066FF;font-weight:bold;}
+        self._tabs.setStyleSheet(f"""
+            QTabWidget::pane{{background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px;}}
+            QTabBar::tab{{background:transparent;color:{ThemeManager.color('text_secondary')};padding:10px 20px;border-radius:8px;margin-right:4px;}}
+            QTabBar::tab:selected{{background:{ThemeManager.color('hover_bg')};color:{ThemeManager.color('accent_primary')};font-weight:bold;}}
         """)
 
         reports = [
@@ -83,11 +84,11 @@ class ReportsModule(QWidget):
         t.setHorizontalHeaderLabels(cols)
         t.verticalHeader().setVisible(False)
         t.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        t.setStyleSheet("""
-            QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.12);}
-            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.08);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
+        t.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QTableWidget::item:hover{{background:{ThemeManager.color('hover_bg')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:10px;border:none;font-weight:bold;}}
         """)
         header = t.horizontalHeader()
         header.setStretchLastSection(True)

@@ -348,9 +348,28 @@ def _init_sqlite_database(db_path: Path):
             c.execute("SELECT name FROM sqlite_master WHERE type='table';")
             if c.fetchone():
                 has_tables = True
+            
+            # Auto-migrate schema additions if missing
+            if has_tables:
+                c.execute("PRAGMA table_info(members);")
+                columns = [col[1] for col in c.fetchall()]
+                if "is_deleted" not in columns:
+                    c.execute("ALTER TABLE members ADD COLUMN is_deleted INTEGER NOT NULL DEFAULT 0;")
+                if "deleted_at" not in columns:
+                    c.execute("ALTER TABLE members ADD COLUMN deleted_at DATETIME NULL;")
+                
+                c.execute("""
+                    CREATE TABLE IF NOT EXISTS sys_job_locks (
+                        job_name    TEXT PRIMARY KEY,
+                        locked_by   TEXT NOT NULL,
+                        locked_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+                        expires_at  DATETIME NOT NULL
+                    );
+                """)
+                conn.commit()
             conn.close()
-        except Exception:
-            pass
+        except Exception as e:
+            logger.warning(f"Schema upgrade check encountered: {e}")
 
     if not has_tables:
         logger.info(f"Initializing SQLite database at {db_path}...")
@@ -382,6 +401,11 @@ def initialize_pool(max_retries: int = 3, retry_delay: float = 2.0):
     """
     global _pool, _connection_string, _use_sqlite
     
+    settings = _load_settings()
+    db_cfg = settings.get("database", {})
+    if db_cfg.get("mode") == "standalone":
+        _use_sqlite = True
+
     if _use_sqlite:
         try:
             logger.info("Initializing SQLite DB pool...")
@@ -393,9 +417,6 @@ def initialize_pool(max_retries: int = 3, retry_delay: float = 2.0):
         except Exception as e:
             logger.critical(f"Failed to initialize SQLite DB pool: {e}")
             return False
-
-    settings = _load_settings()
-    db_cfg = settings.get("database", {})
     _connection_string = _build_connection_string(db_cfg)
     pool_size = db_cfg.get("pool_size", 5)
 
@@ -440,18 +461,40 @@ def close_pool():
 def test_connection(max_retries: int = 3, retry_delay: float = 2.0) -> bool:
     """
     Test database connectivity without using the pool.
-    Used for the startup check and connection error screen.
+    Honors explicit database mode ('standalone' vs 'networked').
+    Prevents silent auto-failover split-brain risk.
     """
     global _use_sqlite
     
+    settings = _load_settings()
+    db_cfg = settings.get("database", {})
+    db_mode = db_cfg.get("mode", "standalone" if _use_sqlite else "networked")
+    allow_fallback = db_cfg.get("allow_auto_fallback", False)
+
+    # 1. Explicit Standalone mode -> direct SQLite initialization
+    if db_mode == "standalone":
+        _use_sqlite = True
+        try:
+            db_path = Path(__file__).parent / "fitlife.db"
+            _init_sqlite_database(db_path)
+            conn = create_sqlite_connection(db_path)
+            conn.close()
+            logger.info("SQLite standalone connection ready.")
+            return True
+        except Exception as e:
+            logger.error(f"SQLite standalone connection test failed: {e}")
+            return False
+
+    # 2. Networked Mode -> Test MS SQL Server
     try:
-        settings = _load_settings()
-        db_cfg = settings.get("database", {})
         conn_str = _build_connection_string(db_cfg)
     except Exception as e:
-        logger.error(f"Failed to load settings: {e}. Falling back to SQLite...")
-        _use_sqlite = True
-        return True
+        logger.error(f"Failed to load settings or connection string: {e}")
+        if allow_fallback:
+            logger.warning("Falling back to SQLite because allow_auto_fallback is enabled.")
+            _use_sqlite = True
+            return True
+        return False
 
     for attempt in range(1, max_retries + 1):
         try:
@@ -466,7 +509,15 @@ def test_connection(max_retries: int = 3, retry_delay: float = 2.0) -> bool:
             if attempt < max_retries:
                 time.sleep(retry_delay)
 
-    logger.warning("MS SQL Server connection failed. Falling back to SQLite...")
+    # If networked mode failed and fallback is NOT explicitly allowed, FAIL SAFE
+    if not allow_fallback:
+        logger.critical(
+            "MS SQL Server connection failed in networked mode. "
+            "Silent SQLite failover is DISABLED to prevent split-brain data divergence."
+        )
+        return False
+
+    logger.warning("MS SQL Server connection failed. Falling back to SQLite as permitted by configuration...")
     _use_sqlite = True
     try:
         db_path = Path(__file__).parent / "fitlife.db"

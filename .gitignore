@@ -1,57 +1,83 @@
-# Git ignore — exclude sensitive and generated files
+# ==============================================================================
+# FitLife Gym Management System — Git Ignore Rules
+# ==============================================================================
 
-# Config with real credentials
+# ─── Environment & Sensitive Credentials ─────────────────────────────────────
 config/settings.json
+.env
+.env.*
+!.env.example
 
-# Python cache
+# ─── Python Bytecode & Cache ──────────────────────────────────────────────────
 __pycache__/
 *.py[cod]
 *$py.class
-*.pyc
+*.so
+.python-version
 
-# Virtual environments
+# ─── Virtual Environments ─────────────────────────────────────────────────────
 venv/
 env/
+ENV/
 .venv/
+env.bak/
+venv.bak/
 
-# IDE files
+# ─── Databases & Storage Locks ────────────────────────────────────────────────
+database/fitlife.db
+database/test_fitlife.db
+*.db
+*.sqlite
+*.sqlite3
+*.db-journal
+*.db-wal
+*.db-shm
+
+# ─── Generated Reports & Exports (Preserve Folder via .gitkeep) ───────────────
+reports/*
+!reports/.gitkeep
+
+# ─── Application Logs (Preserve Folder via .gitkeep) ──────────────────────────
+logs/*
+!logs/.gitkeep
+
+# ─── Uploaded Assets & Media ─────────────────────────────────────────────────
+assets/images/photos/*
+!assets/images/photos/.gitkeep
+
+# ─── IDE & Editor Settings ───────────────────────────────────────────────────
 .vscode/
 .idea/
 *.swp
 *.swo
+*~
+*.sublime-project
+*.sublime-workspace
 
-# Generated reports (keep folder, not contents)
-reports/*.pdf
-reports/*.xlsx
-reports/*.csv
-
-# Log files
-logs/*.log
-
-# Uploaded photos
-assets/images/photos/
-
-# OS files
+# ─── Operating System Metadata ────────────────────────────────────────────────
 .DS_Store
+.DS_Store?
+._*
+.Spotlight-V100
+.Trashes
+ehthumbs.db
 Thumbs.db
 desktop.ini
+*.stackdump
 
-# Distribution / packaging
+# ─── Packaging & Build Artifacts ──────────────────────────────────────────────
 dist/
 build/
 *.egg-info/
+*.egg
+*.spec
+*.exe
 
-# Dev / test scripts
-verify_all.py
-
-# Databases (Local fallback state)
-database/fitlife.db
-*.db
-*.sqlite
-*.sqlite3
-
-# Test and coverage artifacts
+# ─── Testing, Linting & Coverage Artifacts ───────────────────────────────────
 .pytest_cache/
 .coverage
 htmlcov/
+.mypy_cache/
+.ruff_cache/
 .ipynb_checkpoints/
+verify_all.py

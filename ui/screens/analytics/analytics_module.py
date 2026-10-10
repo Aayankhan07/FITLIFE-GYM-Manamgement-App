@@ -168,7 +168,7 @@ def _make_vertical_bar_chart(title, data, color='#0066FF', prefix=''):
     return fig
 
 
-def _make_line_chart(title, data, color='#00F5FF'):
+def _make_line_chart(title, data, color='#3B82F6'):
     """Create an area line chart."""
     fig = Figure(figsize=(4, 3), dpi=96)
     ax = fig.add_subplot(111)
@@ -196,16 +196,16 @@ def _make_donut_chart(title, data, colors=None):
     """Create a donut pie chart."""
     fig = Figure(figsize=(3.5, 3), dpi=96)
     ax = fig.add_subplot(111)
-    fig.patch.set_facecolor('#0D1117')
-    ax.set_facecolor('#0D1117')
-    ax.set_title(title, color='#E6EDF3', fontsize=12, fontweight='bold', pad=10)
+    fig.patch.set_facecolor('#141518')
+    ax.set_facecolor('#141518')
+    ax.set_title(title, color='#F4F5F8', fontsize=12, fontweight='bold', pad=10)
 
     if not data:
         return fig
 
     labels = [str(d[0]) for d in data]
     values = [float(d[1]) for d in data]
-    default_colors = ['#00E676', '#FFB800', '#FF2D78', '#6B7280', '#0066FF', '#00F5FF']
+    default_colors = ['#FA5A3C', '#3B82F6', '#10B981', '#F59E0B', '#EF4444', '#6B7280']
     clrs = colors if colors else default_colors[:len(values)]
 
     wedges, texts, autotexts = ax.pie(

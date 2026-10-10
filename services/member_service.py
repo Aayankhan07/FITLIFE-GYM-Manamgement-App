@@ -56,7 +56,7 @@ def get_all_members(branch_id: Optional[int] = None,
             LEFT JOIN branches b  ON m.branch_id = b.id
             LEFT JOIN trainers t  ON m.trainer_id = t.id
             LEFT JOIN membership_plans mp ON m.membership_plan_id = mp.id
-            WHERE  1=1
+            WHERE  coalesce(m.is_deleted, 0) = 0
         """
         params = []
         if branch_id:
@@ -177,6 +177,21 @@ def create_member(data: dict, created_by_user_id: int) -> dict:
             cursor.execute("SELECT @@IDENTITY")
             new_id = int(cursor.fetchone()[0])
 
+            # Historical subscription ledger: record membership span
+            if data.get("membership_plan_id") and data.get("expiry_date"):
+                try:
+                    cursor.execute("""
+                        INSERT INTO memberships (member_id, plan_id, start_date, end_date, status, created_at)
+                        VALUES (?, ?, ?, ?, 'Active', CURRENT_TIMESTAMP)
+                    """, (
+                        new_id,
+                        data["membership_plan_id"],
+                        data.get("join_date", date.today()),
+                        data["expiry_date"]
+                    ))
+                except Exception as sub_err:
+                    logger.warning(f"Could not write historical membership record: {sub_err}")
+
         _log_audit(created_by_user_id, ACTION_CREATE, "Members", new_id,
                    new_val=data["full_name"])
         logger.info(f"Member created: {data['full_name']} (id={new_id})")
@@ -214,6 +229,20 @@ def update_member(member_id: int, data: dict, updated_by_user_id: int) -> dict:
                 data.get("status", MEMBER_STATUS_ACTIVE),
                 member_id,
             ))
+            # If membership plan or expiry date updated, record renewal in historical memberships ledger
+            if data.get("membership_plan_id") and data.get("expiry_date"):
+                try:
+                    cursor.execute("""
+                        INSERT INTO memberships (member_id, plan_id, start_date, end_date, status, created_at)
+                        VALUES (?, ?, CURRENT_DATE, ?, 'Active', CURRENT_TIMESTAMP)
+                    """, (
+                        member_id,
+                        data["membership_plan_id"],
+                        data["expiry_date"]
+                    ))
+                except Exception as ren_err:
+                    logger.debug(f"Historical renewal ledger update: {ren_err}")
+
         _log_audit(updated_by_user_id, ACTION_UPDATE, "Members", member_id,
                    new_val=data["full_name"])
         return {"success": True, "message": "Member updated successfully."}
@@ -224,16 +253,26 @@ def update_member(member_id: int, data: dict, updated_by_user_id: int) -> dict:
         return {"success": False, "message": f"Failed to update member: {e}"}
 
 
-# ─── DELETE ───────────────────────────────────────────────────────────────────
+# ─── DELETE (SOFT DELETE) ───────────────────────────────────────────────────────
 def delete_member(member_id: int, deleted_by_user_id: int) -> dict:
     try:
         row = get_member_by_id(member_id)
         name = row[1] if row else str(member_id)
         with DatabaseConnection() as (conn, cursor):
-            cursor.execute("DELETE FROM members WHERE id=?", (member_id,))
+            cursor.execute(
+                """
+                UPDATE members
+                SET is_deleted = 1,
+                    deleted_at = CURRENT_TIMESTAMP,
+                    status = 'Inactive',
+                    updated_at = CURRENT_TIMESTAMP
+                WHERE id = ?
+                """,
+                (member_id,)
+            )
         _log_audit(deleted_by_user_id, ACTION_DELETE, "Members", member_id,
-                   old_val=name)
-        return {"success": True, "message": f"Member '{name}' deleted successfully."}
+                   old_val=name, new_val="Soft deleted")
+        return {"success": True, "message": f"Member '{name}' safely deleted (archived)."}
     except Exception as e:
         logger.error(f"delete_member error: {e}", exc_info=True)
         return {"success": False, "message": f"Failed to delete member: {e}"}

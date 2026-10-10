@@ -80,10 +80,10 @@ class ToastNotification(QFrame):
     """Slide-in toast notification from top-right."""
 
     COLORS = {
-        "success": ("#00E676", "#003319"),
-        "error":   ("#FF2D78", "#2D0014"),
-        "warning": ("#FFB800", "#2D2000"),
-        "info":    ("#00F5FF", "#002D33"),
+        "success": ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "error":   ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "warning": ("#F59E0B", "rgba(245, 158, 11, 0.15)"),
+        "info":    ("#3B82F6", "rgba(59, 130, 246, 0.15)"),
     }
     ICONS = {"success": "✅", "error": "❌", "warning": "⚠️", "info": "ℹ️"}
 

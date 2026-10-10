@@ -18,6 +18,7 @@ from utils.thread_worker import Worker
 import services.membership_service as membership_svc
 import services.member_service as member_svc
 import services.branch_service as branch_svc
+from ui.theme.theme_manager import ThemeManager
 
 
 # ── Plans List ────────────────────────────────────────────────────────────────
@@ -76,11 +77,11 @@ class PlansScreen(QWidget):
         self.usage_table.setHorizontalHeaderLabels(["Plan Name","Active Members","Duration","Price"])
         self.usage_table.verticalHeader().setVisible(False)
         self.usage_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.usage_table.setStyleSheet("""
-            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
-            border-radius:12px;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
+        self.usage_table.setStyleSheet(f"""
+            QTableWidget{{background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};
+            border-radius:12px;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:10px;border:none;font-weight:bold;}}
         """)
         header = self.usage_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
@@ -93,7 +94,8 @@ class PlansScreen(QWidget):
         cols = ["ID","Plan Name","Duration (days)","Price","Description","Active","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -146,17 +148,14 @@ class PlansScreen(QWidget):
             is_active = bool(p[5])
             toggle_lbl = "🔴 Deactivate" if is_active else "🟢 Activate"
             toggle_color = "#FF2D78" if is_active else "#00E676"
-            for label, color, handler in [
-                ("✏️ Edit",     "#0066FF", lambda _, i=pid: self.open_edit_form.emit(i)),
-                (toggle_lbl, toggle_color, lambda _, i=pid: self._toggle_active(i)),
-                ("🗑 Del",     "#FF2D78", lambda _, i=pid, n=p[1]: self._confirm_delete(i,n)),
+            for label, cls_name, handler in [
+                ("✏️ Edit",     "btn-edit", lambda _, i=pid: self.open_edit_form.emit(i)),
+                (toggle_lbl, "btn-view" if not is_active else "btn-warning", lambda _, i=pid: self._toggle_active(i)),
+                ("🗑 Del",     "btn-delete", lambda _, i=pid, n=p[1]: self._confirm_delete(i,n)),
             ]:
-                btn = QPushButton(label); btn.setFixedHeight(32)
-                btn.setStyleSheet(
-                    f"QPushButton{{background:rgba(0,0,0,0.2);border:1px solid {color};"
-                    f"border-radius:6px;color:{color};font-size: 13px;padding:0 8px;}}"
-                    f"QPushButton:hover{{background:{color}22;}}"
-                )
+                btn = QPushButton(label); btn.setFixedHeight(30)
+                btn.setProperty("class", cls_name)
+                btn.setCursor(Qt.CursorShape.PointingHandCursor)
                 btn.clicked.connect(handler); bl.addWidget(btn)
             tw.setCellWidget(r_idx, 6, cell)
 

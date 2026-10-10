@@ -14,6 +14,7 @@ from ui.components.glass_card import KPICard, StatusBadge, SectionHeader
 from ui.components.data_table import DataTable
 from ui.components.confirm_dialog import ConfirmDialog, InfoDialog
 from ui.components.loading_spinner import LoadingOverlay
+from ui.theme.theme_manager import ThemeManager
 from utils.thread_worker import Worker
 import services.workout_service as workout_svc
 import services.member_service as member_svc
@@ -69,7 +70,8 @@ class WorkoutPlansScreen(QWidget):
 
         # Status filter
         fbar = QFrame()
-        fbar.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
+        fbar.setObjectName("glassCard")
+        fbar.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px; }}")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Status:"))
         self.status_filter = QComboBox(); self.status_filter.setFixedHeight(34)
@@ -89,7 +91,8 @@ class WorkoutPlansScreen(QWidget):
             if r < len(self.table._filtered_data) else None
         )
         tc = QFrame()
-        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -145,22 +148,25 @@ class WorkoutPlansScreen(QWidget):
             bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
 
             view_btn = QPushButton("👁 View")
-            view_btn.setFixedHeight(32)
-            view_btn.setStyleSheet("QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #0097B2,stop:1 #00D4E8);border:none;border-radius:6px;color:#001A1F;font-weight:600;font-size: 13px;padding:0 8px;}QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #00B8D9,stop:1 #00F5FF);}")
+            view_btn.setFixedHeight(30)
+            view_btn.setProperty("class", "btn-view")
+            view_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             view_btn.clicked.connect(lambda _, i=pid: self.open_detail.emit(i))
             bl.addWidget(view_btn)
 
             if role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
                 edit_btn = QPushButton("✏️ Edit")
-                edit_btn.setFixedHeight(32)
-                edit_btn.setStyleSheet("QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #0066FF,stop:1 #004BCC);border:none;border-radius:6px;color:#FFFFFF;font-weight:600;font-size: 13px;padding:0 8px;}QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #3B82F6,stop:1 #0066FF);}")
+                edit_btn.setFixedHeight(30)
+                edit_btn.setProperty("class", "btn-edit")
+                edit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
                 edit_btn.clicked.connect(lambda _, i=pid: self.open_edit.emit(i))
                 bl.addWidget(edit_btn)
 
                 if role == ROLE_TRAINER and status == "Pending Verification":
                     approve_btn = QPushButton("✅ Approve")
-                    approve_btn.setFixedHeight(32)
-                    approve_btn.setStyleSheet("QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #00E676,stop:1 #00B248);border:none;border-radius:6px;color:#001A0A;font-weight:600;font-size: 13px;padding:0 8px;}")
+                    approve_btn.setFixedHeight(30)
+                    approve_btn.setProperty("class", "btn-add")
+                    approve_btn.setCursor(Qt.CursorShape.PointingHandCursor)
                     approve_btn.clicked.connect(lambda _, i=pid: self._approve_plan(i))
                     bl.addWidget(approve_btn)
 
@@ -274,14 +280,13 @@ class WorkoutPlanDetail(QWidget):
         self.ex_table.horizontalHeader().setStretchLastSection(not is_staff)
         self.ex_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
         self.ex_table.setAlternatingRowColors(True)
-        self.ex_table.setStyleSheet("""
-            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
-            border-radius:12px;color:#F0F4FF;gridline-color:rgba(0, 102, 255, 0.1);}
-            QTableWidget::item{padding:10px 8px;border-bottom:1px solid rgba(0, 102, 255, 0.1);}
-            QTableWidget::item:alternate{background:rgba(0, 102, 255, 0.05);}
-            QTableWidget::item:selected{background:rgba(0, 102, 255, 0.25);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.25);color:#00F5FF;
-            padding:10px;border:none;font-weight:bold;font-size:13px;}
+        self.ex_table.setStyleSheet(f"""
+            QTableWidget{{background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};
+            border-radius:12px;color:{ThemeManager.color('text_primary')};gridline-color:{ThemeManager.color('glass_border')};}}
+            QTableWidget::item{{padding:10px 8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QTableWidget::item:selected{{background:{ThemeManager.color('accent_primary')};color:#FFFFFF;}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};
+            padding:10px;border:none;font-weight:bold;font-size:13px;}}
         """)
         main.addWidget(self.ex_table)
         main.addStretch()
@@ -320,11 +325,11 @@ class WorkoutPlanDetail(QWidget):
             sep_row = self.ex_table.rowCount()
             self.ex_table.insertRow(sep_row)
             day_item = QTableWidgetItem(f"  📅  {day}")
-            day_item.setForeground(__import__('PyQt6.QtGui', fromlist=['QColor']).QColor("#FFB800"))
+            day_item.setForeground(__import__('PyQt6.QtGui', fromlist=['QColor']).QColor("#F59E0B"))
             from PyQt6.QtGui import QFont, QColor
             f = QFont(); f.setBold(True); f.setPointSize(11)
             day_item.setFont(f)
-            day_item.setBackground(QColor(255, 184, 0, 25))
+            day_item.setBackground(QColor(245, 158, 11, 25))
             self.ex_table.setItem(sep_row, 0, day_item)
             self.ex_table.setSpan(sep_row, 0, 1, self._ex_col_count)
 
@@ -337,12 +342,9 @@ class WorkoutPlanDetail(QWidget):
                     self.ex_table.setItem(r, ci, item)
                 if can_delete:
                     del_btn = QPushButton("🗑")
-                    del_btn.setFixedHeight(30)
-                    del_btn.setStyleSheet(
-                        "QPushButton{background:rgba(255,45,120,0.15);border:1px solid #FF2D78;"
-                        "border-radius:6px;color:#FF2D78;font-size:14px;}"
-                        "QPushButton:hover{background:#FF2D78;color:#fff;}"
-                    )
+                    del_btn.setFixedHeight(28)
+                    del_btn.setProperty("class", "btn-delete")
+                    del_btn.setCursor(Qt.CursorShape.PointingHandCursor)
                     del_btn.clicked.connect(lambda _, eid=ex[0]: self._delete_exercise(eid))
                     self.ex_table.setCellWidget(r, 6, del_btn)
 

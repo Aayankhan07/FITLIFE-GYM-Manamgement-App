@@ -95,27 +95,86 @@ def is_running() -> bool:
     return _scheduler is not None and _scheduler.running
 
 
+# ── Distributed Lock Helper ────────────────────────────────────────────────────
+import socket
+import os
+
+_LOCK_HOLDER_ID = f"{socket.gethostname()}:{os.getpid()}"
+
+def _acquire_job_lock(job_name: str, lock_duration_minutes: int = 15) -> bool:
+    """
+    Attempt to acquire distributed job lock.
+    Ensures only ONE running client instance executes scheduled maintenance.
+    """
+    try:
+        from database.connection import DatabaseConnection
+        with DatabaseConnection() as (conn, cursor):
+            # 1. Clean up any expired locks
+            cursor.execute("DELETE FROM sys_job_locks WHERE expires_at < CURRENT_TIMESTAMP")
+            
+            # 2. Try inserting our lock
+            try:
+                cursor.execute(
+                    """
+                    INSERT INTO sys_job_locks (job_name, locked_by, locked_at, expires_at)
+                    VALUES (?, ?, CURRENT_TIMESTAMP, DATEADD(day, 0, CURRENT_TIMESTAMP))
+                    """,
+                    (job_name, _LOCK_HOLDER_ID)
+                )
+                return True
+            except Exception:
+                # Primary key collision: another terminal holds active lock
+                return False
+    except Exception as e:
+        logger.warning(f"[Scheduler] Could not verify job lock for '{job_name}': {e}. Proceeding locally.")
+        return True
+
+
+def _release_job_lock(job_name: str):
+    """Release our lock after completion."""
+    try:
+        from database.connection import DatabaseConnection
+        with DatabaseConnection() as (conn, cursor):
+            cursor.execute("DELETE FROM sys_job_locks WHERE job_name = ? AND locked_by = ?",
+                           (job_name, _LOCK_HOLDER_ID))
+    except Exception as e:
+        logger.debug(f"[Scheduler] Error releasing lock for '{job_name}': {e}")
+
+
 # ── Job Implementations ────────────────────────────────────────────────────────
 
 def _job_expire_memberships():
+    if not _acquire_job_lock("expire_memberships"):
+        logger.info("[Scheduler] 'expire_memberships' locked by another instance. Skipping.")
+        return
     try:
         from services.member_service import update_expired_memberships
         count = update_expired_memberships()
         logger.info(f"[Scheduler] Expired {count} memberships.")
     except Exception as e:
         logger.error(f"[Scheduler] expire_memberships error: {e}")
+    finally:
+        _release_job_lock("expire_memberships")
 
 
 def _job_overdue_payments():
+    if not _acquire_job_lock("overdue_payments"):
+        logger.info("[Scheduler] 'overdue_payments' locked by another instance. Skipping.")
+        return
     try:
         from services.billing_service import mark_overdue_payments
         count = mark_overdue_payments()
         logger.info(f"[Scheduler] Marked {count} overdue payments.")
     except Exception as e:
         logger.error(f"[Scheduler] overdue_payments error: {e}")
+    finally:
+        _release_job_lock("overdue_payments")
 
 
 def _job_equipment_maintenance():
+    if not _acquire_job_lock("equipment_maintenance"):
+        logger.info("[Scheduler] 'equipment_maintenance' locked by another instance. Skipping.")
+        return
     try:
         from services.equipment_service import get_maintenance_due
         items = get_maintenance_due(days=7)
@@ -131,18 +190,28 @@ def _job_equipment_maintenance():
         logger.info(f"[Scheduler] Equipment check: {len(items)} items due.")
     except Exception as e:
         logger.error(f"[Scheduler] equipment_maintenance error: {e}")
+    finally:
+        _release_job_lock("equipment_maintenance")
 
 
 def _job_renewal_notifications():
+    if not _acquire_job_lock("renewal_notifications"):
+        logger.info("[Scheduler] 'renewal_notifications' locked by another instance. Skipping.")
+        return
     try:
         from services.notification_service import notify_expiring_memberships
         count = notify_expiring_memberships(days=7)
         logger.info(f"[Scheduler] Renewal notifications: {count} members.")
     except Exception as e:
         logger.error(f"[Scheduler] renewal_notifications error: {e}")
+    finally:
+        _release_job_lock("renewal_notifications")
 
 
 def _job_auto_invoices():
+    if not _acquire_job_lock("auto_invoices"):
+        logger.info("[Scheduler] 'auto_invoices' locked by another instance. Skipping.")
+        return
     try:
         logger.info("[Scheduler] Auto invoice job triggered (27th of month).")
         from services.notification_service import push_notification
@@ -154,12 +223,19 @@ def _job_auto_invoices():
         )
     except Exception as e:
         logger.error(f"[Scheduler] auto_invoices error: {e}")
+    finally:
+        _release_job_lock("auto_invoices")
 
 
 def _job_overdue_alerts():
+    if not _acquire_job_lock("overdue_alerts"):
+        logger.info("[Scheduler] 'overdue_alerts' locked by another instance. Skipping.")
+        return
     try:
         from services.notification_service import notify_overdue_payments
         count = notify_overdue_payments()
         logger.info(f"[Scheduler] Overdue alerts: {count} payments.")
     except Exception as e:
         logger.error(f"[Scheduler] overdue_alerts error: {e}")
+    finally:
+        _release_job_lock("overdue_alerts")

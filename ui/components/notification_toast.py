@@ -15,10 +15,10 @@ class NotificationItem(QFrame):
 
         colors = {
             "info":    "#3B82F6",
-            "success": "#00E676",
-            "warning": "#FFB800",
-            "error":   "#FF2D78",
-            "alert":   "#0066FF",
+            "success": "#10B981",
+            "warning": "#F59E0B",
+            "error":   "#EF4444",
+            "alert":   "#FA5A3C",
         }
         color = colors.get(notif_type, "#3B82F6")
 

@@ -19,6 +19,7 @@ from utils.thread_worker import Worker
 import services.salary_service as salary_svc
 import services.branch_service as branch_svc
 from config.constants import ROLE_ADMIN, ROLE_MANAGER
+from ui.theme.theme_manager import ThemeManager
 
 now = datetime.now()
 MONTHS_LABELS = ["","January","February","March","April","May","June",
@@ -109,9 +110,10 @@ class SalaryScreen(QWidget):
                 "Base Salary","Bonus","Deduction","Net Salary","Status","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
+        tc.setObjectName("glassCard")
         tc.setStyleSheet(
-            "background:rgba(255,255,255,0.04);"
-            "border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px;"
+            f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};"
+            f"border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}"
         )
         tcl = QVBoxLayout(tc)
         tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
@@ -178,15 +180,9 @@ class SalaryScreen(QWidget):
 
             # Edit bonus/deduction
             edit_btn = QPushButton("✏ Adjust")
-            edit_btn.setFixedHeight(32)
-            edit_btn.setStyleSheet(
-                "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #0066FF,stop:1 #004BCC);"
-                "border:none;border-radius:6px;color:#FFFFFF;"
-                "font-size: 13px;font-weight:600;padding:0 8px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #3B82F6,stop:1 #0066FF);}"
-            )
+            edit_btn.setFixedHeight(30)
+            edit_btn.setProperty("class", "btn-edit")
+            edit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             edit_btn.clicked.connect(
                 lambda _, i=rid, base=float(rec[5]), bon=float(rec[6] or 0),
                 ded=float(rec[7] or 0), notes=rec[11] if len(rec)>11 else "":
@@ -197,29 +193,17 @@ class SalaryScreen(QWidget):
             # Mark paid (only if pending)
             if status == "Pending":
                 pay_btn = QPushButton("✅ Mark Paid")
-                pay_btn.setFixedHeight(32)
-                pay_btn.setStyleSheet(
-                    "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                    "stop:0 #00E676,stop:1 #00B248);"
-                    "border:none;border-radius:6px;color:#001A0A;"
-                    "font-size: 13px;font-weight:600;padding:0 8px;}"
-                    "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                    "stop:0 #33FF99,stop:1 #00E676);}"
-                )
+                pay_btn.setFixedHeight(30)
+                pay_btn.setProperty("class", "btn-add")
+                pay_btn.setCursor(Qt.CursorShape.PointingHandCursor)
                 pay_btn.clicked.connect(lambda _, i=rid: self._mark_paid(i))
                 bl.addWidget(pay_btn)
 
             # View slip
             slip_btn = QPushButton("🧾 Slip")
-            slip_btn.setFixedHeight(32)
-            slip_btn.setStyleSheet(
-                "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #0097B2,stop:1 #00D4E8);"
-                "border:none;border-radius:6px;color:#001A1F;"
-                "font-size: 13px;font-weight:600;padding:0 8px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #00B8D9,stop:1 #00F5FF);}"
-            )
+            slip_btn.setFixedHeight(30)
+            slip_btn.setProperty("class", "btn-view")
+            slip_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             slip_btn.clicked.connect(lambda _, i=rid: self._view_slip(i))
             bl.addWidget(slip_btn)
 

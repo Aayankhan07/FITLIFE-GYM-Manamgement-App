@@ -62,7 +62,8 @@ class EquipmentScreen(QWidget):
 
         # Filters
         fbar = QFrame()
-        fbar.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
+        fbar.setObjectName("glassCard")
+        fbar.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px; }}")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Category:"))
         self.cat_filter = QComboBox(); self.cat_filter.setFixedHeight(34)
@@ -86,7 +87,8 @@ class EquipmentScreen(QWidget):
         cols = ["ID","Name","Category","Qty","Price (Rs.)","Status","Branch","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -141,24 +143,20 @@ class EquipmentScreen(QWidget):
             eid = e[0]
             cell = QWidget(); bl = QHBoxLayout(cell)
             bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
-            for label, bg1, bg2, txt_color, hover1, hover2 in [
-                ("✏ Edit",   "#0066FF", "#004BCC", "#FFFFFF", "#3B82F6", "#0066FF"),
-                ("🗑 Del",   "#FF2D78", "#C0155A", "#FFFFFF", "#FF5294", "#FF2D78"),
-            ]:
-                btn = QPushButton(label); btn.setFixedHeight(32)
-                btn.setStyleSheet(
-                    f"QPushButton{{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                    f"stop:0 {bg1},stop:1 {bg2});"
-                    f"border:none;border-radius:6px;color:{txt_color};"
-                    f"font-size: 13px;font-weight:600;padding:0 8px;}}"
-                    f"QPushButton:hover{{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                    f"stop:0 {hover1},stop:1 {hover2});}}"
-                )
-                bl.addWidget(btn)
-            # wire up buttons by index
-            btns_in_cell = [bl.itemAt(i).widget() for i in range(bl.count())]
-            btns_in_cell[0].clicked.connect(lambda _, i=eid: self.open_edit.emit(i))
-            btns_in_cell[1].clicked.connect(lambda _, i=eid, n=e[1]: self._confirm_delete(i,n))
+            edit_btn = QPushButton("✏ Edit")
+            edit_btn.setFixedHeight(30)
+            edit_btn.setProperty("class", "btn-edit")
+            edit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            edit_btn.clicked.connect(lambda _, i=eid: self.open_edit.emit(i))
+
+            del_btn = QPushButton("🗑 Del")
+            del_btn.setFixedHeight(30)
+            del_btn.setProperty("class", "btn-delete")
+            del_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            del_btn.clicked.connect(lambda _, i=eid, n=e[1]: self._confirm_delete(i, n))
+
+            bl.addWidget(edit_btn)
+            bl.addWidget(del_btn)
             tw.setCellWidget(r_idx, 7, cell)
             # Status badge
             stat_badge = StatusBadge(e[6])
@@ -321,6 +319,7 @@ class EquipmentModule(QWidget):
 
 # ── Maintenance Log Dialog ─────────────────────────────────────────────────────
 from PyQt6.QtWidgets import QDialog
+from ui.theme.theme_manager import ThemeManager
 
 class MaintenanceLogDialog(QDialog):
     def __init__(self, equip_id, user_id, parent=None):

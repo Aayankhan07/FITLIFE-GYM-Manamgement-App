@@ -14,6 +14,7 @@ from ui.components.glass_card import GlassCard, KPICard, SectionHeader, StatusBa
 from ui.components.data_table import DataTable
 from ui.components.confirm_dialog import ConfirmDialog, InfoDialog
 from ui.components.loading_spinner import LoadingOverlay
+from ui.theme.theme_manager import ThemeManager
 from utils.thread_worker import Worker
 import services.member_service as member_svc
 import services.branch_service as branch_svc
@@ -53,7 +54,8 @@ class MembersScreen(QWidget):
         # ── Header row ────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("👥  Members Management")
-        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
+        title.setObjectName("heading1")
+        title.setStyleSheet("font-size: 24px; font-weight: 900;")
         hdr.addWidget(title)
         hdr.addStretch()
 
@@ -79,12 +81,12 @@ class MembersScreen(QWidget):
         # ── Filter bar ────────────────────────────────────────────────────────
         filter_frame = QFrame()
         filter_frame.setObjectName("glassCard")
-        filter_frame.setStyleSheet("""
-            QFrame#glassCard {
-                background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(0, 102, 255, 0.25);
+        filter_frame.setStyleSheet(f"""
+            QFrame#glassCard {{
+                background: {ThemeManager.color('card_bg')};
+                border: 1px solid {ThemeManager.color('glass_border')};
                 border-radius: 12px;
-            }
+            }}
         """)
         filter_row = QHBoxLayout(filter_frame)
         filter_row.setContentsMargins(16, 12, 16, 12)
@@ -134,12 +136,12 @@ class MembersScreen(QWidget):
 
         table_card = QFrame()
         table_card.setObjectName("glassCard")
-        table_card.setStyleSheet("""
-            QFrame#glassCard {
-                background: rgba(255,255,255,0.05);
-                border: 1px solid rgba(0, 102, 255, 0.2);
+        table_card.setStyleSheet(f"""
+            QFrame#glassCard {{
+                background: {ThemeManager.color('card_bg')};
+                border: 1px solid {ThemeManager.color('glass_border')};
                 border-radius: 16px;
-            }
+            }}
         """)
         tc_layout = QVBoxLayout(table_card)
         tc_layout.setContentsMargins(16, 16, 16, 16)
@@ -181,13 +183,17 @@ class MembersScreen(QWidget):
         self._populate_table(self._members_data)
 
     def _populate_table(self, members: list):
+        from utils.formatters import mask_cnic, mask_phone
+        is_admin = getattr(self._session, "role", "") == ROLE_ADMIN
         rows = []
         for m in members:
             # m: id, full_name, cnic, phone, email, branch_name, trainer_name,
             #    plan_name, expiry_date, status, ...
             expiry = str(m[8]) if m[8] else "—"
+            cnic_val = m[2] if is_admin else mask_cnic(m[2])
+            phone_val = m[3] if is_admin else mask_phone(m[3])
             row = [
-                m[0], m[1], m[2], m[3],
+                m[0], m[1], cnic_val, phone_val,
                 m[5] or "—", m[6] or "—",
                 m[7] or "—", expiry, m[9],
                 ""   # Actions column placeholder
@@ -212,39 +218,21 @@ class MembersScreen(QWidget):
             btn_row.setSpacing(4)
 
             view_btn = QPushButton("👁 View")
-            view_btn.setFixedHeight(32)
-            view_btn.setStyleSheet(
-                "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #0097B2,stop:1 #00D4E8);"
-                "border:none;border-radius:6px;color:#001A1F;"
-                "font-size: 13px;font-weight:600;padding:0 8px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #00B8D9,stop:1 #00F5FF);}"
-            )
+            view_btn.setFixedHeight(30)
+            view_btn.setProperty("class", "btn-view")
+            view_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             view_btn.clicked.connect(lambda _, mid=member_id: self.open_profile.emit(mid))
 
             edit_btn = QPushButton("✏ Edit")
-            edit_btn.setFixedHeight(32)
-            edit_btn.setStyleSheet(
-                "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #0066FF,stop:1 #004BCC);"
-                "border:none;border-radius:6px;color:#FFFFFF;"
-                "font-size: 13px;font-weight:600;padding:0 8px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #3B82F6,stop:1 #0066FF);}"
-            )
+            edit_btn.setFixedHeight(30)
+            edit_btn.setProperty("class", "btn-edit")
+            edit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             edit_btn.clicked.connect(lambda _, mid=member_id: self.open_edit_form.emit(mid))
 
             del_btn = QPushButton("🗑 Del")
-            del_btn.setFixedHeight(32)
-            del_btn.setStyleSheet(
-                "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #FF2D78,stop:1 #C0155A);"
-                "border:none;border-radius:6px;color:#FFFFFF;"
-                "font-size: 13px;font-weight:600;padding:0 8px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #FF5294,stop:1 #FF2D78);}"
-            )
+            del_btn.setFixedHeight(30)
+            del_btn.setProperty("class", "btn-delete")
+            del_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             del_btn.clicked.connect(lambda _, mid=member_id, name=m[1]: self._confirm_delete(mid, name))
 
             btn_row.addWidget(view_btn)

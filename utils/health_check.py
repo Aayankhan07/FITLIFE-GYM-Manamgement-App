@@ -57,10 +57,13 @@ def check_services() -> list[str]:
 def check_database() -> tuple[bool, str]:
     """Returns (ok, message)."""
     try:
-        ok, msg = test_connection()
-        return ok, msg
+        res = test_connection()
+        if isinstance(res, tuple):
+            return res[0], res[1]
+        return res, "Database connection active" if res else "Connection failed"
     except Exception as e:
         return False, str(e)
+
 
 
 def run_health_check(skip_db: bool = False) -> dict:
@@ -94,3 +97,18 @@ def run_health_check(skip_db: bool = False) -> dict:
         logger.warning(f"Startup health check FAILED: {result}")
 
     return result
+
+
+if __name__ == "__main__":
+    import json
+    res = run_health_check()
+    print("=" * 60)
+    print("           FitLife Startup Health Check Results")
+    print("=" * 60)
+    print(f"Overall Status    : {'PASSED' if res['ok'] else 'FAILED'}")
+    print(f"Missing Packages  : {res['missing_packages'] if res['missing_packages'] else 'None'}")
+    print(f"Failed Services   : {res['failed_services'] if res['failed_services'] else 'None'}")
+    print(f"Database Connect  : {'OK' if res['db_ok'] else 'FAILED'} ({res['db_message']})")
+    print("=" * 60)
+    sys.exit(0 if res["ok"] else 1)
+

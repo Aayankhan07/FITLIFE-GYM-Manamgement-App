@@ -15,6 +15,7 @@ from utils.thread_worker import Worker
 import services.diet_service as diet_svc
 import services.member_service as member_svc
 import services.trainer_service as trainer_svc
+from ui.theme.theme_manager import ThemeManager
 from config.constants import (
     PLAN_STATUSES, FITNESS_GOALS, MEAL_TYPES,
     ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER
@@ -157,13 +158,24 @@ class _DietList(QWidget):
         tw = self.table.table
         vis = plans[self.table._current_page*self.table._page_size:(self.table._current_page+1)*self.table._page_size]
         for ri, p in enumerate(vis):
-            pid, st = p[0], p[6]
-            cell = QWidget(); bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
-            for lbl, clr, fn in [
-                ("👁 View","#00F5FF", lambda _, i=pid: self.open_detail.emit(i)),
-                ("✏️ Edit","#0066FF", lambda _, i=pid: self.open_edit.emit(i)),
-            ]:
-                btn = QPushButton(lbl); btn.setStyleSheet(_BTN(lbl,clr)); btn.clicked.connect(fn); bl.addWidget(btn)
+            cell = QWidget()
+            bl = QHBoxLayout(cell)
+            bl.setContentsMargins(4,2,4,2)
+            bl.setSpacing(4)
+            view_btn = QPushButton("👁 View")
+            view_btn.setFixedHeight(30)
+            view_btn.setProperty("class", "btn-view")
+            view_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            view_btn.clicked.connect(lambda _, i=pid: self.open_detail.emit(i))
+
+            edit_btn = QPushButton("✏️ Edit")
+            edit_btn.setFixedHeight(30)
+            edit_btn.setProperty("class", "btn-edit")
+            edit_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+            edit_btn.clicked.connect(lambda _, i=pid: self.open_edit.emit(i))
+
+            bl.addWidget(view_btn)
+            bl.addWidget(edit_btn)
             tw.setCellWidget(ri,7,cell); tw.setCellWidget(ri,6,StatusBadge(st))
 
     def refresh(self): self._load()
@@ -239,7 +251,11 @@ class _DietDetail(QWidget):
         self._meal_table.verticalHeader().setVisible(False)
         self._meal_table.horizontalHeader().setStretchLastSection(True)
         self._meal_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self._meal_table.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
+        self._meal_table.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:8px;border:none;font-weight:bold;}}
+        """)
         m.addWidget(self._meal_table)
         m.addStretch(); scroll.setWidget(c)
         QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)

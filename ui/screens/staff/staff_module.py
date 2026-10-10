@@ -10,6 +10,7 @@ from ui.components.glass_card import KPICard, StatusBadge, SectionHeader
 from ui.components.data_table import DataTable
 from ui.components.confirm_dialog import ConfirmDialog, InfoDialog
 from ui.components.loading_spinner import LoadingOverlay
+from ui.theme.theme_manager import ThemeManager
 from utils.thread_worker import Worker
 import services.staff_service as staff_svc
 import services.member_service as member_svc
@@ -88,7 +89,9 @@ class _StaffList(QWidget):
         kr.addStretch(); m.addLayout(kr)
 
         # Filters
-        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
+        ff = QFrame()
+        ff.setObjectName("glassCard")
+        ff.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px; }}")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Role:"))
         self._rf = QComboBox(); self._rf.setFixedHeight(34)
@@ -110,7 +113,9 @@ class _StaffList(QWidget):
 
         cols = ["ID","Username","Full Name","Email","Phone","Role","Branch","Status","Last Login","Actions"]
         self.table = DataTable(cols)
-        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
+        tc = QFrame()
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         QVBoxLayout(tc).addWidget(self.table); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -143,13 +148,26 @@ class _StaffList(QWidget):
             uid, is_active = s[0], s[7]
             cell = QWidget(); bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
             if self._session.role == ROLE_ADMIN:
-                eb = QPushButton("✏️ Edit"); eb.setStyleSheet(_pill("",c:="#0066FF"))
-                eb.clicked.connect(lambda _, i=uid: self.open_edit.emit(i)); bl.addWidget(eb)
+                eb = QPushButton("✏️ Edit")
+                eb.setFixedHeight(30)
+                eb.setProperty("class", "btn-edit")
+                eb.setCursor(Qt.CursorShape.PointingHandCursor)
+                eb.clicked.connect(lambda _, i=uid: self.open_edit.emit(i))
+                bl.addWidget(eb)
+
                 tb = QPushButton("🔒 Deactivate" if is_active else "✅ Activate")
-                tb.setStyleSheet(_pill("",c:="#FF2D78" if is_active else "#00E676"))
-                tb.clicked.connect(lambda _, i=uid, n=s[2]: self._toggle(i,n)); bl.addWidget(tb)
-                pb = QPushButton("🔑 Reset PW"); pb.setStyleSheet(_pill("",c:="#FFB800"))
-                pb.clicked.connect(lambda _, i=uid, n=s[2]: self._reset_pw(i,n)); bl.addWidget(pb)
+                tb.setFixedHeight(30)
+                tb.setProperty("class", "btn-delete" if is_active else "btn-add")
+                tb.setCursor(Qt.CursorShape.PointingHandCursor)
+                tb.clicked.connect(lambda _, i=uid, n=s[2]: self._toggle(i,n))
+                bl.addWidget(tb)
+
+                pb = QPushButton("🔑 Reset PW")
+                pb.setFixedHeight(30)
+                pb.setProperty("class", "btn-view")
+                pb.setCursor(Qt.CursorShape.PointingHandCursor)
+                pb.clicked.connect(lambda _, i=uid, n=s[2]: self._reset_pw(i,n))
+                bl.addWidget(pb)
             tw.setCellWidget(ri,9,cell)
             tw.setCellWidget(ri,7,StatusBadge("Active" if is_active else "Inactive"))
 

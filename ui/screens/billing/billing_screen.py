@@ -21,6 +21,7 @@ import services.billing_service as billing_svc
 import services.member_service as member_svc
 import services.membership_service as membership_svc
 from config.constants import PAYMENT_METHODS, ROLE_ADMIN, ROLE_MANAGER
+from ui.theme.theme_manager import ThemeManager
 
 
 class BillingScreen(QWidget):
@@ -132,11 +133,11 @@ class BillingScreen(QWidget):
         self.unpaid_table.verticalHeader().setVisible(False)
         self.unpaid_table.horizontalHeader().setStretchLastSection(True)
         self.unpaid_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.unpaid_table.setStyleSheet("""
-            QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
-            QHeaderView::section{background:rgba(255,45,120,0.2);color:#FF2D78;
-            padding:10px;border:none;font-weight:bold;}
+        self.unpaid_table.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_danger')};
+            padding:10px;border:none;font-weight:bold;}}
         """)
         utl.addWidget(self.unpaid_table)
         self.tabs.addTab(unpaid_tab, "⚠️ Unpaid Members")
@@ -204,12 +205,9 @@ class BillingScreen(QWidget):
             self.unpaid_table.setItem(r, 4, QTableWidgetItem(f"Rs. {amount:,.0f}"))
             self.unpaid_table.setItem(r, 5, QTableWidgetItem(str(u[4]) if u[4] else "—"))
             pay_btn = QPushButton("💰 Pay Now")
-            pay_btn.setFixedHeight(32)
-            pay_btn.setStyleSheet(
-                "QPushButton{background:rgba(0,230,118,0.15);border:1px solid #00E676;"
-                "border-radius:6px;color:#00E676;font-size: 13px;padding:0 10px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #33FF99,stop:1 #00E676);}"
-            )
+            pay_btn.setFixedHeight(30)
+            pay_btn.setProperty("class", "btn-add")
+            pay_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             pay_btn.clicked.connect(lambda _, mid=u[0], amt=amount: self._quick_pay(mid, amt))
             self.unpaid_table.setCellWidget(r, 6, pay_btn)
 
@@ -224,12 +222,9 @@ class BillingScreen(QWidget):
             cell = QWidget()
             bl = QHBoxLayout(cell); bl.setContentsMargins(4,2,4,2); bl.setSpacing(4)
             view_btn = QPushButton("🧾 Invoice")
-            view_btn.setFixedHeight(32)
-            view_btn.setStyleSheet(
-                "QPushButton{background:rgba(0,245,255,0.15);border:1px solid #00F5FF;"
-                "border-radius:6px;color:#00F5FF;font-size: 13px;padding:0 8px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #00B8D9,stop:1 #00F5FF);}"
-            )
+            view_btn.setFixedHeight(30)
+            view_btn.setProperty("class", "btn-view")
+            view_btn.setCursor(Qt.CursorShape.PointingHandCursor)
             view_btn.clicked.connect(lambda _, i=pid: self._view_invoice(i))
             bl.addWidget(view_btn)
             tw.setCellWidget(r_idx, 9, cell)

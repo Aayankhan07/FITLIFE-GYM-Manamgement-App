@@ -14,6 +14,7 @@ from utils.thread_worker import Worker
 import services.progress_service as prog_svc
 import services.member_service as member_svc
 from config.constants import ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER
+from ui.theme.theme_manager import ThemeManager
 
 
 class ProgressModule(QWidget):
@@ -71,18 +72,20 @@ class _ProgressOverview(QWidget):
         self._table.setHorizontalHeaderLabels(["Member","Current Weight","Fitness Goal","Last Log","Total Logs","View Progress"])
         self._table.verticalHeader().setVisible(False)
         self._table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self._table.setStyleSheet("""
-            QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:10px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
-            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.1);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
-            padding:10px;border:none;font-weight:bold;}
+        self._table.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:10px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QTableWidget::item:hover{{background:{ThemeManager.color('hover_bg')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};
+            padding:10px;border:none;font-weight:bold;}}
         """)
         header = self._table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         for i in range(1, 6):
             header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
-        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
+        tc = QFrame()
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         QVBoxLayout(tc).addWidget(self._table)
         m.addWidget(tc)
 
@@ -125,15 +128,9 @@ class _ProgressOverview(QWidget):
             self._table.setItem(r,3,QTableWidgetItem(str(last_log) if last_log else "Never"))
             self._table.setItem(r,4,QTableWidgetItem(str(total or "0")))
             btn = QPushButton("📈 View Progress")
-            btn.setFixedHeight(32)
-            btn.setStyleSheet(
-                "QPushButton{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #0097B2,stop:1 #00D4E8);"
-                "border:none;border-radius:6px;color:#001A1F;"
-                "font-size: 13px;font-weight:600;padding:0 10px;}"
-                "QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,"
-                "stop:0 #00B8D9,stop:1 #00F5FF);}"
-            )
+            btn.setFixedHeight(30)
+            btn.setProperty("class", "btn-view")
+            btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.clicked.connect(lambda _, i=mid: self.open_member.emit(i))
             self._table.setCellWidget(r,5,btn)
 
@@ -211,12 +208,18 @@ class _MemberProgress(QWidget):
         self._hist.setHorizontalHeaderLabels(["Date","Weight","Body Fat","Chest","Waist","Hips","Arms","Legs","Notes"])
         self._hist.verticalHeader().setVisible(False)
         self._hist.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self._hist.setStyleSheet("QTableWidget{background:transparent;border:none;color:#F0F4FF;}QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:8px;border:none;font-weight:bold;}")
+        self._hist.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:8px;border:none;font-weight:bold;}}
+        """)
         header = self._hist.horizontalHeader()
         header.setStretchLastSection(True)
         for i in range(8):
             header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
-        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
+        tc = QFrame()
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:14px; }}")
         QVBoxLayout(tc).addWidget(self._hist)
         m.addWidget(tc); m.addStretch(); scroll.setWidget(c)
         QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)

@@ -14,6 +14,7 @@ from ui.components.glass_card import KPICard, StatusBadge
 from ui.components.confirm_dialog import ConfirmDialog, InfoDialog
 from ui.components.data_table import DataTable
 from ui.components.loading_spinner import LoadingOverlay
+from ui.theme.theme_manager import ThemeManager
 from utils.thread_worker import Worker
 import services.trainer_service as trainer_svc
 import services.branch_service as branch_svc
@@ -70,7 +71,8 @@ class TrainersScreen(QWidget):
 
         # Filter bar
         fbar = QFrame()
-        fbar.setStyleSheet("QFrame { background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:12px; }")
+        fbar.setObjectName("glassCard")
+        fbar.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')}; border:1px solid {ThemeManager.color('glass_border')}; border-radius:12px; }}")
         fr = QHBoxLayout(fbar)
         fr.setContentsMargins(16, 10, 16, 10)
         fr.setSpacing(12)
@@ -99,7 +101,8 @@ class TrainersScreen(QWidget):
         self.table = DataTable(cols)
         self.table.row_double_clicked.connect(self._on_double_click)
         tc = QFrame()
-        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px; }")
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')}; border:1px solid {ThemeManager.color('glass_border')}; border-radius:16px; }}")
         tc_l = QVBoxLayout(tc)
         tc_l.setContentsMargins(16, 16, 16, 16)
         tc_l.addWidget(self.table)
@@ -150,18 +153,15 @@ class TrainersScreen(QWidget):
             bl = QHBoxLayout(cell)
             bl.setContentsMargins(4, 2, 4, 2)
             bl.setSpacing(4)
-            for label, color, signal in [
-                ("👁 View", "#00F5FF", lambda _, i=tid: self.open_profile.emit(i)),
-                ("✏️ Edit", "#0066FF", lambda _, i=tid: self.open_edit_form.emit(i)),
-                ("🗑 Del",  "#FF2D78", lambda _, i=tid, n=t[1]: self._confirm_delete(i, n)),
+            for label, cls_name, signal in [
+                ("👁 View", "btn-view", lambda _, i=tid: self.open_profile.emit(i)),
+                ("✏️ Edit", "btn-edit", lambda _, i=tid: self.open_edit_form.emit(i)),
+                ("🗑 Del",  "btn-delete", lambda _, i=tid, n=t[1]: self._confirm_delete(i, n)),
             ]:
                 btn = QPushButton(label)
-                btn.setFixedHeight(32)
-                btn.setStyleSheet(
-                    f"QPushButton{{background:rgba(0,0,0,0.2);border:1px solid {color};"
-                    f"border-radius:6px;color:{color};font-size: 13px;padding:0 8px;}}"
-                    f"QPushButton:hover{{background:{color}22;}}"
-                )
+                btn.setFixedHeight(30)
+                btn.setProperty("class", cls_name)
+                btn.setCursor(Qt.CursorShape.PointingHandCursor)
                 btn.clicked.connect(signal)
                 bl.addWidget(btn)
             tw.setCellWidget(r_idx, 8, cell)
@@ -416,12 +416,12 @@ class TrainerProfile(QWidget):
         self.members_table.setHorizontalHeaderLabels(["Name","Phone","Goal","Status","Expiry"])
         self.members_table.verticalHeader().setVisible(False)
         self.members_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.members_table.setStyleSheet("""
-            QTableWidget{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);
-            border-radius:12px;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
-            padding:10px;border:none;font-weight:bold;}
+        self.members_table.setStyleSheet(f"""
+            QTableWidget{{background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};
+            border-radius:12px;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};
+            padding:10px;border:none;font-weight:bold;}}
         """)
         header = self.members_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)

@@ -19,6 +19,7 @@ import services.attendance_service as att_svc
 import services.member_service as member_svc
 from config.constants import ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER, ROLE_MEMBER, ATTEND_STATUSES
 from datetime import date as dt_date
+from ui.theme.theme_manager import ThemeManager
 
 
 class AttendanceScreen(QWidget):
@@ -60,30 +61,30 @@ class AttendanceScreen(QWidget):
         title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
         hdr.addWidget(title); hdr.addStretch()
         self.clock_lbl = QLabel()
-        self.clock_lbl.setStyleSheet("QWidget { font-size:18px; color:#00F5FF; font-weight:bold; }")
+        self.clock_lbl.setStyleSheet(f"QWidget {{ font-size:18px; color:{ThemeManager.color('accent_primary')}; font-weight:bold; }}")
         hdr.addWidget(self.clock_lbl)
         main.addLayout(hdr)
         self._update_clock()
  
         krow = QHBoxLayout(); krow.setSpacing(14)
-        self._kpi_present = KPICard("Present Today", "—", "success","","#00E676")
-        self._kpi_late    = KPICard("Late Today",    "—", "warning","","#FFB800")
-        self._kpi_total   = KPICard("Total Logged",  "—", "analytics","","#0066FF")
+        self._kpi_present = KPICard("Present Today", "—", "success","","#10B981")
+        self._kpi_late    = KPICard("Late Today",    "—", "warning","","#F59E0B")
+        self._kpi_total   = KPICard("Total Logged",  "—", "analytics","","#3B82F6")
         for k in [self._kpi_present, self._kpi_late, self._kpi_total]:
             krow.addWidget(k)
         krow.addStretch(); main.addLayout(krow)
 
         # ── Main Split: Check-in Panel (left) | Daily Log (right) ─────────────
         splitter = QSplitter(Qt.Orientation.Horizontal)
-        splitter.setStyleSheet("QSplitter::handle{background:rgba(0, 102, 255, 0.3);width:2px;}")
+        splitter.setStyleSheet(f"QSplitter::handle{{background:{ThemeManager.color('glass_border')};width:2px;}}")
         splitter.setHandleWidth(2)
 
         # ── LEFT: Check-in Panel ──────────────────────────────────────────────
         left_frame = QFrame()
         left_frame.setObjectName("glassCard")
-        left_frame.setStyleSheet("""
-            QFrame {background:rgba(255,255,255,0.05);
-            border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;}
+        left_frame.setStyleSheet(f"""
+            QFrame#glassCard {{background:{ThemeManager.color('card_bg')};
+            border:1px solid {ThemeManager.color('glass_border')};border-radius:16px;}}
         """)
         left_layout = QVBoxLayout(left_frame)
         left_layout.setContentsMargins(20,20,20,20); left_layout.setSpacing(14)
@@ -126,21 +127,14 @@ class AttendanceScreen(QWidget):
         btn_row = QHBoxLayout(); btn_row.setSpacing(8)
         self.checkin_btn = QPushButton("Check IN")
         self.checkin_btn.setObjectName("btnSuccess")
-        self.checkin_btn.setMinimumHeight(46)
-        self.checkin_btn.setStyleSheet("""
-            QPushButton{background:rgba(0,230,118,0.15);border:1px solid #00E676;
-            border-radius:12px;color:#00E676;font-size:15px;font-weight:bold;}
-            QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #33FF99,stop:1 #00E676);}
-        """)
+        self.checkin_btn.setMinimumHeight(44)
+        self.checkin_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.checkin_btn.clicked.connect(self._do_checkin)
  
         self.checkout_btn = QPushButton("Check OUT")
-        self.checkout_btn.setMinimumHeight(46)
-        self.checkout_btn.setStyleSheet("""
-            QPushButton{background:rgba(255,45,120,0.15);border:1px solid #FF2D78;
-            border-radius:12px;color:#FF2D78;font-size:15px;font-weight:bold;}
-            QPushButton:hover{background:qlineargradient(x1:0,y1:0,x2:1,y2:0,stop:0 #FF5294,stop:1 #FF2D78);}
-        """)
+        self.checkout_btn.setObjectName("btnDanger")
+        self.checkout_btn.setMinimumHeight(44)
+        self.checkout_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.checkout_btn.clicked.connect(self._do_checkout)
         btn_row.addWidget(self.checkin_btn)
         btn_row.addWidget(self.checkout_btn)
@@ -151,8 +145,8 @@ class AttendanceScreen(QWidget):
         self.result_lbl.setWordWrap(True)
         self.result_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         self.result_lbl.setStyleSheet(
-            "color:#00E676;font-size:13px;padding:8px;"
-            "background:rgba(0,230,118,0.1);border-radius:8px;"
+            f"color:{ThemeManager.color('accent_success')};font-size:13px;padding:8px;"
+            f"background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('accent_success')};border-radius:8px;"
         )
         self.result_lbl.hide()
         left_layout.addWidget(self.result_lbl)
@@ -171,9 +165,9 @@ class AttendanceScreen(QWidget):
         # ── RIGHT: Daily Log ──────────────────────────────────────────────────
         right_frame = QFrame()
         right_frame.setObjectName("glassCard")
-        right_frame.setStyleSheet("""
-            QFrame {background:rgba(255,255,255,0.05);
-            border:1px solid rgba(0, 102, 255, 0.25);border-radius:16px;}
+        right_frame.setStyleSheet(f"""
+            QFrame#glassCard {{background:{ThemeManager.color('card_bg')};
+            border:1px solid {ThemeManager.color('glass_border')};border-radius:16px;}}
         """)
         right_layout = QVBoxLayout(right_frame)
         right_layout.setContentsMargins(20,20,20,20); right_layout.setSpacing(12)
@@ -204,12 +198,12 @@ class AttendanceScreen(QWidget):
         )
         self.log_table.verticalHeader().setVisible(False)
         self.log_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.log_table.setStyleSheet("""
-            QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.15);}
-            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.1);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;
-            padding:10px;border:none;font-weight:bold;}
+        self.log_table.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget{{gridline-color:{ThemeManager.color('glass_border')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};
+            padding:10px;border:none;font-weight:bold;}}
         """)
         header = self.log_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)  # Member stretches
@@ -355,10 +349,10 @@ class AttendanceScreen(QWidget):
         if result["success"]: self._load_daily_log()
 
     def _show_result(self, result: dict):
-        color = "#00E676" if result["success"] else "#FF2D78"
-        bg    = "rgba(0,230,118,0.1)" if result["success"] else "rgba(255,45,120,0.1)"
+        color = ThemeManager.color("accent_success") if result["success"] else ThemeManager.color("accent_danger")
+        bg    = "rgba(16, 185, 129, 0.12)" if result["success"] else "rgba(239, 68, 68, 0.12)"
         self.result_lbl.setStyleSheet(
-            f"color:{color};font-size:13px;padding:8px;background:{bg};border-radius:8px;"
+            f"color:{color};font-size:13px;padding:8px;background:{bg};border:1px solid {color};border-radius:8px;"
         )
         self.result_lbl.setText(result["message"])
         self.result_lbl.show()

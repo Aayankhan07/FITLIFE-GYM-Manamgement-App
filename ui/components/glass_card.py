@@ -139,7 +139,7 @@ class KPICard(QFrame):
         
         icon_key = EMOJI_MAP.get(self._icon_str, self._icon_str)
         if icon_key in SVG_ICONS:
-            color = ThemeManager.color("accent_" + self._accent_name)
+            color = ThemeManager.color("accent_primary")
             self.icon_lbl.setPixmap(get_icon(icon_key, color=color, size=18).pixmap(18, 18))
         else:
             self.icon_lbl.setText(self._icon_str)
@@ -168,30 +168,30 @@ class StatusBadge(QLabel):
     """Colored status badge pill with explicit text colors."""
 
     STATUS_COLORS = {
-        "Active":               ("#001A0A", "#00E676"),
-        "Inactive":             ("#FFFFFF", "#4B5563"),
-        "Maintenance":          ("#1A0F00", "#FFB800"),
-        "Suspended":            ("#FFFFFF", "#F97316"),
-        "Expired":              ("#FFFFFF", "#6B7280"),
-        "Paid":                 ("#001A0A", "#00E676"),
-        "Unpaid":               ("#FFFFFF", "#FF2D78"),
-        "Partial":              ("#1A0F00", "#FFB800"),
-        "Overdue":              ("#FCA5A5", "#7F1D1D"),
-        "Pending":              ("#FFFFFF", "#3B82F6"),
-        "Pending Verification": ("#1A0F00", "#FFB800"),
-        "Trainer Approved":     ("#001A0A", "#00E676"),
-        "Approved":             ("#001A0A", "#00E676"),
-        "Draft":                ("#FFFFFF", "#6B7280"),
-        "Completed":            ("#F0F6FF", "#1D4ED8"),
-        "Rejected":             ("#FFFFFF", "#FF2D78"),
-        "New":                  ("#001A0A", "#00E676"),
-        "Good":                 ("#001F20", "#00F5FF"),
-        "Fair":                 ("#1A0F00", "#FFB800"),
-        "Damaged":              ("#FFFFFF", "#FF2D78"),
-        "Retired":              ("#FFFFFF", "#6B7280"),
-        "Present":              ("#001A0A", "#00E676"),
-        "Absent":               ("#FFFFFF", "#FF2D78"),
-        "Late":                 ("#1A0F00", "#FFB800"),
+        "Active":               ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Inactive":             ("#6B7280", "rgba(107, 114, 128, 0.15)"),
+        "Maintenance":          ("#F59E0B", "rgba(245, 158, 11, 0.15)"),
+        "Suspended":            ("#FA5A3C", "rgba(250, 90, 60, 0.15)"),
+        "Expired":              ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "Paid":                 ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Unpaid":               ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "Partial":              ("#F59E0B", "rgba(245, 158, 11, 0.15)"),
+        "Overdue":              ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "Pending":              ("#3B82F6", "rgba(59, 130, 246, 0.15)"),
+        "Pending Verification": ("#F59E0B", "rgba(245, 158, 11, 0.15)"),
+        "Trainer Approved":     ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Approved":             ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Draft":                ("#6B7280", "rgba(107, 114, 128, 0.15)"),
+        "Completed":            ("#3B82F6", "rgba(59, 130, 246, 0.15)"),
+        "Rejected":             ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "New":                  ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Good":                 ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Fair":                 ("#F59E0B", "rgba(245, 158, 11, 0.15)"),
+        "Damaged":              ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "Retired":              ("#6B7280", "rgba(107, 114, 128, 0.15)"),
+        "Present":              ("#10B981", "rgba(16, 185, 129, 0.15)"),
+        "Absent":               ("#EF4444", "rgba(239, 68, 68, 0.15)"),
+        "Late":                 ("#F59E0B", "rgba(245, 158, 11, 0.15)"),
     }
 
     STATUS_LABELS = {

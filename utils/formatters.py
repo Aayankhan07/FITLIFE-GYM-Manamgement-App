@@ -78,6 +78,29 @@ def format_cnic(cnic: Optional[str]) -> str:
     return cnic
 
 
+def mask_cnic(cnic: Optional[str]) -> str:
+    """Mask sensitive national ID for PII security: 35202-*******-1"""
+    if not cnic:
+        return "—"
+    formatted = format_cnic(cnic)
+    parts = formatted.split("-")
+    if len(parts) == 3:
+        return f"{parts[0]}-{'*' * len(parts[1])}-{parts[2]}"
+    elif len(formatted) > 6:
+        return formatted[:3] + "*" * (len(formatted) - 5) + formatted[-2:]
+    return "******"
+
+
+def mask_phone(phone: Optional[str]) -> str:
+    """Mask phone number for PII compliance: 0300-****123"""
+    if not phone:
+        return "—"
+    p = "".join(c for c in phone if c.isdigit())
+    if len(p) >= 10:
+        return f"{p[:4]}-****{p[-3:]}"
+    return "****"
+
+
 def truncate(text: str, max_len: int = 50) -> str:
     if not text:
         return ""

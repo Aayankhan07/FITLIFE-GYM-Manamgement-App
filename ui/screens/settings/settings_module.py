@@ -10,6 +10,7 @@ from PyQt6.QtGui import QFont
 from ui.components.glass_card import SectionHeader
 from ui.components.confirm_dialog import ConfirmDialog, InfoDialog
 from config.constants import ROLE_ADMIN, ROLE_MANAGER
+from ui.theme.theme_manager import ThemeManager
 import services.settings_service as svc
 
 
@@ -36,22 +37,32 @@ class SettingsModule(QWidget):
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("⚙️  Settings"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
-        hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
+        self._title = QLabel("⚙️  Settings")
+        hdr.addWidget(self._title); hdr.addStretch(); m.addLayout(hdr)
 
-        tabs = QTabWidget(); tabs.setStyleSheet("""
-            QTabWidget::pane{background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px;}
-            QTabBar::tab{background:rgba(0,0,0,0.2);color:#9CA3AF;padding:10px 20px;border-radius:8px;margin-right:4px;}
-            QTabBar::tab:selected{background:rgba(0, 102, 255, 0.3);color:#0066FF;font-weight:bold;}
-        """)
-        tabs.addTab(self._build_profile(), "👤 Profile")
-        tabs.addTab(self._build_notifications(), "🔔 Notifications")
+        self.tabs = QTabWidget()
+        self.tabs.addTab(self._build_profile(), "👤 Profile")
+        self.tabs.addTab(self._build_notifications(), "🔔 Notifications")
         if self._session.role == ROLE_ADMIN:
-            tabs.addTab(self._build_system(), "🛠 System Config")
-            tabs.addTab(self._build_reminders(), "⚠️ Alerts Preview")
-        m.addWidget(tabs); m.addStretch()
+            self.tabs.addTab(self._build_system(), "🛠 System Config")
+            self.tabs.addTab(self._build_reminders(), "⚠️ Alerts Preview")
+        m.addWidget(self.tabs); m.addStretch()
         scroll.setWidget(c)
         QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)
+        self.refresh_theme()
+
+    def refresh_theme(self):
+        c = ThemeManager.get_colors()
+        self._title.setStyleSheet(f"QWidget {{ font-size:26px;font-weight:900;color:{c['text_primary']}; }}")
+        self.tabs.setStyleSheet(f"""
+            QTabWidget::pane{{background:{c['card_bg']};border:1px solid {c['glass_border']};border-radius:12px;}}
+            QTabBar::tab{{background:transparent;color:{c['text_secondary']};padding:10px 20px;border-radius:8px;margin-right:4px;}}
+            QTabBar::tab:selected{{background:{c['hover_bg']};color:{c['accent_primary']};font-weight:bold;}}
+        """)
+        for card_name in ["infoCard", "pwCard", "notifCard", "systemCard", "aiCard"]:
+            cards = self.findChildren(QFrame, card_name)
+            for card in cards:
+                card.setStyleSheet(f"QFrame#{card_name} {{ background:{c['card_bg']};border:1px solid {c['glass_border']};border-radius:14px; }}")
 
     # ── Profile Tab ──────────────────────────────────────────────────────────
     def _build_profile(self):

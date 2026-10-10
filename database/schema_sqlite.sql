@@ -105,6 +105,8 @@ CREATE TABLE IF NOT EXISTS members (
     membership_plan_id INTEGER NULL REFERENCES membership_plans(id),
     expiry_date        TEXT NULL,
     status             TEXT NOT NULL DEFAULT 'Active' CHECK (status IN ('Active','Inactive','Suspended','Expired')),
+    is_deleted         INTEGER NOT NULL DEFAULT 0,
+    deleted_at         DATETIME NULL,
     created_at         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
     updated_at         DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP
 );
@@ -428,3 +430,11 @@ CREATE INDEX IF NOT EXISTS idx_payments_member   ON payments(member_id);
 CREATE INDEX IF NOT EXISTS idx_audit_timestamp   ON audit_logs(timestamp);
 CREATE INDEX IF NOT EXISTS idx_sched_date        ON trainer_schedule(slot_date);
 CREATE INDEX IF NOT EXISTS idx_progress_member   ON progress_logs(member_id);
+
+CREATE TABLE IF NOT EXISTS sys_job_locks (
+    job_name    TEXT PRIMARY KEY,
+    locked_by   TEXT NOT NULL,
+    locked_at   DATETIME NOT NULL DEFAULT CURRENT_TIMESTAMP,
+    expires_at  DATETIME NOT NULL
+);
+

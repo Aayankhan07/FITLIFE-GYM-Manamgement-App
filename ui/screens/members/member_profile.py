@@ -12,6 +12,7 @@ from PyQt6.QtGui import QFont
 
 from ui.components.glass_card import GlassCard, KPICard, StatusBadge
 from ui.components.confirm_dialog import ConfirmDialog, InfoDialog
+from ui.theme.theme_manager import ThemeManager
 import services.member_service as member_svc
 import services.membership_service as membership_svc
 
@@ -205,11 +206,11 @@ class MemberProfile(QWidget):
         t.setSelectionBehavior(QTableWidget.SelectionBehavior.SelectRows)
         t.verticalHeader().setVisible(False)
         t.horizontalHeader().setStretchLastSection(True)
-        t.setStyleSheet("""
-            QTableWidget { background:transparent; border:none; color:#F0F4FF; }
-            QTableWidget::item { padding:8px; border-bottom:1px solid rgba(0, 102, 255, 0.15); }
-            QHeaderView::section { background:rgba(0, 102, 255, 0.2); color:#00F5FF;
-                padding:10px; border:none; font-weight:bold; }
+        t.setStyleSheet(f"""
+            QTableWidget {{ background:transparent; border:none; color:{ThemeManager.color('text_primary')}; }}
+            QTableWidget::item {{ padding:8px; border-bottom:1px solid {ThemeManager.color('glass_border')}; }}
+            QHeaderView::section {{ background:{ThemeManager.color('table_header')}; color:{ThemeManager.color('accent_primary')};
+                padding:10px; border:none; font-weight:bold; }}
         """)
         return t
 

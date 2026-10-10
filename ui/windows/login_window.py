@@ -182,7 +182,7 @@ class LoginWindow(QWidget):
         # ── Logo area ─────────────────────────────────────────────────────────
         icon_lbl = QLabel()
         from ui.components.icons import get_icon
-        icon_lbl.setPixmap(get_icon("brand", color="#00F5FF", size=56).pixmap(56, 56))
+        icon_lbl.setPixmap(get_icon("brand", color="#FA5A3C", size=56).pixmap(56, 56))
         icon_lbl.setAlignment(Qt.AlignmentFlag.AlignCenter)
         card_layout.addWidget(icon_lbl)
         card_layout.addSpacing(8)
@@ -191,8 +191,7 @@ class LoginWindow(QWidget):
         brand_lbl.setStyleSheet("""
             font-size: 34px;
             font-weight: 900;
-            color: qlineargradient(x1:0, y1:0, x2:1, y2:0,
-                stop:0 #38BDF8, stop:1 #00F5FF);
+            color: #FA5A3C;
             background: transparent;
             letter-spacing: 2px;
         """)

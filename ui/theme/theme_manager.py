@@ -9,59 +9,59 @@ import logging
 
 logger = logging.getLogger(__name__)
 
-# ─── Color Palettes ───────────────────────────────────────────────────────────
+# ─── Color Palettes (Harmonized with GYM-MANAGEMENT Reference) ───────────────
 DARK_COLORS = {
-    "bg_primary":            "#0B0F19",
-    "bg_secondary":          "#152033",
-    "bg_tertiary":           "#1E293B",
-    "accent_primary":        "#3B82F6",
-    "accent_primary_hover":  "#60A5FA",
-    "accent_secondary":      "#06B6D4",
-    "accent_secondary_hover": "#22D3EE",
-    "accent_danger":         "#F43F5E",
-    "accent_danger_hover":   "#FB7185",
+    "bg_primary":            "#0C0D0E",  # Main Canvas Background
+    "bg_secondary":          "#141518",  # Main Card Background
+    "bg_tertiary":           "#1E2129",  # Elevated Surface / Active Pills
+    "accent_primary":        "#FA5A3C",  # Energy Coral Primary
+    "accent_primary_hover":  "#E54829",  # Energy Coral Hover
+    "accent_secondary":      "#3B82F6",  # Performance Slate Blue
+    "accent_secondary_hover": "#2563EB", # Performance Blue Hover
+    "accent_danger":         "#EF4444",
+    "accent_danger_hover":   "#DC2626",
     "accent_warning":        "#F59E0B",
-    "accent_warning_hover":  "#FBBF24",
+    "accent_warning_hover":  "#D97706",
     "accent_success":        "#10B981",
-    "accent_success_hover":  "#34D399",
-    "text_primary":          "#F8FAFC",
-    "text_secondary":        "#94A3B8",
-    "text_muted":            "#64748B",
-    "glass_bg":              "rgba(21, 32, 51, 0.75)",
-    "glass_border":          "rgba(59, 130, 246, 0.2)",
-    "card_bg":               "rgba(21, 32, 51, 0.65)",
-    "input_bg":              "rgba(15, 23, 42, 0.6)",
-    "hover_bg":              "rgba(59, 130, 246, 0.12)",
-    "sidebar_bg":            "#0D1527",
-    "row_hover":             "rgba(59, 130, 246, 0.08)",
-    "table_header":          "rgba(59, 130, 246, 0.15)",
+    "accent_success_hover":  "#059669",
+    "text_primary":          "#F4F5F8",
+    "text_secondary":        "#9CA3AF",
+    "text_muted":            "#6B7280",
+    "glass_bg":              "#141518",
+    "glass_border":          "#24272D",
+    "card_bg":               "#141518",
+    "input_bg":              "#181A1F",
+    "hover_bg":              "rgba(250, 90, 60, 0.12)",
+    "sidebar_bg":            "#0C0D0E",
+    "row_hover":             "#1A1D23",
+    "table_header":          "#181A1F",
 }
 
 LIGHT_COLORS = {
-    "bg_primary":            "#F8FAFC",
-    "bg_secondary":          "#FFFFFF",
-    "bg_tertiary":           "#F1F5F9",
-    "accent_primary":        "#2563EB",
-    "accent_primary_hover":  "#1D4ED8",
-    "accent_secondary":      "#0891B2",
-    "accent_secondary_hover": "#0E7490",
-    "accent_danger":         "#DC2626",
-    "accent_danger_hover":   "#B91C4C",
-    "accent_warning":        "#D97706",
-    "accent_warning_hover":  "#B45309",
-    "accent_success":        "#16A34A",
-    "accent_success_hover":  "#15803D",
-    "text_primary":          "#0F172A",
-    "text_secondary":        "#475569",
-    "text_muted":            "#94A3B8",
-    "glass_bg":              "rgba(255, 255, 255, 0.85)",
-    "glass_border":          "rgba(37, 99, 235, 0.15)",
+    "bg_primary":            "#F4F5F8",  # Main Light Canvas
+    "bg_secondary":          "#FFFFFF",  # Main White Card
+    "bg_tertiary":           "#EAECEF",  # Segmented Controls / Pills
+    "accent_primary":        "#FA5A3C",  # Energy Coral Primary
+    "accent_primary_hover":  "#E54829",  # Energy Coral Hover
+    "accent_secondary":      "#3B82F6",  # Performance Slate Blue
+    "accent_secondary_hover": "#2563EB",
+    "accent_danger":         "#EF4444",
+    "accent_danger_hover":   "#DC2626",
+    "accent_warning":        "#F59E0B",
+    "accent_warning_hover":  "#D97706",
+    "accent_success":        "#10B981",
+    "accent_success_hover":  "#059669",
+    "text_primary":          "#18181B",
+    "text_secondary":        "#6B7280",
+    "text_muted":            "#8C93A3",
+    "glass_bg":              "#FFFFFF",
+    "glass_border":          "#E2E6ED",
     "card_bg":               "#FFFFFF",
     "input_bg":              "#FFFFFF",
-    "hover_bg":              "rgba(37, 99, 235, 0.08)",
-    "sidebar_bg":            "#FFFFFF",
-    "row_hover":             "rgba(37, 99, 235, 0.04)",
-    "table_header":          "rgba(37, 99, 235, 0.08)",
+    "hover_bg":              "rgba(250, 90, 60, 0.08)",
+    "sidebar_bg":            "#F4F5F8",
+    "row_hover":             "#F9FAFC",
+    "table_header":          "#F4F5F8",
 }
 
 
@@ -236,12 +236,6 @@ QLabel#topbarRoleLbl {{
     border-radius: 16px;
 }}
 
-#kpiCard[accent="primary"] {{ border-top: 3px solid {c['accent_primary']}; }}
-#kpiCard[accent="secondary"] {{ border-top: 3px solid {c['accent_secondary']}; }}
-#kpiCard[accent="success"] {{ border-top: 3px solid {c['accent_success']}; }}
-#kpiCard[accent="warning"] {{ border-top: 3px solid {c['accent_warning']}; }}
-#kpiCard[accent="danger"] {{ border-top: 3px solid {c['accent_danger']}; }}
-
 /* KPI Icon Badge */
 QLabel#kpiIconBadge {{
     font-size: 0px;
@@ -253,22 +247,7 @@ QLabel#kpiIconBadge {{
     max-width: 36px;
     min-height: 36px;
     max-height: 36px;
-}}
-
-#kpiCard[accent="primary"] QLabel#kpiIconBadge {{
-    background-color: rgba(59, 130, 246, 0.15);
-}}
-#kpiCard[accent="secondary"] QLabel#kpiIconBadge {{
-    background-color: rgba(6, 182, 212, 0.15);
-}}
-#kpiCard[accent="success"] QLabel#kpiIconBadge {{
-    background-color: rgba(16, 185, 129, 0.15);
-}}
-#kpiCard[accent="warning"] QLabel#kpiIconBadge {{
-    background-color: rgba(245, 158, 11, 0.15);
-}}
-#kpiCard[accent="danger"] QLabel#kpiIconBadge {{
-    background-color: rgba(244, 63, 94, 0.15);
+    background-color: {c['hover_bg']};
 }}
 
 /* KPI Value Text */
@@ -549,11 +528,11 @@ QTableWidget::item:selected {{
 }}
 QHeaderView::section {{
     background: {c['table_header']};
-    color: {c['accent_primary']};
+    color: {c['text_secondary']};
     padding: 12px;
     border: none;
-    font-weight: bold;
-    font-size: 13px;
+    font-weight: 700;
+    font-size: 12px;
     border-bottom: 1px solid {c['glass_border']};
 }}
 

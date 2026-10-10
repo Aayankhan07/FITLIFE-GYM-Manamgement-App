@@ -10,6 +10,7 @@ from ui.components.loading_spinner import LoadingOverlay
 from utils.thread_worker import Worker
 from database.connection import DatabaseConnection
 import logging
+from ui.theme.theme_manager import ThemeManager
 
 logger = logging.getLogger(__name__)
 
@@ -103,13 +104,15 @@ class AuditLogsModule(QWidget):
         self._tbl.verticalHeader().setVisible(False)
         self._tbl.horizontalHeader().setStretchLastSection(True)
         self._tbl.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self._tbl.setStyleSheet("""
-            QTableWidget{background:transparent;border:none;color:#F0F4FF;}
-            QTableWidget::item{padding:8px;border-bottom:1px solid rgba(0, 102, 255, 0.12);}
-            QTableWidget::item:hover{background:rgba(0, 102, 255, 0.08);}
-            QHeaderView::section{background:rgba(0, 102, 255, 0.2);color:#00F5FF;padding:10px;border:none;font-weight:bold;}
+        self._tbl.setStyleSheet(f"""
+            QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
+            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
+            QTableWidget::item:hover{{background:{ThemeManager.color('hover_bg')};}}
+            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:10px;border:none;font-weight:bold;}}
         """)
-        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px; }")
+        tc = QFrame()
+        tc.setObjectName("glassCard")
+        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:14px; }}")
         QVBoxLayout(tc).addWidget(self._tbl); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)
@@ -118,10 +121,10 @@ class AuditLogsModule(QWidget):
 
     # Colors for action badges
     _ACTION_COLORS = {
-        "CREATE": "#00E676", "UPDATE": "#00F5FF", "DELETE": "#FF2D78",
-        "LOGIN": "#0066FF", "LOGOUT": "#9CA3AF", "PAYMENT": "#FFB800",
-        "PLAN_APPROVE": "#00E676", "PLAN_REJECT": "#FF2D78",
-        "LOGIN_FAILED": "#FF2D78",
+        "CREATE": "#10B981", "UPDATE": "#3B82F6", "DELETE": "#EF4444",
+        "LOGIN": "#3B82F6", "LOGOUT": "#9CA3AF", "PAYMENT": "#F59E0B",
+        "PLAN_APPROVE": "#10B981", "PLAN_REJECT": "#EF4444",
+        "LOGIN_FAILED": "#EF4444",
     }
 
     def _load(self):

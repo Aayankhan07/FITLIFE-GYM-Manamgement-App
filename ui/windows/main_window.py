@@ -25,13 +25,13 @@ class GradientBackground(QWidget):
         painter.setRenderHint(QPainter.RenderHint.Antialiasing)
         g = QLinearGradient(0, 0, self.width(), self.height())
         if ThemeManager.current_theme() == "dark":
-            g.setColorAt(0.0, QColor(11, 15, 25))    # #0B0F19
-            g.setColorAt(0.5, QColor(21, 32, 51))    # #152033
-            g.setColorAt(1.0, QColor(15, 23, 42))    # #0F172A
+            g.setColorAt(0.0, QColor(12, 13, 14))    # #0C0D0E Canvas
+            g.setColorAt(0.5, QColor(14, 15, 17))    # Subtle depth
+            g.setColorAt(1.0, QColor(12, 13, 14))    # #0C0D0E
         else:
-            g.setColorAt(0.0, QColor(248, 250, 252)) # #F8FAFC
-            g.setColorAt(0.5, QColor(241, 245, 249)) # #F1F5F9
-            g.setColorAt(1.0, QColor(226, 232, 240)) # #E2E8F0
+            g.setColorAt(0.0, QColor(244, 245, 248)) # #F4F5F8 Light Canvas
+            g.setColorAt(0.5, QColor(248, 249, 251)) # Clean soft elevation
+            g.setColorAt(1.0, QColor(244, 245, 248)) # #F4F5F8
         painter.fillRect(self.rect(), QBrush(g))
 
 
@@ -65,6 +65,8 @@ class MainWindow(QMainWindow):
         body = QHBoxLayout(); body.setSpacing(0); body.setContentsMargins(0,0,0,0)
         self.sidebar = Sidebar(self._session.role, self._session.full_name, parent=central)
         self.sidebar.nav_clicked.connect(self._navigate)
+        self.sidebar.theme_changed.connect(self._apply_theme)
+        self.sidebar.theme_toggled.connect(self._toggle_theme)
         body.addWidget(self.sidebar)
 
         self.content_stack = QStackedWidget()
@@ -80,9 +82,9 @@ class MainWindow(QMainWindow):
     def _load_screens(self):
         role = self._session.role
 
-        # Dashboard (all roles)
-        from ui.screens.dashboard_placeholder import DashboardPlaceholder
-        dash = DashboardPlaceholder(self._session)
+        # Dashboard (all roles) — Redesigned Bento Dashboard matching GYM-MANAGEMENT
+        from ui.screens.dashboard.bento_dashboard import BentoDashboardScreen
+        dash = BentoDashboardScreen(self._session)
         dash.nav_requested.connect(self.navigate_to)
         self._register("dashboard", dash)
 
@@ -211,21 +213,26 @@ class MainWindow(QMainWindow):
         self.toast.show_message(title, message, toast_type)
 
     # ── Theme + Session ────────────────────────────────────────────────────────
-    def _toggle_theme(self):
-        new_theme = ThemeManager.toggle_theme()
+    def _apply_theme(self, new_theme: str):
+        ThemeManager.apply_theme(new_theme)
         auth.save_theme_preference(self._session.user_id, new_theme)
         self.toast.show_message("Theme Changed", f"Switched to {new_theme.title()} mode.", "info")
-        
-        # Refresh dynamic vector colors across sidebar and topbar
-        self.sidebar.refresh_icons()
-        self.topbar.update_icons()
-        
-        # Refresh current screen's dynamic elements (like KPI cards)
-        current_screen = self.content_stack.currentWidget()
-        if current_screen and hasattr(current_screen, "refresh"):
-            current_screen.refresh()
-            
+
+        # Refresh all screens or current screen
+        for i in range(self.content_stack.count()):
+            screen = self.content_stack.widget(i)
+            if hasattr(screen, "refresh_theme"):
+                screen.refresh_theme()
+            elif hasattr(screen, "refresh"):
+                screen.refresh()
+
+        self.sidebar.refresh_styles()
+        self.topbar.update_styles()
         self.centralWidget().update()
+
+    def _toggle_theme(self):
+        new_theme = "light" if ThemeManager.current_theme() == "dark" else "dark"
+        self._apply_theme(new_theme)
 
     def _check_session(self):
         session = auth.get_current_session()
