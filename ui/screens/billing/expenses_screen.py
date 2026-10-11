@@ -37,7 +37,7 @@ class ExpensesScreen(QWidget):
         # Header
         hdr = QHBoxLayout()
         title = QLabel("📉 Extra Expenses")
-        title.setStyleSheet("QWidget { font-size:24px; font-weight:bold; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:24px; font-weight:900;")
         hdr.addWidget(title)
         hdr.addStretch()
 

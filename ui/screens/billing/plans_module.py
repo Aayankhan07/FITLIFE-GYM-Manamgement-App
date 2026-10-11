@@ -44,7 +44,7 @@ class PlansScreen(QWidget):
 
         hdr = QHBoxLayout()
         title = QLabel("📋  Membership Plans")
-        title.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
 
         self.assign_btn = QPushButton("🔗  Assign Membership")
@@ -77,12 +77,6 @@ class PlansScreen(QWidget):
         self.usage_table.setHorizontalHeaderLabels(["Plan Name","Active Members","Duration","Price"])
         self.usage_table.verticalHeader().setVisible(False)
         self.usage_table.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
-        self.usage_table.setStyleSheet(f"""
-            QTableWidget{{background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};
-            border-radius:12px;color:{ThemeManager.color('text_primary')};}}
-            QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
-            QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:10px;border:none;font-weight:bold;}}
-        """)
         header = self.usage_table.horizontalHeader()
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         for i in range(1, 4):
@@ -95,7 +89,6 @@ class PlansScreen(QWidget):
         self.table = DataTable(cols)
         tc = QFrame()
         tc.setObjectName("glassCard")
-        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 

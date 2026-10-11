@@ -60,6 +60,7 @@ class MainWindow(QMainWindow):
         self.topbar = TopBar(self._session.full_name, self._session.role, parent=central)
         self.topbar.theme_toggled.connect(self._toggle_theme)
         self.topbar.logout_clicked.connect(self._logout)
+        self.topbar.profile_clicked.connect(lambda: self._navigate("settings"))
         root.addWidget(self.topbar)
 
         body = QHBoxLayout(); body.setSpacing(0); body.setContentsMargins(0,0,0,0)
@@ -218,13 +219,25 @@ class MainWindow(QMainWindow):
         auth.save_theme_preference(self._session.user_id, new_theme)
         self.toast.show_message("Theme Changed", f"Switched to {new_theme.title()} mode.", "info")
 
-        # Refresh all screens or current screen
+        # Refresh all screens with refresh_theme, and only active screen with refresh
+        current_visible = self.content_stack.currentWidget()
+
+        def _refresh_widget(w):
+            try:
+                if hasattr(w, "refresh_theme"):
+                    w.refresh_theme()
+                elif w is current_visible and hasattr(w, "refresh"):
+                    w.refresh()
+            except Exception as e:
+                logger.warning(f"Error refreshing widget theme: {e}")
+
+            # If widget contains an internal stack (e.g. MembersModule, DietPlansModule)
+            if hasattr(w, "_stack") and hasattr(w._stack, "count"):
+                for idx in range(w._stack.count()):
+                    _refresh_widget(w._stack.widget(idx))
+
         for i in range(self.content_stack.count()):
-            screen = self.content_stack.widget(i)
-            if hasattr(screen, "refresh_theme"):
-                screen.refresh_theme()
-            elif hasattr(screen, "refresh"):
-                screen.refresh()
+            _refresh_widget(self.content_stack.widget(i))
 
         self.sidebar.refresh_styles()
         self.topbar.update_styles()

@@ -43,7 +43,7 @@ class EquipmentScreen(QWidget):
 
         hdr = QHBoxLayout()
         title = QLabel("🏋️  Equipment Inventory")
-        title.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
         self.add_btn = QPushButton("➕  Add Equipment")
         self.add_btn.setObjectName("btnPrimary"); self.add_btn.setMinimumHeight(40)
@@ -63,7 +63,6 @@ class EquipmentScreen(QWidget):
         # Filters
         fbar = QFrame()
         fbar.setObjectName("glassCard")
-        fbar.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px; }}")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Category:"))
         self.cat_filter = QComboBox(); self.cat_filter.setFixedHeight(34)
@@ -88,7 +87,6 @@ class EquipmentScreen(QWidget):
         self.table = DataTable(cols)
         tc = QFrame()
         tc.setObjectName("glassCard")
-        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 

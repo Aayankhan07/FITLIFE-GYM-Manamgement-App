@@ -48,7 +48,7 @@ class TrainersScreen(QWidget):
 
         hdr = QHBoxLayout()
         title = QLabel("Trainers Management")
-        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title)
         hdr.addStretch()
         self.add_btn = QPushButton("Add Trainer")
@@ -72,7 +72,6 @@ class TrainersScreen(QWidget):
         # Filter bar
         fbar = QFrame()
         fbar.setObjectName("glassCard")
-        fbar.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')}; border:1px solid {ThemeManager.color('glass_border')}; border-radius:12px; }}")
         fr = QHBoxLayout(fbar)
         fr.setContentsMargins(16, 10, 16, 10)
         fr.setSpacing(12)
@@ -102,7 +101,6 @@ class TrainersScreen(QWidget):
         self.table.row_double_clicked.connect(self._on_double_click)
         tc = QFrame()
         tc.setObjectName("glassCard")
-        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')}; border:1px solid {ThemeManager.color('glass_border')}; border-radius:16px; }}")
         tc_l = QVBoxLayout(tc)
         tc_l.setContentsMargins(16, 16, 16, 16)
         tc_l.addWidget(self.table)
@@ -135,7 +133,7 @@ class TrainersScreen(QWidget):
         for t in trainers:
             rows.append([
                 t[0], t[1], t[2], t[5], t[6],
-                f"Rs. {float(t[7]):,.0f}", t[9],
+                f"Rs. {float(t[7]):,.0f}", "",
                 t[12], ""
             ])
         self.table.set_data(rows)
@@ -395,7 +393,7 @@ class TrainerProfile(QWidget):
         self.avatar = QLabel("💪"); self.avatar.setStyleSheet("QWidget { font-size:60px; }"); self.avatar.setFixedWidth(80)
         hcl.addWidget(self.avatar)
         info = QVBoxLayout(); info.setSpacing(4)
-        self.name_lbl = QLabel("—"); self.name_lbl.setStyleSheet("QWidget { font-size:22px;font-weight:900;color:#F0F4FF; }")
+        self.name_lbl = QLabel("—"); self.name_lbl.setStyleSheet("font-size:22px; font-weight:900;")
         self.sub_lbl  = QLabel("—"); self.sub_lbl.setStyleSheet("QWidget { font-size:14px;color:#9CA3AF; }")
         self.stat_badge = StatusBadge("Active")
         for w in [self.name_lbl, self.sub_lbl, self.stat_badge]: info.addWidget(w)

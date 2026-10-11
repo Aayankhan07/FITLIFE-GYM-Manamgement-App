@@ -120,27 +120,22 @@ class FeaturedProgramsCard(QFrame):
             ("Cardio Engine", "ZONE C", "#10B981"),
             ("Powerlifting", "LIFT D", "#8B5CF6"),
         ]
+        self.boxes = []
         for idx, (p_title, tag, col) in enumerate(programs):
             box = QFrame()
             box_layout = QVBoxLayout(box)
-            box_layout.setContentsMargins(10, 10, 10, 10)
+            box_layout.setContentsMargins(12, 10, 12, 10)
             box_layout.setSpacing(4)
 
             tag_lbl = QLabel(tag)
-            tag_lbl.setStyleSheet(f"font-size: 9px; font-weight: 800; color: {col};")
+            tag_lbl.setStyleSheet(f"font-size: 10px; font-weight: 800; color: {col}; background: transparent; border: none;")
             title_lbl = QLabel(p_title)
-            title_lbl.setStyleSheet("font-size: 12px; font-weight: 800;")
+            title_lbl.setObjectName("programTitleLbl")
+            title_lbl.setStyleSheet("font-size: 13px; font-weight: 700; background: transparent; border: none;")
             box_layout.addWidget(tag_lbl)
             box_layout.addWidget(title_lbl)
 
-            is_dark = ThemeManager.current_theme() == "dark"
-            box.setStyleSheet(f"""
-                QFrame {{
-                    background-color: {"#181A1F" if is_dark else "#F8F9FB"};
-                    border: 1px solid {"#24272D" if is_dark else "#E6E9EE"};
-                    border-radius: 10px;
-                }}
-            """)
+            self.boxes.append(box)
             grid.addWidget(box, idx // 2, idx % 2)
 
         layout.addLayout(grid)
@@ -148,13 +143,31 @@ class FeaturedProgramsCard(QFrame):
 
     def update_styles(self):
         is_dark = ThemeManager.current_theme() == "dark"
+        card_bg = "#141518" if is_dark else "#FFFFFF"
+        card_border = "#24272D" if is_dark else "#E6E9EE"
+        item_bg = "#181A1F" if is_dark else "#F8F9FB"
+        item_border = "#24272D" if is_dark else "#E6E9EE"
+        text_color = "#F4F5F8" if is_dark else "#18181B"
+
         self.setStyleSheet(f"""
             QFrame#programsCard {{
-                background-color: {"#141518" if is_dark else "#FFFFFF"};
-                border: 1px solid {"#24272D" if is_dark else "#E6E9EE"};
+                background-color: {card_bg};
+                border: 1px solid {card_border};
                 border-radius: 16px;
             }}
         """)
+
+        for box in getattr(self, "boxes", []):
+            box.setStyleSheet(f"""
+                QFrame {{
+                    background-color: {item_bg};
+                    border: 1px solid {item_border};
+                    border-radius: 10px;
+                }}
+                QLabel#programTitleLbl {{
+                    color: {text_color};
+                }}
+            """)
 
 
 class BentoDashboardScreen(QWidget):

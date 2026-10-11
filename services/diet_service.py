@@ -232,7 +232,11 @@ def get_diet_plan_stats(branch_id: Optional[int] = None, member_id: Optional[int
         with DatabaseConnection() as (conn, cursor):
             cursor.execute(sql, params)
             row = cursor.fetchone()
-            return {"total": row[0], "active": row[1], "pending": row[2]}
+            return {
+                "total": (row[0] or 0) if row else 0,
+                "active": (row[1] or 0) if row else 0,
+                "pending": (row[2] or 0) if row else 0,
+            }
     except Exception as e:
         logger.error(f"get_diet_plan_stats error: {e}")
         return {"total": 0, "active": 0, "pending": 0}

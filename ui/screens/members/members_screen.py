@@ -81,13 +81,6 @@ class MembersScreen(QWidget):
         # ── Filter bar ────────────────────────────────────────────────────────
         filter_frame = QFrame()
         filter_frame.setObjectName("glassCard")
-        filter_frame.setStyleSheet(f"""
-            QFrame#glassCard {{
-                background: {ThemeManager.color('card_bg')};
-                border: 1px solid {ThemeManager.color('glass_border')};
-                border-radius: 12px;
-            }}
-        """)
         filter_row = QHBoxLayout(filter_frame)
         filter_row.setContentsMargins(16, 12, 16, 12)
         filter_row.setSpacing(12)
@@ -136,13 +129,6 @@ class MembersScreen(QWidget):
 
         table_card = QFrame()
         table_card.setObjectName("glassCard")
-        table_card.setStyleSheet(f"""
-            QFrame#glassCard {{
-                background: {ThemeManager.color('card_bg')};
-                border: 1px solid {ThemeManager.color('glass_border')};
-                border-radius: 16px;
-            }}
-        """)
         tc_layout = QVBoxLayout(table_card)
         tc_layout.setContentsMargins(16, 16, 16, 16)
         tc_layout.addWidget(self.table)

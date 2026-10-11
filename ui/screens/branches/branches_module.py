@@ -40,7 +40,7 @@ class BranchesScreen(QWidget):
 
         hdr = QHBoxLayout()
         title = QLabel("🏢  Branch Management")
-        title.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
         self.add_btn = QPushButton("➕  Add Branch")
         self.add_btn.setObjectName("btnPrimary"); self.add_btn.setMinimumHeight(40)
@@ -58,7 +58,7 @@ class BranchesScreen(QWidget):
         cols = ["ID","Branch Name","City","Phone","Manager","Members","Trainers","Status","Actions"]
         self.table = DataTable(cols)
         tc = QFrame()
-        tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04); border:1px solid rgba(0, 102, 255, 0.2); border-radius:16px; }")
+        tc.setObjectName("glassCard")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
         self._overlay = LoadingOverlay(self)

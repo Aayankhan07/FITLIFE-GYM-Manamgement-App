@@ -88,7 +88,7 @@ class _DietList(QWidget):
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("🥗  Diet Plans"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("🥗  Diet Plans"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             b = QPushButton("➕ New Plan"); b.setObjectName("btnPrimary"); b.setMinimumHeight(40)
@@ -102,7 +102,8 @@ class _DietList(QWidget):
         for k in [self._k_total, self._k_active, self._k_pending]: krow.addWidget(k)
         krow.addStretch(); m.addLayout(krow)
 
-        ff = QFrame(); ff.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:12px; }")
+        ff = QFrame()
+        ff.setObjectName("glassCard")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Status:"))
         self._sf = QComboBox(); self._sf.setFixedHeight(34); self._sf.addItem("All",None)
@@ -118,7 +119,8 @@ class _DietList(QWidget):
         self.table.row_double_clicked.connect(
             lambda r: self.open_detail.emit(self.table._filtered_data[r][0])
             if r < len(self.table._filtered_data) else None)
-        tc = QFrame(); tc.setStyleSheet("QFrame { background:rgba(255,255,255,0.04);border:1px solid rgba(0, 102, 255, 0.2);border-radius:16px; }")
+        tc = QFrame()
+        tc.setObjectName("glassCard")
         QVBoxLayout(tc).addWidget(self.table)
         m.addWidget(tc)
 
@@ -208,7 +210,7 @@ class _DietDetail(QWidget):
         hc = QFrame(); hc.setStyleSheet("QFrame { background:rgba(0, 102, 255, 0.1);border:1px solid rgba(0, 102, 255, 0.4);border-radius:16px; }")
         hl = QHBoxLayout(hc); hl.setContentsMargins(24,18,24,18); hl.setSpacing(20)
         iv = QVBoxLayout(); iv.setSpacing(4)
-        self._title = QLabel("—"); self._title.setStyleSheet("QWidget { font-size:20px;font-weight:900;color:#F0F4FF; }")
+        self._title = QLabel("—"); self._title.setStyleSheet("font-size:20px; font-weight:900;")
         self._sub   = QLabel("—"); self._sub.setStyleSheet("QWidget { font-size:13px;color:#9CA3AF; }")
         self._badge = StatusBadge("Draft")
         for w in [self._title, self._sub, self._badge]: iv.addWidget(w)

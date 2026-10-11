@@ -74,7 +74,7 @@ class _StaffList(QWidget):
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("👤  Staff Management"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("👤  Staff Management"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role == ROLE_ADMIN:
             b = QPushButton("➕ Add Staff"); b.setObjectName("btnPrimary"); b.setMinimumHeight(40)
@@ -91,7 +91,6 @@ class _StaffList(QWidget):
         # Filters
         ff = QFrame()
         ff.setObjectName("glassCard")
-        ff.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px; }}")
         fr = QHBoxLayout(ff); fr.setContentsMargins(16,10,16,10); fr.setSpacing(10)
         fr.addWidget(QLabel("Role:"))
         self._rf = QComboBox(); self._rf.setFixedHeight(34)
@@ -115,7 +114,6 @@ class _StaffList(QWidget):
         self.table = DataTable(cols)
         tc = QFrame()
         tc.setObjectName("glassCard")
-        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         QVBoxLayout(tc).addWidget(self.table); m.addWidget(tc)
 
         self._overlay = LoadingOverlay(self)

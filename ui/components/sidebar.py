@@ -167,21 +167,15 @@ class Sidebar(QWidget):
         layout.setSpacing(16)
 
         # ── 1. Top Section: Circular Brand Emblem ─────────────────────────────
+        # ── 1. Top Section: Brand Title ──────────────────────────────────────
         top_row = QHBoxLayout()
-        top_row.setContentsMargins(0, 0, 0, 0)
-        
-        self.emblem_btn = QPushButton()
-        self.emblem_btn.setFixedSize(42, 42)
-        self.emblem_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.emblem_btn.setToolTip("FitLife Overview")
-        self.emblem_btn.clicked.connect(lambda: self._on_nav_click("dashboard"))
+        top_row.setContentsMargins(4, 0, 0, 0)
         
         self.brand_title_lbl = QLabel("FitLife Pro")
         self.brand_title_lbl.setStyleSheet("""
-            font-size: 15px; font-weight: 800; letter-spacing: 0.5px;
+            font-size: 16px; font-weight: 800; letter-spacing: 0.5px;
         """)
 
-        top_row.addWidget(self.emblem_btn)
         top_row.addWidget(self.brand_title_lbl)
         top_row.addStretch()
         layout.addLayout(top_row)
@@ -207,44 +201,52 @@ class Sidebar(QWidget):
         scroll.setWidget(scroll_content)
         layout.addWidget(scroll, 1)
 
-        # ── 3. Bottom Controls: Pill Theme Toggle & Watermark ─────────────────
+        # ── 3. Bottom Controls: Pill Theme Toggle & Collapse ─────────────────
         bottom_box = QVBoxLayout()
+        bottom_box.setContentsMargins(0, 8, 0, 8)
         bottom_box.setSpacing(8)
 
         # Pill theme switcher
-        self.theme_pill = QFrame()
-        self.theme_pill.setFixedHeight(36)
+        self.theme_pill = QWidget()
+        self.theme_pill.setObjectName("sidebarThemePill")
+        self.theme_pill.setAttribute(Qt.WidgetAttribute.WA_StyledBackground, True)
+        self.theme_pill.setFixedSize(72, 34)
         theme_pill_layout = QHBoxLayout(self.theme_pill)
         theme_pill_layout.setContentsMargins(3, 3, 3, 3)
         theme_pill_layout.setSpacing(2)
 
         self.light_btn = QPushButton()
+        self.light_btn.setObjectName("sidebarThemeBtn")
+        self.light_btn.setFixedSize(32, 28)
         self.light_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.light_btn.setIcon(get_icon("sun", size=14))
-        self.light_btn.setIconSize(QSize(14, 14))
+        self.light_btn.setIcon(get_icon("sun", size=15))
+        self.light_btn.setIconSize(QSize(15, 15))
         self.light_btn.clicked.connect(lambda: self._set_theme("light"))
 
         self.dark_btn = QPushButton()
+        self.dark_btn.setObjectName("sidebarThemeBtn")
+        self.dark_btn.setFixedSize(32, 28)
         self.dark_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.dark_btn.setIcon(get_icon("moon", size=14))
-        self.dark_btn.setIconSize(QSize(14, 14))
+        self.dark_btn.setIcon(get_icon("moon", size=15))
+        self.dark_btn.setIconSize(QSize(15, 15))
         self.dark_btn.clicked.connect(lambda: self._set_theme("dark"))
 
         theme_pill_layout.addWidget(self.light_btn)
         theme_pill_layout.addWidget(self.dark_btn)
 
-        bottom_row = QHBoxLayout()
-        bottom_row.addWidget(self.theme_pill)
-        bottom_row.addStretch()
+        self.bottom_row = QHBoxLayout()
+        self.bottom_row.setContentsMargins(0, 0, 0, 0)
+        self.bottom_row.addWidget(self.theme_pill)
+        self.bottom_stretch = self.bottom_row.addStretch()
 
         self.collapse_toggle = QPushButton()
-        self.collapse_toggle.setFixedSize(32, 32)
+        self.collapse_toggle.setObjectName("sidebarCollapseBtn")
+        self.collapse_toggle.setFixedSize(34, 34)
         self.collapse_toggle.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.collapse_toggle.setText("◀")
         self.collapse_toggle.clicked.connect(self.toggle_collapse)
-        bottom_row.addWidget(self.collapse_toggle)
+        self.bottom_row.addWidget(self.collapse_toggle)
 
-        bottom_box.addLayout(bottom_row)
+        bottom_box.addLayout(self.bottom_row)
         layout.addLayout(bottom_box)
 
         self.refresh_styles()
@@ -364,41 +366,50 @@ class Sidebar(QWidget):
     def refresh_styles(self):
         is_dark = ThemeManager.current_theme() == "dark"
 
-        # 1. Update Emblem
-        emblem_bg = "#181A1F" if is_dark else "#FFFFFF"
-        emblem_border = "#2B2F38" if is_dark else "#E2E6ED"
-        self.emblem_btn.setIcon(get_icon("globe", color="#FA5A3C", size=22))
-        self.emblem_btn.setIconSize(QSize(22, 22))
-        self.emblem_btn.setStyleSheet(f"""
-            QPushButton {{
-                background-color: {emblem_bg};
-                border: 1px solid {emblem_border};
-                border-radius: 21px;
-            }}
-            QPushButton:hover {{
-                border: 1.5px solid #FA5A3C;
-            }}
+        # 1. Update Brand Title
+        self.brand_title_lbl.setStyleSheet(f"""
+            font-size: 16px;
+            font-weight: 800;
+            letter-spacing: 0.5px;
+            color: {"#FA5A3C" if is_dark else "#FA5A3C"};
         """)
 
         # 2. Update Theme Pill
         pill_bg = "#1E2129" if is_dark else "#FFFFFF"
         pill_border = "#2B2F38" if is_dark else "#E2E6ED"
         self.theme_pill.setStyleSheet(f"""
-            QFrame {{
+            QWidget#sidebarThemePill {{
                 background-color: {pill_bg};
                 border: 1px solid {pill_border};
-                border-radius: 18px;
+                border-radius: 17px;
             }}
         """)
 
         active_btn_style = f"""
-            background-color: {"#282C36" if is_dark else "#EAECEF"};
-            border: none;
-            border-radius: 14px;
+            QPushButton#sidebarThemeBtn {{
+                background-color: {"#282C36" if is_dark else "#EAECEF"};
+                border: none;
+                border-radius: 14px;
+                min-width: 32px;
+                max-width: 32px;
+                min-height: 28px;
+                max-height: 28px;
+                padding: 0px;
+                margin: 0px;
+            }}
         """
         inactive_btn_style = """
-            background-color: transparent;
-            border: none;
+            QPushButton#sidebarThemeBtn {{
+                background-color: transparent;
+                border: none;
+                border-radius: 14px;
+                min-width: 32px;
+                max-width: 32px;
+                min-height: 28px;
+                max-height: 28px;
+                padding: 0px;
+                margin: 0px;
+            }}
         """
 
         self.dark_btn.setStyleSheet(active_btn_style if is_dark else inactive_btn_style)
@@ -410,18 +421,26 @@ class Sidebar(QWidget):
         self.light_btn.setIcon(get_icon("sun", color=sun_color, size=15))
         self.dark_btn.setIcon(get_icon("moon", color=moon_color, size=15))
 
-        self.collapse_toggle.setStyleSheet(f"""
-            QPushButton {{
-                background-color: {pill_bg};
-                border: 1px solid {pill_border};
-                border-radius: 16px;
-                color: {"#9CA3AF" if is_dark else "#6B7280"};
-                font-size: 11px;
-                font-weight: bold;
-            }}
-            QPushButton:hover {{
-                color: #FA5A3C;
-            }}
+        arrow_icon_name = "chevron_left" if self._expanded else "chevron_right"
+        self.collapse_toggle.setIcon(get_icon(arrow_icon_name, color="#FFFFFF", size=16))
+        self.collapse_toggle.setIconSize(QSize(16, 16))
+        self.collapse_toggle.setStyleSheet("""
+            QPushButton#sidebarCollapseBtn {
+                background-color: #FA5A3C;
+                border: none;
+                border-radius: 17px;
+                min-width: 34px;
+                max-width: 34px;
+                min-height: 34px;
+                max-height: 34px;
+                padding: 0px;
+            }
+            QPushButton#sidebarCollapseBtn:hover {
+                background-color: #E0482B;
+            }
+            QPushButton#sidebarCollapseBtn:pressed {
+                background-color: #C83C22;
+            }
         """)
 
         self._update_ops_button_text()
@@ -462,6 +481,8 @@ class Sidebar(QWidget):
 
         self.brand_title_lbl.setVisible(self._expanded)
         self.theme_pill.setVisible(self._expanded)
+        if hasattr(self, 'bottom_row'):
+            self.bottom_row.invalidate()
         if hasattr(self, 'ops_container'):
             self.ops_container.setVisible(self._expanded and self._operations_expanded)
             self.ops_btn.setVisible(self._expanded)
@@ -469,4 +490,5 @@ class Sidebar(QWidget):
         for btn in self._nav_buttons:
             btn.set_expanded(self._expanded)
 
-        self.collapse_toggle.setText("◀" if self._expanded else "▶")
+        arrow_icon_name = "chevron_left" if self._expanded else "chevron_right"
+        self.collapse_toggle.setIcon(get_icon(arrow_icon_name, color="#FFFFFF", size=16))

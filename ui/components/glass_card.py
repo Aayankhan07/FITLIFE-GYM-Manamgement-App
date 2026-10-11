@@ -216,24 +216,59 @@ class StatusBadge(QLabel):
         "Retired":   "Retired",
     }
 
+    STATUS_COLORS_LIGHT = {
+        "Active":               ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Inactive":             ("#4B5563", "rgba(107, 114, 128, 0.14)", "#E5E7EB"),
+        "Maintenance":          ("#B45309", "rgba(245, 158, 11, 0.16)", "#FDE68A"),
+        "Suspended":            ("#C93A1E", "rgba(250, 90, 60, 0.16)", "#FECACA"),
+        "Expired":              ("#B91C1C", "rgba(239, 68, 68, 0.16)", "#FECACA"),
+        "Paid":                 ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Unpaid":               ("#B91C1C", "rgba(239, 68, 68, 0.16)", "#FECACA"),
+        "Partial":              ("#B45309", "rgba(245, 158, 11, 0.16)", "#FDE68A"),
+        "Overdue":              ("#B91C1C", "rgba(239, 68, 68, 0.16)", "#FECACA"),
+        "Pending":              ("#1D4ED8", "rgba(59, 130, 246, 0.16)", "#BFDBFE"),
+        "Pending Verification": ("#B45309", "rgba(245, 158, 11, 0.16)", "#FDE68A"),
+        "Trainer Approved":     ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Approved":             ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Draft":                ("#4B5563", "rgba(107, 114, 128, 0.14)", "#E5E7EB"),
+        "Completed":            ("#1D4ED8", "rgba(59, 130, 246, 0.16)", "#BFDBFE"),
+        "Rejected":             ("#B91C1C", "rgba(239, 68, 68, 0.16)", "#FECACA"),
+        "New":                  ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Good":                 ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Fair":                 ("#B45309", "rgba(245, 158, 11, 0.16)", "#FDE68A"),
+        "Damaged":              ("#B91C1C", "rgba(239, 68, 68, 0.16)", "#FECACA"),
+        "Retired":              ("#4B5563", "rgba(107, 114, 128, 0.14)", "#E5E7EB"),
+        "Present":              ("#047857", "rgba(16, 185, 129, 0.16)", "#A7F3D0"),
+        "Absent":               ("#B91C1C", "rgba(239, 68, 68, 0.16)", "#FECACA"),
+        "Late":                 ("#B45309", "rgba(245, 158, 11, 0.16)", "#FDE68A"),
+    }
+
     def __init__(self, status: str, parent=None):
         super().__init__(status, parent)
         self.set_status(status)
 
     def set_status(self, status: str):
+        from ui.theme.theme_manager import ThemeManager
         display = self.STATUS_LABELS.get(status, status)
         self.setText(display)
-        # text_color (fg) is the foreground text, bg is the background fill
-        fg, bg = self.STATUS_COLORS.get(status, ("#FFFFFF", "#374151"))
+        
+        is_dark = ThemeManager.current_theme() == "dark"
+        if is_dark:
+            fg, bg = self.STATUS_COLORS.get(status, ("#FFFFFF", "#374151"))
+            border_col = bg
+        else:
+            cfg = self.STATUS_COLORS_LIGHT.get(status, ("#18181B", "rgba(0,0,0,0.06)", "#E2E6ED"))
+            fg, bg, border_col = cfg[0], cfg[1], cfg[2]
+
         self.setStyleSheet(f"""
             QLabel {{
                 background-color: {bg};
                 color: {fg};
-                border: 1px solid {bg};
+                border: 1px solid {border_col};
                 border-radius: 12px;
                 padding: 3px 10px;
                 font-size: 11px;
-                font-weight: bold;
+                font-weight: 700;
                 min-width: 70px;
             }}
         """)

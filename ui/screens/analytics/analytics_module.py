@@ -12,6 +12,7 @@ from ui.components.loading_spinner import LoadingOverlay
 from utils.thread_worker import Worker
 import services.analytics_service as analytics_svc
 import services.branch_service as branch_svc
+from ui.theme.theme_manager import ThemeManager
 from config.constants import ROLE_ADMIN
 
 # Try matplotlib; fall back to inline bar chart if unavailable
@@ -115,27 +116,34 @@ class _FallbackBarChart(QFrame):
 
 # ── Matplotlib chart helpers ──────────────────────────────────────────────────
 def _apply_chart_theme(fig, axes):
-    """Apply dark FitLife theme to a matplotlib figure and axes list."""
-    fig.patch.set_facecolor('#0D1117')
+    """Apply dynamic FitLife theme (Dark/Light) to a matplotlib figure and axes list."""
+    from ui.theme.theme_manager import ThemeManager
+    is_dark = ThemeManager.current_theme() == "dark"
+    bg_color = '#141518' if is_dark else '#FFFFFF'
+    text_color = '#F4F5F8' if is_dark else '#18181B'
+    sub_color = '#9CA3AF' if is_dark else '#6B7280'
+    grid_color = '#21262D' if is_dark else '#E2E6ED'
+
+    fig.patch.set_facecolor(bg_color)
     for ax in axes:
-        ax.set_facecolor('#0D1117')
-        ax.tick_params(colors='#9CA3AF', labelsize=9)
-        ax.xaxis.label.set_color('#9CA3AF')
-        ax.yaxis.label.set_color('#9CA3AF')
-        ax.title.set_color('#E6EDF3')
+        ax.set_facecolor(bg_color)
+        ax.tick_params(colors=sub_color, labelsize=9)
+        ax.xaxis.label.set_color(sub_color)
+        ax.yaxis.label.set_color(sub_color)
+        ax.title.set_color(text_color)
         ax.title.set_fontsize(12)
         ax.title.set_fontweight('bold')
         ax.spines['top'].set_visible(False)
         ax.spines['right'].set_visible(False)
-        ax.spines['left'].set_color('#21262D')
-        ax.spines['bottom'].set_color('#21262D')
-        ax.yaxis.grid(True, color='#21262D', linestyle='--', alpha=0.5)
+        ax.spines['left'].set_color(grid_color)
+        ax.spines['bottom'].set_color(grid_color)
+        ax.yaxis.grid(True, color=grid_color, linestyle='--', alpha=0.5)
         ax.xaxis.grid(False)
         ax.set_axisbelow(True)
 
 
 def _make_vertical_bar_chart(title, data, color='#0066FF', prefix=''):
-    """Create a dark-themed vertical bar chart."""
+    """Create a theme-aware vertical bar chart."""
     fig = Figure(figsize=(4, 3), dpi=96)
     ax = fig.add_subplot(111)
     _apply_chart_theme(fig, [ax])
@@ -154,6 +162,10 @@ def _make_vertical_bar_chart(title, data, color='#0066FF', prefix=''):
     ax.set_xticklabels(labels, rotation=30, ha='right', fontsize=8)
     ax.set_title(title, pad=10)
 
+    from ui.theme.theme_manager import ThemeManager
+    is_dark = ThemeManager.current_theme() == "dark"
+    lbl_color = '#E6EDF3' if is_dark else '#18181B'
+
     max_val = max(values) if values else 1
     for bar in bars:
         h = bar.get_height()
@@ -162,7 +174,7 @@ def _make_vertical_bar_chart(title, data, color='#0066FF', prefix=''):
             ax.text(bar.get_x() + bar.get_width() / 2,
                     h + max_val * 0.01,
                     lbl, ha='center', va='bottom',
-                    color='#E6EDF3', fontsize=8, fontweight='bold')
+                    color=lbl_color, fontsize=8, fontweight='bold')
 
     fig.tight_layout(pad=1.2)
     return fig
@@ -193,12 +205,20 @@ def _make_line_chart(title, data, color='#3B82F6'):
 
 
 def _make_donut_chart(title, data, colors=None):
-    """Create a donut pie chart."""
+    """Create a theme-aware donut pie chart."""
+    from ui.theme.theme_manager import ThemeManager
+    is_dark = ThemeManager.current_theme() == "dark"
+    bg_color = '#141518' if is_dark else '#FFFFFF'
+    title_color = '#F4F5F8' if is_dark else '#18181B'
+    sub_color = '#9CA3AF' if is_dark else '#6B7280'
+    slice_edge = '#141518' if is_dark else '#FFFFFF'
+    at_color = '#FFFFFF' if is_dark else '#18181B'
+
     fig = Figure(figsize=(3.5, 3), dpi=96)
     ax = fig.add_subplot(111)
-    fig.patch.set_facecolor('#141518')
-    ax.set_facecolor('#141518')
-    ax.set_title(title, color='#F4F5F8', fontsize=12, fontweight='bold', pad=10)
+    fig.patch.set_facecolor(bg_color)
+    ax.set_facecolor(bg_color)
+    ax.set_title(title, color=title_color, fontsize=12, fontweight='bold', pad=10)
 
     if not data:
         return fig
@@ -211,11 +231,11 @@ def _make_donut_chart(title, data, colors=None):
     wedges, texts, autotexts = ax.pie(
         values, labels=labels, colors=clrs,
         autopct='%1.0f%%', startangle=90,
-        wedgeprops={'width': 0.55, 'edgecolor': '#0D1117', 'linewidth': 2},
-        textprops={'color': '#9CA3AF', 'fontsize': 8}
+        wedgeprops={'width': 0.55, 'edgecolor': slice_edge, 'linewidth': 2},
+        textprops={'color': sub_color, 'fontsize': 8}
     )
     for at in autotexts:
-        at.set_color('#E6EDF3')
+        at.set_color(at_color)
         at.set_fontsize(8)
         at.set_fontweight('bold')
 
@@ -273,7 +293,7 @@ class AnalyticsDashboard(QWidget):
         # Header + filter
         hdr = QHBoxLayout()
         t = QLabel("📊  Analytics Dashboard")
-        t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role == ROLE_ADMIN:
             hdr.addWidget(QLabel("Branch:"))
@@ -434,22 +454,26 @@ class AnalyticsDashboard(QWidget):
             w = self._trainer_rows.takeAt(0).widget()
             if w:
                 w.deleteLater()
+        card_bg = ThemeManager.color("card_bg")
+        border_col = ThemeManager.color("glass_border")
+        text_pri = ThemeManager.color("text_primary")
+        text_sec = ThemeManager.color("text_secondary")
         for i, t in enumerate(d["trainers"]):
             row = QFrame()
             row.setStyleSheet(
-                "background:rgba(0, 102, 255, 0.08);"
-                "border:1px solid rgba(0, 102, 255, 0.15);border-radius:10px;"
+                f"QFrame {{ background:{card_bg};"
+                f"border:1px solid {border_col};border-radius:10px; }}"
             )
             rl = QHBoxLayout(row); rl.setContentsMargins(14, 10, 14, 10)
             num = QLabel(f"#{i+1}")
-            num.setStyleSheet("QWidget { font-size:16px;font-weight:900;color:#0066FF;min-width:28px; }")
+            num.setStyleSheet("QLabel { font-size:16px;font-weight:900;color:#FA5A3C;min-width:28px;border:none;background:transparent; }")
             rl.addWidget(num)
             info = QVBoxLayout(); info.setSpacing(2)
-            info.addWidget(_lbl(str(t[0]), "color:#F0F4FF;font-weight:bold;font-size:13px;"))
-            info.addWidget(_lbl(str(t[1]), "color:#9CA3AF;font-size: 13px;"))
+            info.addWidget(_lbl(str(t[0]), f"color:{text_pri};font-weight:bold;font-size:13px;border:none;background:transparent;"))
+            info.addWidget(_lbl(str(t[1]), f"color:{text_sec};font-size: 13px;border:none;background:transparent;"))
             rl.addLayout(info); rl.addStretch()
-            rl.addWidget(_lbl(f"👥 {t[2]} members", "color:#00E676;font-size: 13px;"))
-            rl.addWidget(_lbl(f"⭐ {float(t[3]):.1f}", "color:#FFB800;font-size: 13px;"))
+            rl.addWidget(_lbl(f"👥 {t[2]} members", "color:#00E676;font-size: 13px;border:none;background:transparent;"))
+            rl.addWidget(_lbl(f"⭐ {float(t[3]):.1f}", "color:#FFB800;font-size: 13px;border:none;background:transparent;"))
             self._trainer_rows.addWidget(row)
 
     def refresh(self):
@@ -457,4 +481,10 @@ class AnalyticsDashboard(QWidget):
 
 
 def _lbl(text, style=""):
-    la = QLabel(text); la.setStyleSheet(style); return la
+    la = QLabel(text)
+    if not "border:" in style:
+        style += "border:none;"
+    if not "background:" in style:
+        style += "background:transparent;"
+    la.setStyleSheet(f"QLabel {{ {style} }}")
+    return la

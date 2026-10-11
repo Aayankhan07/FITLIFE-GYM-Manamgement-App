@@ -255,8 +255,10 @@ def get_plan_stats(branch_id: Optional[int] = None, member_id: Optional[int] = N
             cursor.execute(sql, params)
             row = cursor.fetchone()
             return {
-                "total": row[0], "active": row[1],
-                "pending": row[2], "approved": row[3]
+                "total": (row[0] or 0) if row else 0,
+                "active": (row[1] or 0) if row else 0,
+                "pending": (row[2] or 0) if row else 0,
+                "approved": (row[3] or 0) if row else 0
             }
     except Exception as e:
         logger.error(f"get_plan_stats error: {e}")

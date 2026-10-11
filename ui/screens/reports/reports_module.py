@@ -30,7 +30,7 @@ class ReportsModule(QWidget):
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("📋  Reports"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("📋  Reports"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         # Common filter bar

@@ -74,7 +74,7 @@ class _ScheduleList(QWidget):
 
         # Header
         hdr = QHBoxLayout()
-        t = QLabel("📅  Training Schedule"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("📅  Training Schedule"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch()
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             b = QPushButton("➕ New Slot"); b.setObjectName("btnPrimary"); b.setMinimumHeight(40)

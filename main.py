@@ -107,15 +107,17 @@ def main():
     logger.info("=" * 60)
     logger.info("FitLife v1.0.0 starting")
     logger.info("=" * 60)
-    # ── QApplication ──────────────────────────────────────────────────────────
-    app = QApplication(sys.argv)
-    app.setStyle("Fusion")  # Base; QSS overrides everything
+    # ── High-Dpi Rounding Policy (must be before QApplication) ─────────────
     try:
-        app.setHighDpiScaleFactorRoundingPolicy(
+        QApplication.setHighDpiScaleFactorRoundingPolicy(
             Qt.HighDpiScaleFactorRoundingPolicy.PassThrough
         )
     except Exception:
         pass
+
+    # ── QApplication ──────────────────────────────────────────────────────────
+    app = QApplication(sys.argv)
+    app.setStyle("Fusion")  # Base; QSS overrides everything
 
     # ── Load premium application fonts ────────────────────────────────────────
     from PyQt6.QtGui import QFontDatabase, QFont, QIcon, QPixmap, QPainter, QRadialGradient, QColor

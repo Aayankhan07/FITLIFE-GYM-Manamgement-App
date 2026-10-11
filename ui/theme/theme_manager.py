@@ -27,6 +27,10 @@ DARK_COLORS = {
     "text_primary":          "#F4F5F8",
     "text_secondary":        "#9CA3AF",
     "text_muted":            "#6B7280",
+    "text_coral":            "#FA5A3C",
+    "text_success":          "#34D399",
+    "text_warning":          "#FBBF24",
+    "text_danger":           "#F87171",
     "glass_bg":              "#141518",
     "glass_border":          "#24272D",
     "card_bg":               "#141518",
@@ -52,8 +56,12 @@ LIGHT_COLORS = {
     "accent_success":        "#10B981",
     "accent_success_hover":  "#059669",
     "text_primary":          "#18181B",
-    "text_secondary":        "#6B7280",
-    "text_muted":            "#8C93A3",
+    "text_secondary":        "#4B5563",  # WCAG AA compliant on #FFFFFF
+    "text_muted":            "#6B7280",  # WCAG AA compliant on #FFFFFF
+    "text_coral":            "#C93A1E",  # WCAG 4.8:1 compliant on light cards
+    "text_success":          "#047857",  # WCAG 4.6:1 compliant on light cards
+    "text_warning":          "#B45309",  # WCAG 4.5:1 compliant on light cards
+    "text_danger":           "#B91C1C",  # WCAG 5.2:1 compliant on light cards
     "glass_bg":              "#FFFFFF",
     "glass_border":          "#E2E6ED",
     "card_bg":               "#FFFFFF",
@@ -238,8 +246,6 @@ QLabel#topbarRoleLbl {{
 
 /* KPI Icon Badge */
 QLabel#kpiIconBadge {{
-    font-size: 0px;
-    line-height: 0px;
     padding: 0px;
     margin: 0px;
     border-radius: 18px;
@@ -663,6 +669,40 @@ QStatusBar {{
     background: {c['sidebar_bg']};
     color: {c['text_secondary']};
     font-size: 12px;
+}}
+
+/* ── HIGH-SPECIFICITY LIGHT THEME TEXT VISIBILITY OVERRIDES ── */
+QLabel[style*="#F0F4FF"], QWidget[style*="#F0F4FF"] {{
+    color: {c['text_primary']} !important;
+}}
+QLabel[style*="color:#F0F4FF"], QWidget[style*="color:#F0F4FF"] {{
+    color: {c['text_primary']} !important;
+}}
+QLabel[style*="color: #F0F4FF"], QWidget[style*="color: #F0F4FF"] {{
+    color: {c['text_primary']} !important;
+}}
+QLabel[style*="color: rgb(240, 244, 255)"], QWidget[style*="color: rgb(240, 244, 255)"] {{
+    color: {c['text_primary']} !important;
+}}
+QPushButton#btnPrimary {{
+    color: #FFFFFF !important;
+    background-color: {c['accent_primary']} !important;
+    font-weight: 700 !important;
+}}
+QPushButton#btnSecondary {{
+    color: {c['text_primary']} !important;
+    border: 1px solid {c['glass_border']} !important;
+    background-color: {c['bg_secondary']} !important;
+}}
+QPushButton#btnSecondary:hover {{
+    color: #FFFFFF !important;
+    background-color: {c['accent_primary']} !important;
+}}
+QTableWidget {{
+    color: {c['text_primary']};
+}}
+QHeaderView::section {{
+    color: {c['text_secondary']};
 }}
 """
 

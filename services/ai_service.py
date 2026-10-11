@@ -19,9 +19,10 @@ def _load_settings() -> dict:
 
 
 def is_api_configured() -> bool:
+    from utils.vault import get_secret
     s = _load_settings()
-    key = s.get("api_key", "").strip()
-    return bool(key and key not in ("", "your-openai-api-key-here"))
+    key = get_secret("AI_API_KEY", s.get("api_key", "")).strip()
+    return bool(key and key not in ("", "YOUR_OPENAI_API_KEY_HERE", "your-openai-api-key-here"))
 
 
 def ask_question(question: str, role: str, user_id: int,
@@ -35,8 +36,9 @@ def ask_question(question: str, role: str, user_id: int,
                     "note": "AI key not configured — using built-in responses."}
 
         from openai import OpenAI
+        from utils.vault import get_secret
         settings = _load_settings()
-        api_key = settings.get("api_key", "")
+        api_key = get_secret("AI_API_KEY", settings.get("api_key", ""))
         model = settings.get("model", "gpt-3.5-turbo")
         max_tokens = int(settings.get("max_tokens", 500))
 

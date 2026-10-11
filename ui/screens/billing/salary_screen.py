@@ -48,7 +48,7 @@ class SalaryScreen(QWidget):
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("💳  Salary Management")
-        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
         self.gen_btn = QPushButton("⚙️  Generate Monthly Salaries")
         self.gen_btn.setObjectName("btnPrimary")

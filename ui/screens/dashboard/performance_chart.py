@@ -300,13 +300,17 @@ class PerformanceChartWidget(QFrame):
 
         # Series Toggles (Checkins Coral / Revenue Blue)
         self.checkins_toggle = QPushButton(" ● Check-ins ")
+        self.checkins_toggle.setObjectName("chartSeriesToggle")
         self.checkins_toggle.setCheckable(True)
         self.checkins_toggle.setChecked(True)
+        self.checkins_toggle.setFixedHeight(28)
         self.checkins_toggle.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.rev_toggle = QPushButton(" ● Revenue ")
+        self.rev_toggle.setObjectName("chartSeriesToggle")
         self.rev_toggle.setCheckable(True)
         self.rev_toggle.setChecked(True)
+        self.rev_toggle.setFixedHeight(28)
         self.rev_toggle.setCursor(Qt.CursorShape.PointingHandCursor)
 
         self.checkins_toggle.clicked.connect(self._on_series_toggled)
@@ -317,14 +321,17 @@ class PerformanceChartWidget(QFrame):
 
         # Timeframe Pills
         self.tf_box = QFrame()
+        self.tf_box.setObjectName("chartTfBox")
+        self.tf_box.setFixedHeight(32)
         tf_layout = QHBoxLayout(self.tf_box)
-        tf_layout.setContentsMargins(2, 2, 2, 2)
+        tf_layout.setContentsMargins(3, 3, 3, 3)
         tf_layout.setSpacing(2)
 
         self.tf_buttons = {}
         for tf in ["7D", "30D", "90D", "YTD"]:
             btn = QPushButton(tf)
-            btn.setFixedSize(40, 26)
+            btn.setObjectName("chartTfBtn")
+            btn.setFixedSize(38, 24)
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.clicked.connect(lambda checked, t=tf: self._set_timeframe(t))
             tf_layout.addWidget(btn)
@@ -356,7 +363,7 @@ class PerformanceChartWidget(QFrame):
         is_dark = ThemeManager.current_theme() == "dark"
         card_bg = "#141518" if is_dark else "#FFFFFF"
         border_color = "#24272D" if is_dark else "#E6E9EE"
-        tf_bg = "#1E2129" if is_dark else "#F4F5F8"
+        tf_bg = "#1E2129" if is_dark else "#EEF0F4"
 
         self.setStyleSheet(f"""
             QFrame#performanceChartCard {{
@@ -367,10 +374,10 @@ class PerformanceChartWidget(QFrame):
         """)
 
         self.tf_box.setStyleSheet(f"""
-            QFrame {{
+            QFrame#chartTfBox {{
                 background-color: {tf_bg};
                 border: 1px solid {border_color};
-                border-radius: 12px;
+                border-radius: 8px;
             }}
         """)
 
@@ -383,27 +390,43 @@ class PerformanceChartWidget(QFrame):
         c_active = self.checkins_toggle.isChecked()
         r_active = self.rev_toggle.isChecked()
 
+        c_bg = ("#2A1715" if is_dark else "#FEECE8") if c_active else "transparent"
+        c_border = "#FA5A3C" if c_active else ("#2B2F38" if is_dark else "#E2E6ED")
+        c_color = "#FA5A3C" if c_active else ("#9CA3AF" if is_dark else "#6B7280")
+
         self.checkins_toggle.setStyleSheet(f"""
-            QPushButton {{
-                background-color: {"#2A1715" if c_active else "transparent"};
-                border: 1px solid {"#FA5A3C" if c_active else ("#2B2F38" if is_dark else "#E2E6ED")};
+            QPushButton#chartSeriesToggle {{
+                background-color: {c_bg};
+                border: 1px solid {c_border};
                 border-radius: 8px;
-                color: {"#FA5A3C" if c_active else ("#9CA3AF" if is_dark else "#6B7280")};
+                color: {c_color};
                 font-size: 11px;
-                font-weight: bold;
-                padding: 4px 8px;
+                font-weight: 700;
+                padding: 4px 10px;
+                min-height: 20px;
+            }}
+            QPushButton#chartSeriesToggle:hover {{
+                border-color: #FA5A3C;
             }}
         """)
 
+        r_bg = ("#15233D" if is_dark else "#EFF6FF") if r_active else "transparent"
+        r_border = "#3B82F6" if r_active else ("#2B2F38" if is_dark else "#E2E6ED")
+        r_color = "#3B82F6" if r_active else ("#9CA3AF" if is_dark else "#6B7280")
+
         self.rev_toggle.setStyleSheet(f"""
-            QPushButton {{
-                background-color: {"#15233D" if r_active else "transparent"};
-                border: 1px solid {"#3B82F6" if r_active else ("#2B2F38" if is_dark else "#E2E6ED")};
+            QPushButton#chartSeriesToggle {{
+                background-color: {r_bg};
+                border: 1px solid {r_border};
                 border-radius: 8px;
-                color: {"#3B82F6" if r_active else ("#9CA3AF" if is_dark else "#6B7280")};
+                color: {r_color};
                 font-size: 11px;
-                font-weight: bold;
-                padding: 4px 8px;
+                font-weight: 700;
+                padding: 4px 10px;
+                min-height: 20px;
+            }}
+            QPushButton#chartSeriesToggle:hover {{
+                border-color: #3B82F6;
             }}
         """)
 
@@ -413,18 +436,33 @@ class PerformanceChartWidget(QFrame):
             is_active = (tf == getattr(self, '_active_tf', '30D'))
             if is_active:
                 btn.setStyleSheet(f"""
-                    background-color: {"#282C36" if is_dark else "#FFFFFF"};
-                    border: none;
-                    border-radius: 8px;
-                    color: {"#FFFFFF" if is_dark else "#18181B"};
-                    font-size: 11px;
-                    font-weight: bold;
+                    QPushButton#chartTfBtn {{
+                        background-color: {"#282C36" if is_dark else "#FFFFFF"};
+                        border: {"1px solid #353B47" if is_dark else "1px solid #D5D9E0"};
+                        border-radius: 6px;
+                        color: {"#FFFFFF" if is_dark else "#18181B"};
+                        font-size: 11px;
+                        font-weight: 800;
+                        padding: 0px;
+                        margin: 0px;
+                        min-height: 20px;
+                    }}
                 """)
             else:
                 btn.setStyleSheet(f"""
-                    background-color: transparent;
-                    border: none;
-                    color: {"#9CA3AF" if is_dark else "#8C93A3"};
-                    font-size: 11px;
-                    font-weight: 600;
+                    QPushButton#chartTfBtn {{
+                        background-color: transparent;
+                        border: none;
+                        border-radius: 6px;
+                        color: {"#9CA3AF" if is_dark else "#64748B"};
+                        font-size: 11px;
+                        font-weight: 600;
+                        padding: 0px;
+                        margin: 0px;
+                        min-height: 20px;
+                    }}
+                    QPushButton#chartTfBtn:hover {{
+                        background-color: {"rgba(255,255,255,0.06)" if is_dark else "rgba(0,0,0,0.05)"};
+                        color: {"#FFFFFF" if is_dark else "#0F172A"};
+                    }}
                 """)

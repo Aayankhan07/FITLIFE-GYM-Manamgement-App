@@ -66,15 +66,7 @@ class TopBar(QWidget):
 
         layout.addStretch()
 
-        # ── 3. Theme Toggle Button ────────────────────────────────────────────
-        self.theme_btn = QPushButton()
-        self.theme_btn.setFixedSize(40, 40)
-        self.theme_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.theme_btn.setToolTip("Toggle Light/Dark Theme")
-        self.theme_btn.clicked.connect(self.theme_toggled.emit)
-        layout.addWidget(self.theme_btn)
-
-        # ── 3b. Notification Bell with Badge ──────────────────────────────────
+        # ── 3. Notification Bell with Badge ──────────────────────────────────
         self.notif_btn = QPushButton()
         self.notif_btn.setFixedSize(40, 40)
         self.notif_btn.setCursor(Qt.CursorShape.PointingHandCursor)
@@ -84,47 +76,95 @@ class TopBar(QWidget):
 
         # ── 4. Separator ──────────────────────────────────────────────────────
         self.sep = QFrame()
-        self.sep.setFrameShape(QFrame.Shape.VLine)
-        self.sep.setFixedHeight(24)
+        self.sep.setFrameShape(QFrame.Shape.NoFrame)
+        self.sep.setFixedWidth(4)
         layout.addWidget(self.sep)
 
-        # ── 5. User Profile Capsule ───────────────────────────────────────────
-        self.user_capsule = QFrame()
-        self.user_capsule.setFixedHeight(40)
-        capsule_layout = QHBoxLayout(self.user_capsule)
-        capsule_layout.setContentsMargins(10, 4, 12, 4)
+        # ── 5. User Profile Capsule (Clickable Dropdown Trigger) ───────────────
+        self.user_capsule_btn = QPushButton()
+        self.user_capsule_btn.setObjectName("userCapsuleBtn")
+        self.user_capsule_btn.setFixedHeight(40)
+        self.user_capsule_btn.setCursor(Qt.CursorShape.PointingHandCursor)
+        capsule_layout = QHBoxLayout(self.user_capsule_btn)
+        capsule_layout.setContentsMargins(12, 4, 14, 4)
         capsule_layout.setSpacing(8)
 
         self.user_avatar = QLabel()
+        self.user_avatar.setFixedSize(20, 20)
+        self.user_avatar.setAlignment(Qt.AlignmentFlag.AlignCenter)
         capsule_layout.addWidget(self.user_avatar)
-
-        user_text_box = QHBoxLayout()
-        user_text_box.setSpacing(6)
 
         self.user_lbl = QLabel(self._user_name)
         self.user_lbl.setStyleSheet("font-size: 13px; font-weight: 700;")
-        user_text_box.addWidget(self.user_lbl)
+        capsule_layout.addWidget(self.user_lbl)
 
         self.role_badge = QLabel(f" {self._role.upper()} ")
         self.role_badge.setStyleSheet("""
             font-size: 10px;
             font-weight: 800;
-            padding: 2px 6px;
+            padding: 3px 8px;
             border-radius: 6px;
         """)
-        user_text_box.addWidget(self.role_badge)
-        capsule_layout.addLayout(user_text_box)
+        capsule_layout.addWidget(self.role_badge)
 
-        layout.addWidget(self.user_capsule)
+        self.dropdown_arrow = QLabel("▼")
+        self.dropdown_arrow.setStyleSheet("font-size: 9px; margin-left: 2px;")
+        capsule_layout.addWidget(self.dropdown_arrow)
 
-        # ── 6. Modern Sign Out Button ─────────────────────────────────────────
-        self.logout_btn = QPushButton("Sign Out")
-        self.logout_btn.setFixedHeight(36)
-        self.logout_btn.setCursor(Qt.CursorShape.PointingHandCursor)
-        self.logout_btn.clicked.connect(self.logout_clicked.emit)
-        layout.addWidget(self.logout_btn)
+        self.user_capsule_btn.clicked.connect(self._show_user_menu)
+        layout.addWidget(self.user_capsule_btn)
 
         self.update_styles()
+
+    def _show_user_menu(self):
+        from PyQt6.QtWidgets import QMenu
+        from PyQt6.QtGui import QAction
+
+        menu = QMenu(self)
+        is_dark = ThemeManager.current_theme() == "dark"
+        bg_col = "#141518" if is_dark else "#FFFFFF"
+        border_col = "#24272D" if is_dark else "#E2E6ED"
+        text_col = "#F4F5F8" if is_dark else "#18181B"
+        hover_col = "#FA5A3C"
+
+        menu.setStyleSheet(f"""
+            QMenu {{
+                background-color: {bg_col};
+                border: 1px solid {border_col};
+                border-radius: 12px;
+                padding: 6px;
+                color: {text_col};
+                font-size: 13px;
+                font-weight: 600;
+            }}
+            QMenu::item {{
+                padding: 8px 18px;
+                border-radius: 8px;
+            }}
+            QMenu::item:selected {{
+                background-color: {"rgba(250, 90, 60, 0.15)" if is_dark else "#FEE2E2"};
+                color: {hover_col};
+            }}
+            QMenu::separator {{
+                height: 1px;
+                background-color: {border_col};
+                margin: 4px 0px;
+            }}
+        """)
+
+        settings_action = QAction("⚙️ Account Settings / Password", self)
+        settings_action.triggered.connect(self.profile_clicked.emit)
+        menu.addAction(settings_action)
+
+        menu.addSeparator()
+
+        logout_action = QAction("🚪 Sign Out", self)
+        logout_action.triggered.connect(self.logout_clicked.emit)
+        menu.addAction(logout_action)
+
+        # Show right under capsule button
+        pos = self.user_capsule_btn.mapToGlobal(self.user_capsule_btn.rect().bottomLeft())
+        menu.exec(pos)
 
     def update_styles(self):
         is_dark = ThemeManager.current_theme() == "dark"
@@ -158,23 +198,6 @@ class TopBar(QWidget):
             }}
         """)
 
-        # Theme button
-        btn_bg = "#141518" if is_dark else "#FFFFFF"
-        theme_icon_name = "sun" if is_dark else "moon"
-        theme_icon_color = "#F59E0B" if is_dark else "#3B82F6"
-        self.theme_btn.setIcon(get_icon(theme_icon_name, color=theme_icon_color, size=18))
-        self.theme_btn.setIconSize(QSize(18, 18))
-        self.theme_btn.setStyleSheet(f"""
-            QPushButton {{
-                background-color: {btn_bg};
-                border: 1px solid {border_color};
-                border-radius: 20px;
-            }}
-            QPushButton:hover {{
-                border-color: #FA5A3C;
-            }}
-        """)
-
         # Notif button
         notif_bg = "#141518" if is_dark else "#FFFFFF"
         self.notif_btn.setIcon(get_icon("bell", color=sub_text, size=18))
@@ -193,45 +216,37 @@ class TopBar(QWidget):
             }}
         """)
 
-        self.sep.setStyleSheet(f"color: {border_color};")
+        self.sep.setStyleSheet("background: transparent; border: none;")
 
-        # User Capsule
+        # User Capsule Button
         capsule_bg = "#141518" if is_dark else "#FFFFFF"
-        self.user_capsule.setStyleSheet(f"""
-            QFrame {{
+        self.user_capsule_btn.setStyleSheet(f"""
+            QPushButton#userCapsuleBtn {{
                 background-color: {capsule_bg};
                 border: 1px solid {border_color};
                 border-radius: 20px;
+                padding: 0px;
+            }}
+            QPushButton#userCapsuleBtn:hover {{
+                border-color: #FA5A3C;
             }}
         """)
 
+        self.user_avatar.setStyleSheet("background: transparent; border: none;")
         self.user_avatar.setPixmap(get_icon("user", color="#FA5A3C", size=18).pixmap(18, 18))
-        self.user_lbl.setStyleSheet(f"color: {text_color}; font-size: 13px; font-weight: 700;")
+        self.user_lbl.setObjectName("topbarUserLbl")
+        self.user_lbl.setStyleSheet(f"background: transparent; border: none; color: {text_color}; font-size: 13px; font-weight: 700; white-space: nowrap;")
+        self.dropdown_arrow.setStyleSheet(f"background: transparent; border: none; color: {sub_text}; font-size: 9px;")
+        self.role_badge.setObjectName("topbarRoleBadge")
         self.role_badge.setStyleSheet(f"""
-            background-color: {"#2A1715" if is_dark else "#FFF2F0"};
-            color: #FA5A3C;
-            font-size: 10px;
-            font-weight: 800;
-            padding: 2px 6px;
-            border-radius: 6px;
-            border: 1px solid rgba(250, 90, 60, 0.3);
-        """)
-
-        # Sign out button
-        self.logout_btn.setStyleSheet(f"""
-            QPushButton {{
-                background-color: transparent;
-                border: 1px solid {border_color};
-                border-radius: 12px;
-                color: {sub_text};
-                padding: 0 16px;
-                font-size: 12px;
-                font-weight: 600;
-            }}
-            QPushButton:hover {{
+            QLabel#topbarRoleBadge {{
                 background-color: {"#2A1715" if is_dark else "#FFF2F0"};
-                border-color: #EF4444;
-                color: #EF4444;
+                color: #FA5A3C;
+                font-size: 10px;
+                font-weight: 800;
+                padding: 2px 7px;
+                border-radius: 6px;
+                border: 1px solid rgba(250, 90, 60, 0.35);
             }}
         """)
 

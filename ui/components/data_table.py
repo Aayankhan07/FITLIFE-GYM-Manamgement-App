@@ -52,7 +52,6 @@ class DataTable(QWidget):
  
         self.result_label = QLabel("0 records")
         self.result_label.setObjectName("labelMuted")
-        self.result_label.setStyleSheet("color: #6B7280; font-size: 13px;")
  
         search_row.addWidget(self.search_input)
         search_row.addWidget(self.result_label)
@@ -85,7 +84,6 @@ class DataTable(QWidget):
         self.page_label = QLabel("Page 1 of 1")
         self.page_label.setObjectName("labelMuted")
         self.page_label.setAlignment(Qt.AlignmentFlag.AlignCenter)
-        self.page_label.setStyleSheet("color: #9CA3AF; font-size: 13px;")
  
         self.next_btn = QPushButton("Next")
         self.next_btn.setObjectName("btnSecondary")
@@ -149,12 +147,16 @@ class DataTable(QWidget):
         self.table.setRowCount(0)
         for r_idx, row in enumerate(page_data):
             self.table.insertRow(r_idx)
-            col_offset = 0
             for c_idx, cell in enumerate(row):
-                item = QTableWidgetItem(str(cell) if cell is not None else "")
+                col_name = self._columns[c_idx].lower() if c_idx < len(self._columns) else ""
+                # Avoid text collision if column is status or actions (which use widgets)
+                if "status" in col_name or "actions" in col_name:
+                    item_text = ""
+                else:
+                    item_text = str(cell) if cell is not None else ""
+                item = QTableWidgetItem(item_text)
                 item.setTextAlignment(Qt.AlignmentFlag.AlignVCenter | Qt.AlignmentFlag.AlignLeft)
                 self.table.setItem(r_idx, c_idx, item)
-                col_offset = c_idx + 1
 
         self.result_label.setText(f"{len(self._filtered_data)} record(s)")
         self.page_label.setText(f"Page {self._current_page + 1} of {total_pages}")

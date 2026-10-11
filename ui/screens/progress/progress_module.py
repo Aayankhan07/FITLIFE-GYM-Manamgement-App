@@ -59,7 +59,7 @@ class _ProgressOverview(QWidget):
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,24); m.setSpacing(18)
 
         hdr = QHBoxLayout()
-        t = QLabel("📈  Progress Tracking"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("📈  Progress Tracking"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch()
         rb = QPushButton("🔄 Refresh"); rb.setObjectName("btnSecondary"); rb.setMinimumHeight(38)
         rb.clicked.connect(self._load); hdr.addWidget(rb)
@@ -83,6 +83,7 @@ class _ProgressOverview(QWidget):
         header.setSectionResizeMode(0, QHeaderView.ResizeMode.Stretch)
         for i in range(1, 6):
             header.setSectionResizeMode(i, QHeaderView.ResizeMode.ResizeToContents)
+        self._table.verticalHeader().setDefaultSectionSize(48)
         tc = QFrame()
         tc.setObjectName("glassCard")
         tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
@@ -127,12 +128,32 @@ class _ProgressOverview(QWidget):
             self._table.setItem(r,2,QTableWidgetItem(str(goal or "—")))
             self._table.setItem(r,3,QTableWidgetItem(str(last_log) if last_log else "Never"))
             self._table.setItem(r,4,QTableWidgetItem(str(total or "0")))
+            
             btn = QPushButton("📈 View Progress")
             btn.setFixedHeight(30)
-            btn.setProperty("class", "btn-view")
+            btn.setStyleSheet("""
+                QPushButton {
+                    background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FA5A3C, stop:1 #FF7A5C);
+                    color: #FFFFFF;
+                    font-weight: 600;
+                    font-size: 11px;
+                    border: none;
+                    border-radius: 6px;
+                    padding: 0 12px;
+                }
+                QPushButton:hover {
+                    background: #E84D31;
+                }
+            """)
             btn.setCursor(Qt.CursorShape.PointingHandCursor)
             btn.clicked.connect(lambda _, i=mid: self.open_member.emit(i))
-            self._table.setCellWidget(r,5,btn)
+            
+            w_box = QWidget()
+            h_box = QHBoxLayout(w_box)
+            h_box.setContentsMargins(4, 4, 4, 4)
+            h_box.setAlignment(Qt.AlignmentFlag.AlignCenter)
+            h_box.addWidget(btn)
+            self._table.setCellWidget(r, 5, w_box)
 
     def refresh(self): self._load()
 

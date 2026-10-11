@@ -81,7 +81,7 @@ class MemberForm(QWidget):
 
         title_text = "Edit Member" if self._is_edit else "Add New Member"
         title = QLabel(f"{'✏️' if self._is_edit else '➕'}  {title_text}")
-        title.setStyleSheet("QWidget { font-size:24px; font-weight:900; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:24px; font-weight:900;")
         hdr.addWidget(title)
         hdr.addStretch()
 

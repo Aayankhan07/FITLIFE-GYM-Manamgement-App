@@ -230,7 +230,7 @@ class SmartAskModule(QWidget):
         m.setSpacing(16)
 
         hdr = QHBoxLayout()
-        t = QLabel("🤖  Smart Ask"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("🤖  Smart Ask"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch()
         clr = QPushButton("🗑 Clear Chat"); clr.setObjectName("btnSecondary"); clr.setFixedHeight(36)
         clr.clicked.connect(self._clear); hdr.addWidget(clr)
@@ -240,9 +240,10 @@ class SmartAskModule(QWidget):
         sub.setStyleSheet("QWidget { color:#9CA3AF;font-size:13px; }"); m.addWidget(sub)
 
         # Chat area
-        self._chat_scroll = QScrollArea(); self._chat_scroll.setWidgetResizable(True)
-        self._chat_scroll.setStyleSheet("QWidget { border:1px solid rgba(0, 102, 255, 0.2);border-radius:14px;background:rgba(0,0,0,0.15); }")
-        self._chat_container = QWidget(); self._chat_container.setStyleSheet("background:transparent;")
+        self._chat_scroll = QScrollArea()
+        self._chat_scroll.setWidgetResizable(True)
+        self._chat_container = QWidget()
+        self._chat_container.setStyleSheet("background:transparent;")
         self._chat_layout = QVBoxLayout(self._chat_container)
         self._chat_layout.setContentsMargins(16,16,16,16); self._chat_layout.setSpacing(12)
         self._chat_layout.addStretch()
@@ -250,20 +251,23 @@ class SmartAskModule(QWidget):
         m.addWidget(self._chat_scroll, 1)
 
         # Quick questions
-        quick_label = QLabel("💡 Quick Questions:")
-        quick_label.setStyleSheet("QWidget { color:#9CA3AF;font-size: 13px;font-weight:bold; }"); m.addWidget(quick_label)
+        self.quick_label = QLabel("💡 Quick Questions:")
+        self.quick_label.setStyleSheet("font-size: 13px; font-weight:bold;")
+        m.addWidget(self.quick_label)
         qrow = QHBoxLayout(); qrow.setSpacing(8)
+        self._quick_btns = []
         for q in ["Revenue this month?","Pending payments?","Expiring memberships?"]:
-            qb = QPushButton(q); qb.setFixedHeight(32)
-            qb.setStyleSheet("QPushButton{background:rgba(0, 102, 255, 0.15);border:1px solid rgba(0, 102, 255, 0.3);border-radius:16px;color:#9CA3AF;font-size: 13px;padding:0 12px;}QPushButton:hover{background:rgba(0, 102, 255, 0.3);color:#F0F4FF;}")
-            qb.clicked.connect(lambda _, qq=q: self._send(qq)); qrow.addWidget(qb)
+            qb = QPushButton(q); qb.setFixedHeight(34)
+            qb.setCursor(Qt.CursorShape.PointingHandCursor)
+            qb.clicked.connect(lambda _, qq=q: self._send(qq))
+            qrow.addWidget(qb)
+            self._quick_btns.append(qb)
         qrow.addStretch(); m.addLayout(qrow)
 
         # Input row
         inp_row = QHBoxLayout(); inp_row.setSpacing(10)
         self._inp = QLineEdit(); self._inp.setPlaceholderText("Message FitLife AI...")
         self._inp.setMinimumHeight(44)
-        self._inp.setStyleSheet("QLineEdit{background:rgba(255,255,255,0.06);border:1px solid rgba(0, 102, 255, 0.3);border-radius:12px;color:#F0F4FF;font-size:14px;padding:0 16px;}QLineEdit:focus{border:1px solid #0066FF;}")
         self._inp.returnPressed.connect(self._on_send); inp_row.addWidget(self._inp,1)
         sb = QPushButton("➤ Ask"); sb.setObjectName("btnPrimary"); sb.setMinimumHeight(44); sb.setMinimumWidth(80)
         sb.clicked.connect(self._on_send); inp_row.addWidget(sb)
@@ -273,17 +277,16 @@ class SmartAskModule(QWidget):
 
         # ── RIGHT: Canvas Pane ──
         self._canvas_pane = QFrame()
-        self._canvas_pane.setStyleSheet("QWidget { background:rgba(0,0,0,0.25); border:1px solid rgba(0, 102, 255, 0.3); border-radius:14px; }")
         canvas_layout = QVBoxLayout(self._canvas_pane)
         canvas_layout.setContentsMargins(20, 20, 20, 20)
         
         canvas_hdr = QHBoxLayout()
         ctitle = QLabel("📄 Smart Canvas")
-        ctitle.setStyleSheet("QWidget { font-size:18px; font-weight:bold; color:#F0F4FF; }")
+        ctitle.setStyleSheet("font-size:18px; font-weight:bold;")
         canvas_hdr.addWidget(ctitle)
         canvas_hdr.addStretch()
         cclear = QPushButton("✖ Close")
-        cclear.setStyleSheet("QWidget { background:transparent; color:#9CA3AF; font-size:14px; }")
+        cclear.setStyleSheet("background:transparent; color:#9CA3AF; font-size:14px;")
         cclear.setCursor(Qt.CursorShape.PointingHandCursor)
         cclear.clicked.connect(self._hide_canvas)
         canvas_hdr.addWidget(cclear)
@@ -291,14 +294,81 @@ class SmartAskModule(QWidget):
         
         self._canvas_text = QTextEdit()
         self._canvas_text.setReadOnly(True)
-        self._canvas_text.setStyleSheet("QWidget { background:transparent; border:none; color:#E2E8F0; font-size:15px; }")
         canvas_layout.addWidget(self._canvas_text)
         
         main_layout.addWidget(self._canvas_pane, 6) # 60% width when visible
         self._canvas_pane.hide()
 
+        self.refresh_theme()
+
         # Greeting
         self._add_bot_bubble("👋  Hello! I'm your **FitLife Smart Assistant**.\n\nAsk me anything about your gym — members, revenue, attendance, equipment, and more!\n\nType **'help'** to see what I can answer.")
+
+    def refresh_theme(self):
+        from ui.theme.theme_manager import ThemeManager
+        is_dark = ThemeManager.current_theme() == "dark"
+        card_bg = "#141518" if is_dark else "#FFFFFF"
+        border_col = "#24272D" if is_dark else "#E2E6ED"
+        text_col = "#F4F5F8" if is_dark else "#18181B"
+        sub_text = "#9CA3AF" if is_dark else "#6B7280"
+        inp_bg = "#181A1F" if is_dark else "#FFFFFF"
+
+        self._chat_scroll.setStyleSheet(f"""
+            QScrollArea {{
+                border: 1px solid {border_col};
+                border-radius: 14px;
+                background-color: {card_bg};
+            }}
+        """)
+        self.quick_label.setStyleSheet(f"color: {sub_text}; font-size: 13px; font-weight: bold;")
+        
+        btn_quick_bg = "#1E2129" if is_dark else "#F1F5F9"
+        btn_quick_txt = "#FA5A3C" if is_dark else "#EA580C"
+        for qb in self._quick_btns:
+            qb.setStyleSheet(f"""
+                QPushButton {{
+                    background-color: {btn_quick_bg};
+                    border: 1px solid {border_col};
+                    border-radius: 16px;
+                    color: {btn_quick_txt};
+                    font-size: 12px;
+                    font-weight: 600;
+                    padding: 0 14px;
+                }}
+                QPushButton:hover {{
+                    border-color: #FA5A3C;
+                }}
+            """)
+
+        self._inp.setStyleSheet(f"""
+            QLineEdit {{
+                background-color: {inp_bg};
+                border: 1px solid {border_col};
+                border-radius: 12px;
+                color: {text_col};
+                font-size: 13px;
+                padding: 0 16px;
+            }}
+            QLineEdit:focus {{
+                border: 1.5px solid #FA5A3C;
+            }}
+        """)
+
+        self._canvas_pane.setStyleSheet(f"""
+            QFrame {{
+                background-color: {card_bg};
+                border: 1px solid {border_col};
+                border-radius: 14px;
+            }}
+        """)
+        self._canvas_text.setStyleSheet(f"""
+            QTextEdit {{
+                background: transparent;
+                border: none;
+                color: {text_col};
+                font-size: 14px;
+            }}
+        """)
 
     def _on_send(self):
         q = self._inp.text().strip()
@@ -319,7 +389,8 @@ class SmartAskModule(QWidget):
         item = self._chat_layout.itemAt(self._chat_layout.count()-1)
         if item and item.widget():
             w = item.widget()
-            if "Thinking" in w.findChild(QLabel).text():
+            lbl = w.findChild(QLabel)
+            if lbl and "Thinking" in lbl.text():
                 self._chat_layout.removeWidget(w); w.deleteLater()
                 
         # Send long plans to the Canvas
@@ -337,29 +408,54 @@ class SmartAskModule(QWidget):
         self._canvas_pane.hide()
 
     def _add_user_bubble(self, text):
-        f = QFrame(); f.setStyleSheet("QWidget { background:#2F2F2F; border-radius:16px; }")
+        from ui.theme.theme_manager import ThemeManager
+        is_dark = ThemeManager.current_theme() == "dark"
+        bubble_bg = "#272A30" if is_dark else "#E2E8F0"
+        bubble_fg = "#F4F5F8" if is_dark else "#0F172A"
+
+        f = QFrame()
+        f.setStyleSheet(f"""
+            QFrame {{
+                background-color: {bubble_bg};
+                border-radius: 16px;
+            }}
+        """)
         l = QVBoxLayout(f); l.setContentsMargins(16,12,16,12)
-        lbl = QLabel(text); lbl.setWordWrap(True); lbl.setStyleSheet("QWidget { color:#F0F4FF;font-size:14px; }")
+        lbl = QLabel(text); lbl.setWordWrap(True)
+        lbl.setStyleSheet(f"font-size:13px; color: {bubble_fg}; background: transparent; font-weight: 500;")
         l.addWidget(lbl)
         row = QHBoxLayout(); row.addStretch(); row.addWidget(f)
-        row.setContentsMargins(0, 10, 0, 10)
+        row.setContentsMargins(0, 8, 0, 8)
         wrap = QWidget(); wrap.setLayout(row); wrap.setStyleSheet("background:transparent;")
         idx = self._chat_layout.count()-1
         self._chat_layout.insertWidget(idx, wrap)
         QTimer.singleShot(50, self._scroll_bottom)
 
     def _add_bot_bubble(self, text, temp=False):
+        from ui.theme.theme_manager import ThemeManager
+        is_dark = ThemeManager.current_theme() == "dark"
+        text_col = "#F4F5F8" if is_dark else "#18181B"
+        ava_bg = "rgba(250, 90, 60, 0.15)" if is_dark else "rgba(250, 90, 60, 0.12)"
+
         wrap = QWidget(); wrap.setStyleSheet("background:transparent;")
-        row = QHBoxLayout(wrap); row.setContentsMargins(0, 10, 0, 10); row.setSpacing(16)
+        row = QHBoxLayout(wrap); row.setContentsMargins(0, 8, 0, 8); row.setSpacing(12)
         
         # Avatar
-        ava = QLabel("🤖"); ava.setStyleSheet("QWidget { font-size:20px; background:rgba(255,255,255,0.1); border-radius:18px; }")
-        ava.setFixedSize(36, 36); ava.setAlignment(Qt.AlignmentFlag.AlignCenter)
+        ava = QLabel("🤖")
+        ava.setStyleSheet(f"""
+            QLabel {{
+                font-size: 18px;
+                background-color: {ava_bg};
+                border-radius: 16px;
+                border: 1px solid rgba(250, 90, 60, 0.3);
+            }}
+        """)
+        ava.setFixedSize(34, 34); ava.setAlignment(Qt.AlignmentFlag.AlignCenter)
         v_ava = QVBoxLayout(); v_ava.addWidget(ava); v_ava.addStretch()
         row.addLayout(v_ava)
         
         lbl = QLabel(); lbl.setWordWrap(True)
-        lbl.setStyleSheet("QWidget { color:#E2E8F0;font-size:14px;line-height:1.6; }")
+        lbl.setStyleSheet(f"color: {text_col}; font-size: 13px; line-height: 1.5; background: transparent;")
         lbl.setTextInteractionFlags(Qt.TextInteractionFlag.TextBrowserInteraction)
         lbl.setOpenExternalLinks(True)
         

@@ -122,19 +122,30 @@ class ToastNotification(QFrame):
         self._timer.timeout.connect(self.hide)
 
     def show_message(self, title: str, message: str, toast_type: str = "info", duration: int = 4000):
-        fg, bg = self.COLORS.get(toast_type, ("#00F5FF", "#002D33"))
+        from ui.theme.theme_manager import ThemeManager
+        is_dark = ThemeManager.current_theme() == "dark"
+        fg, bg = self.COLORS.get(toast_type, ("#3B82F6", "rgba(59, 130, 246, 0.15)"))
+        card_bg = "#181A1F" if is_dark else "#FFFFFF"
+        text_col = "#F4F5F8" if is_dark else "#18181B"
+        border_col = fg
+
         self.setStyleSheet(f"""
             QFrame {{
-                background: {bg};
-                border: 1px solid {fg};
+                background-color: {card_bg};
+                border: 1.5px solid {border_col};
                 border-radius: 12px;
+            }}
+            QLabel {{
+                background: transparent;
+                border: none;
             }}
         """)
         self.icon_lbl.setText(self.ICONS.get(toast_type, "ℹ️"))
+        self.icon_lbl.setStyleSheet("background: transparent; border: none; font-size: 16px;")
         self.title_lbl.setText(title)
-        self.title_lbl.setStyleSheet(f"font-weight:bold; font-size:14px; color:{fg}; background:transparent;")
+        self.title_lbl.setStyleSheet(f"font-weight: 800; font-size: 13px; color: {fg}; background: transparent; border: none;")
         self.msg_lbl.setText(message)
-        self.msg_lbl.setStyleSheet(f"font-size:12px; color:#F0F4FF; background:transparent;")
+        self.msg_lbl.setStyleSheet(f"font-size: 12px; color: {text_col}; background: transparent; border: none;")
         self.adjustSize()
 
         # Position top-right of parent

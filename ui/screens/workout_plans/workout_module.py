@@ -49,7 +49,7 @@ class WorkoutPlansScreen(QWidget):
 
         hdr = QHBoxLayout()
         title = QLabel("🏋️  Workout Plans")
-        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
         if self._session.role in (ROLE_ADMIN, ROLE_MANAGER, ROLE_TRAINER):
             self.add_btn = QPushButton("➕  New Plan")
@@ -71,7 +71,6 @@ class WorkoutPlansScreen(QWidget):
         # Status filter
         fbar = QFrame()
         fbar.setObjectName("glassCard")
-        fbar.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:12px; }}")
         fr = QHBoxLayout(fbar); fr.setContentsMargins(16,10,16,10); fr.setSpacing(12)
         fr.addWidget(QLabel("Status:"))
         self.status_filter = QComboBox(); self.status_filter.setFixedHeight(34)
@@ -92,7 +91,6 @@ class WorkoutPlansScreen(QWidget):
         )
         tc = QFrame()
         tc.setObjectName("glassCard")
-        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:16px; }}")
         tcl = QVBoxLayout(tc); tcl.setContentsMargins(16,16,16,16); tcl.addWidget(self.table)
         main.addWidget(tc)
 
@@ -221,7 +219,7 @@ class WorkoutPlanDetail(QWidget):
         hcl = QHBoxLayout(hc); hcl.setContentsMargins(24,20,24,20); hcl.setSpacing(20)
         info = QVBoxLayout(); info.setSpacing(6)
         self.title_lbl = QLabel("—")
-        self.title_lbl.setStyleSheet("QWidget { font-size:22px;font-weight:900;color:#F0F4FF; }")
+        self.title_lbl.setStyleSheet("font-size:22px; font-weight:900;")
         self.sub_lbl = QLabel("—"); self.sub_lbl.setStyleSheet("QWidget { font-size:14px;color:#9CA3AF; }")
         self.status_badge = StatusBadge("Draft")
         for w in [self.title_lbl, self.sub_lbl, self.status_badge]: info.addWidget(w)

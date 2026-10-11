@@ -46,7 +46,7 @@ class BillingScreen(QWidget):
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("💰  Billing & Payments")
-        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
         rec_btn = QPushButton("➕  Record Payment")
         rec_btn.setObjectName("btnPrimary")

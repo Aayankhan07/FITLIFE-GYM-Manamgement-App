@@ -58,7 +58,7 @@ class AttendanceScreen(QWidget):
         # ── Header ────────────────────────────────────────────────────────────
         hdr = QHBoxLayout()
         title = QLabel("Attendance Management")
-        title.setStyleSheet("QWidget { font-size:26px; font-weight:900; color:#F0F4FF; }")
+        title.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(title); hdr.addStretch()
         self.clock_lbl = QLabel()
         self.clock_lbl.setStyleSheet(f"QWidget {{ font-size:18px; color:{ThemeManager.color('accent_primary')}; font-weight:bold; }}")
@@ -82,10 +82,6 @@ class AttendanceScreen(QWidget):
         # ── LEFT: Check-in Panel ──────────────────────────────────────────────
         left_frame = QFrame()
         left_frame.setObjectName("glassCard")
-        left_frame.setStyleSheet(f"""
-            QFrame#glassCard {{background:{ThemeManager.color('card_bg')};
-            border:1px solid {ThemeManager.color('glass_border')};border-radius:16px;}}
-        """)
         left_layout = QVBoxLayout(left_frame)
         left_layout.setContentsMargins(20,20,20,20); left_layout.setSpacing(14)
 
@@ -165,10 +161,6 @@ class AttendanceScreen(QWidget):
         # ── RIGHT: Daily Log ──────────────────────────────────────────────────
         right_frame = QFrame()
         right_frame.setObjectName("glassCard")
-        right_frame.setStyleSheet(f"""
-            QFrame#glassCard {{background:{ThemeManager.color('card_bg')};
-            border:1px solid {ThemeManager.color('glass_border')};border-radius:16px;}}
-        """)
         right_layout = QVBoxLayout(right_frame)
         right_layout.setContentsMargins(20,20,20,20); right_layout.setSpacing(12)
 

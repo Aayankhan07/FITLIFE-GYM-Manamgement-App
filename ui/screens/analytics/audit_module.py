@@ -24,15 +24,16 @@ AUDIT_MODULES = ["All", "Members", "Trainers", "Branches", "Billing", "Attendanc
 
 def _get_audit_logs(date_from, date_to, action=None, module=None, search=None, limit=500):
     try:
-        sql = """
-            SELECT TOP (?) al.id, u.full_name, u.username, al.action,
+        limit_val = int(limit)
+        sql = f"""
+            SELECT TOP ({limit_val}) al.id, u.full_name, u.username, al.action,
                    al.module, al.record_id, al.old_value, al.new_value,
                    al.timestamp
             FROM   audit_logs al
             LEFT JOIN users u ON al.user_id=u.id
-            WHERE  al.timestamp BETWEEN ? AND DATEADD(day,1,?)
+            WHERE  al.timestamp >= ? AND al.timestamp < DATEADD(day, 1, ?)
         """
-        params = [limit, date_from, date_to]
+        params = [str(date_from), str(date_to)]
         if action and action != "All":
             sql += " AND al.action=?"; params.append(action)
         if module and module != "All":
@@ -62,7 +63,7 @@ class AuditLogsModule(QWidget):
         m = QVBoxLayout(c); m.setContentsMargins(28,24,28,28); m.setSpacing(16)
 
         hdr = QHBoxLayout()
-        t = QLabel("🔍  Audit Logs"); t.setStyleSheet("QWidget { font-size:26px;font-weight:900;color:#F0F4FF; }")
+        t = QLabel("🔍  Audit Logs"); t.setStyleSheet("font-size:26px; font-weight:900;")
         hdr.addWidget(t); hdr.addStretch(); m.addLayout(hdr)
 
         # Filters
@@ -90,8 +91,28 @@ class AuditLogsModule(QWidget):
         self._srch = QLineEdit(); self._srch.setPlaceholderText("Search user / value...")
         self._srch.setFixedHeight(34); self._srch.setMaximumWidth(200); fr.addWidget(self._srch)
         fr.addStretch()
-        rb = QPushButton("🔄 Load"); rb.setObjectName("btnPrimary"); rb.setFixedHeight(34)
-        rb.clicked.connect(self._load); fr.addWidget(rb)
+        self._rb = QPushButton("🔄 Load")
+        self._rb.setFixedHeight(34)
+        self._rb.setCursor(Qt.CursorShape.PointingHandCursor)
+        self._rb.setStyleSheet("""
+            QPushButton {
+                background: qlineargradient(x1:0, y1:0, x2:1, y2:0, stop:0 #FA5A3C, stop:1 #FF7A5C);
+                color: #FFFFFF;
+                font-weight: 700;
+                font-size: 13px;
+                border: none;
+                border-radius: 8px;
+                padding: 0 18px;
+            }
+            QPushButton:hover {
+                background: #E84D31;
+            }
+            QPushButton:pressed {
+                background: #CC3D20;
+            }
+        """)
+        self._rb.clicked.connect(self._load)
+        fr.addWidget(self._rb)
         m.addWidget(ff)
 
         # Count label
@@ -104,20 +125,26 @@ class AuditLogsModule(QWidget):
         self._tbl.verticalHeader().setVisible(False)
         self._tbl.horizontalHeader().setStretchLastSection(True)
         self._tbl.setEditTriggers(QTableWidget.EditTrigger.NoEditTriggers)
+        self._tc = QFrame()
+        self._tc.setObjectName("glassCard")
+        self._apply_theme_styles()
+        QVBoxLayout(self._tc).addWidget(self._tbl); m.addWidget(self._tc)
+
+        self._overlay = LoadingOverlay(self)
+        scroll.setWidget(c)
+        QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)
+
+    def _apply_theme_styles(self):
         self._tbl.setStyleSheet(f"""
             QTableWidget{{background:transparent;border:none;color:{ThemeManager.color('text_primary')};}}
             QTableWidget::item{{padding:8px;border-bottom:1px solid {ThemeManager.color('glass_border')};}}
             QTableWidget::item:hover{{background:{ThemeManager.color('hover_bg')};}}
             QHeaderView::section{{background:{ThemeManager.color('table_header')};color:{ThemeManager.color('accent_primary')};padding:10px;border:none;font-weight:bold;}}
         """)
-        tc = QFrame()
-        tc.setObjectName("glassCard")
-        tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:14px; }}")
-        QVBoxLayout(tc).addWidget(self._tbl); m.addWidget(tc)
+        self._tc.setStyleSheet(f"QFrame#glassCard {{ background:{ThemeManager.color('card_bg')};border:1px solid {ThemeManager.color('glass_border')};border-radius:14px; }}")
 
-        self._overlay = LoadingOverlay(self)
-        scroll.setWidget(c)
-        QVBoxLayout(self).addWidget(scroll); self.layout().setContentsMargins(0,0,0,0)
+    def refresh_theme(self):
+        self._apply_theme_styles()
 
     # Colors for action badges
     _ACTION_COLORS = {

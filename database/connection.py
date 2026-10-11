@@ -51,8 +51,9 @@ def _build_connection_string(db_cfg: dict) -> str:
             f"Connection Timeout={timeout};"
         )
     else:
-        username = db_cfg.get("username", "")
-        password = db_cfg.get("password", "")
+        from utils.vault import get_secret
+        username = get_secret("DB_USERNAME", db_cfg.get("username", ""))
+        password = get_secret("DB_PASSWORD", db_cfg.get("password", ""))
         return (
             f"DRIVER={{{driver}}};"
             f"SERVER={server};"
