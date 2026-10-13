@@ -216,7 +216,6 @@ class Sidebar(QWidget):
         theme_pill_layout.setSpacing(2)
 
         self.light_btn = QPushButton()
-        self.light_btn.setObjectName("sidebarThemeBtn")
         self.light_btn.setFixedSize(32, 28)
         self.light_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.light_btn.setIcon(get_icon("sun", size=15))
@@ -224,7 +223,6 @@ class Sidebar(QWidget):
         self.light_btn.clicked.connect(lambda: self._set_theme("light"))
 
         self.dark_btn = QPushButton()
-        self.dark_btn.setObjectName("sidebarThemeBtn")
         self.dark_btn.setFixedSize(32, 28)
         self.dark_btn.setCursor(Qt.CursorShape.PointingHandCursor)
         self.dark_btn.setIcon(get_icon("moon", size=15))
@@ -385,12 +383,20 @@ class Sidebar(QWidget):
             }}
         """)
 
+        if is_dark:
+            self.dark_btn.setObjectName("sidebarThemeBtnActive")
+            self.light_btn.setObjectName("sidebarThemeBtnInactive")
+        else:
+            self.light_btn.setObjectName("sidebarThemeBtnActive")
+            self.dark_btn.setObjectName("sidebarThemeBtnInactive")
+
         active_btn_style = f"""
-            QPushButton#sidebarThemeBtn {{
+            QPushButton {{
                 background-color: {"#282C36" if is_dark else "#EAECEF"} !important;
+                background: {"#282C36" if is_dark else "#EAECEF"} !important;
                 border: none !important;
                 outline: none !important;
-                border-radius: 14px;
+                border-radius: 14px !important;
                 min-width: 32px;
                 max-width: 32px;
                 min-height: 28px;
@@ -398,18 +404,18 @@ class Sidebar(QWidget):
                 padding: 0px !important;
                 margin: 0px !important;
             }}
-            QPushButton#sidebarThemeBtn:hover {{
+            QPushButton:hover {{
                 border: none !important;
                 outline: none !important;
             }}
         """
         inactive_btn_style = """
-            QPushButton#sidebarThemeBtn {{
+            QPushButton {{
                 background-color: transparent !important;
                 background: transparent !important;
                 border: none !important;
                 outline: none !important;
-                border-radius: 14px;
+                border-radius: 14px !important;
                 min-width: 32px;
                 max-width: 32px;
                 min-height: 28px;
@@ -417,8 +423,9 @@ class Sidebar(QWidget):
                 padding: 0px !important;
                 margin: 0px !important;
             }}
-            QPushButton#sidebarThemeBtn:hover {{
+            QPushButton:hover {{
                 background-color: rgba(125, 125, 125, 0.08) !important;
+                background: rgba(125, 125, 125, 0.08) !important;
                 border: none !important;
                 outline: none !important;
             }}

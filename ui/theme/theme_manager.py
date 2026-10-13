@@ -704,16 +704,19 @@ QTableWidget {{
 QHeaderView::section {{
     color: {c['text_secondary']};
 }}
-QPushButton#sidebarThemeBtn {{
+QPushButton#sidebarThemeBtnActive, QPushButton#sidebarThemeBtnInactive {{
     border: none !important;
     outline: none !important;
     padding: 0px !important;
     margin: 0px !important;
     min-height: 0px !important;
 }}
-QPushButton#sidebarThemeBtn:hover {{
-    border: none !important;
-    outline: none !important;
+QPushButton#sidebarThemeBtnInactive {{
+    background: transparent !important;
+    background-color: transparent !important;
+}}
+QPushButton#sidebarThemeBtnInactive:hover {{
+    background-color: rgba(125, 125, 125, 0.08) !important;
 }}
 """
 
