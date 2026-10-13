@@ -704,17 +704,17 @@ QTableWidget {{
 QHeaderView::section {{
     color: {c['text_secondary']};
 }}
-QPushButton#sidebarThemeBtn {
+QPushButton#sidebarThemeBtn {{
     border: none !important;
     outline: none !important;
     padding: 0px !important;
     margin: 0px !important;
     min-height: 0px !important;
-}
-QPushButton#sidebarThemeBtn:hover {
+}}
+QPushButton#sidebarThemeBtn:hover {{
     border: none !important;
     outline: none !important;
-}
+}}
 """
 
 
