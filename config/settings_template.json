@@ -7,7 +7,9 @@
         "username": "",
         "password": "",
         "connection_timeout": 30,
-        "pool_size": 5
+        "pool_size": 5,
+        "mode": "standalone",
+        "allow_auto_fallback": true
     },
     "ai": {
         "provider": "openai",

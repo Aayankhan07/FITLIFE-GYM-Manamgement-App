@@ -20,7 +20,16 @@ logger = logging.getLogger(__name__)
 _settings_path = Path(__file__).parent.parent / "config" / "settings.json"
 
 def _load_settings() -> dict:
-    """Load database settings from config file."""
+    """Load database settings from config file. Creates settings.json from template if missing."""
+    template_path = Path(__file__).parent.parent / "config" / "settings_template.json"
+    if not _settings_path.exists() and template_path.exists():
+        import shutil
+        try:
+            shutil.copyfile(template_path, _settings_path)
+            logger.info(f"Initialized {_settings_path} from template.")
+        except Exception as e:
+            logger.warning(f"Could not copy template to {_settings_path}: {e}")
+
     try:
         with open(_settings_path, "r", encoding="utf-8") as f:
             return json.load(f)
