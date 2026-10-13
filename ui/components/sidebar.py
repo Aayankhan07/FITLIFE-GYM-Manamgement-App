@@ -387,28 +387,40 @@ class Sidebar(QWidget):
 
         active_btn_style = f"""
             QPushButton#sidebarThemeBtn {{
-                background-color: {"#282C36" if is_dark else "#EAECEF"};
-                border: none;
+                background-color: {"#282C36" if is_dark else "#EAECEF"} !important;
+                border: none !important;
+                outline: none !important;
                 border-radius: 14px;
                 min-width: 32px;
                 max-width: 32px;
                 min-height: 28px;
                 max-height: 28px;
-                padding: 0px;
-                margin: 0px;
+                padding: 0px !important;
+                margin: 0px !important;
+            }}
+            QPushButton#sidebarThemeBtn:hover {{
+                border: none !important;
+                outline: none !important;
             }}
         """
         inactive_btn_style = """
             QPushButton#sidebarThemeBtn {{
-                background-color: transparent;
-                border: none;
+                background-color: transparent !important;
+                background: transparent !important;
+                border: none !important;
+                outline: none !important;
                 border-radius: 14px;
                 min-width: 32px;
                 max-width: 32px;
                 min-height: 28px;
                 max-height: 28px;
-                padding: 0px;
-                margin: 0px;
+                padding: 0px !important;
+                margin: 0px !important;
+            }}
+            QPushButton#sidebarThemeBtn:hover {{
+                background-color: rgba(125, 125, 125, 0.08) !important;
+                border: none !important;
+                outline: none !important;
             }}
         """
 
